@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cq5d5npavt00d"]
+
+[ext_resource type="Texture2D" uid="uid://dsk1lmb8tm3hm" path="res://art_test/Sprout Lands - Sprites - Basic pack/Objects/Chest.png" id="1_6ugdh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_efl7u"]
+size = Vector2(14, 7)
+
+[node name="Chest" type="Sprite2D"]
+texture = ExtResource("1_6ugdh")
+hframes = 5
+vframes = 2
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 4.5)
+shape = SubResource("RectangleShape2D_efl7u")
