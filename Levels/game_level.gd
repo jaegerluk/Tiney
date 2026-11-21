@@ -54,4 +54,3 @@ func _on_world_3_warp_body_entered(body):
 func _on_world_3_warp_body_exited(body):
 	if body.has_method("player"):
 		Global.transition_scene = false
-

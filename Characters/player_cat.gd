@@ -144,5 +144,3 @@ func _on_deal_attack_timer_timeout():
 	
 func collect_item(item):
 	inventory.insert(item)
-
-
