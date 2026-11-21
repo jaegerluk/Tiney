@@ -40,6 +40,16 @@ Szene und Skript liegen zusammen und tragen denselben Namen (`player/player.tscn
 - **Gruppen oder `class_name` statt `has_method`:** z. B. `body is Player` oder `body.is_in_group("player")`.
 - **Physik statt `position +=`:** Bewegte Figuren sind `CharacterBody2D` und bewegen sich mit `velocity` und `move_and_slide()`.
 - **Kampf über Hitbox/Hurtbox** (`Area2D` auf eigenen Kollisionsebenen), nie über globale Flags.
+- **Kollisionsebenen** (benannt in `project.godot`):
+
+  | Nr. | Name | Wer liegt darauf |
+  |---|---|---|
+  | 1 | `world` | Wände, geschlossene Türen, feste Objekte |
+  | 2 | `player` | Spielerkörper |
+  | 3 | `enemies` | Gegnerkörper |
+  | 4 | `player_attack` | Schwert-Hitbox des Spielers |
+  | 5 | `enemy_attack` | Gegner-Hitboxen |
+  | 6 | `triggers` | Pickups, Schalter, Schilder, Ausgänge (Maske: `player`) |
 - **Keine globalen Zustands-Flags** für einzelne Übergänge. Raumwechsel laufen datengetrieben über Ausgänge mit Ziel-Raum und Ziel-Marker.
 - `@export` für alles, was im Editor eingestellt werden soll. Keine Zahlen fest im Code, die Design-Werte sind.
 
@@ -67,8 +77,9 @@ Szene und Skript liegen zusammen und tragen denselben Namen (`player/player.tscn
 - Git: `core.fileMode=false` (Rechtewechsel 644→755 ist Rauschen). `.godot/` wird ignoriert, `.uid`-Dateien werden eingecheckt.
 
 ## Aktueller Stand
-- Godot 4.7, Ordnerstruktur angelegt.
-- Der alte Prototyp (Godot 4.2, Tag `prototyp-alt`) liegt noch in `Characters/`, `Levels/`, `Objects/`, `inventory/`, `scripts/` und `art_test/`. Brauchbare Teile werden einzeln übernommen, danach wird der Rest entfernt.
+- Godot 4.7, Ordnerstruktur angelegt, pixelgenaue Einstellungen gesetzt.
+- Der alte Prototyp ist entfernt. Er bleibt unter dem Tag `prototyp-alt` erreichbar (`git show prototyp-alt:<pfad>`).
+- Hauptszene: `world/test_area/test_area.tscn`.
 
 ## Entscheidungen
 - **Neuaufbau statt Weiterbau** des Prototyps. Übernommen werden Inventar, Schalter/Tür, Spieler-Animationen, Kamera-Grenzen, Schild und Lebensanzeige. Neu geschrieben werden Raumwechsel, Kampf und Gegner.
