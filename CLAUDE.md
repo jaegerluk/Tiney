@@ -51,7 +51,19 @@ Szene und Skript liegen zusammen und tragen denselben Namen (`player/player.tscn
 ## Technische Eckdaten
 - Interne Auflösung 256×224, 16×16-Tiles. Ganzzahlige Skalierung (Stretch-Modus `viewport`, Skalierung `integer`), Texturfilter Nearest.
 - Renderer: GL Compatibility.
+- Fenster startet mit 1024×896 (×4). Snap von 2D-Transforms und Vertices auf Pixel ist an.
 - Eingaben nur über Aktionen der Input-Map (Tastatur und Gamepad), nie über Tastencodes im Code.
+  Gamepad nach Position, SNES-artig (Angriff unten, Interaktion rechts, Item links):
+
+  | Aktion | Tastatur | Gamepad |
+  |---|---|---|
+  | `move_up/down/left/right` | WASD, Pfeiltasten | Steuerkreuz, linker Stick |
+  | `attack` | J, Leertaste | unten (Xbox A) |
+  | `interact` | K, E | rechts (Xbox B) |
+  | `use_item` | L, Q | links (Xbox X) |
+  | `menu` | Esc, Tab | Start |
+
+  Die Aktionen `up/down/left/right/inventory` gehören zum alten Prototyp und fallen mit ihm weg.
 - Git: `core.fileMode=false` (Rechtewechsel 644→755 ist Rauschen). `.godot/` wird ignoriert, `.uid`-Dateien werden eingecheckt.
 
 ## Aktueller Stand
