@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Characters/player_cat.gd" id="1_jraxg"]
 [ext_resource type="Resource" uid="uid://cnkwvssa4cj6e" path="res://inventory/players_inventory.tres" id="2_6666a"]
-[ext_resource type="Texture2D" uid="uid://h2ve0pm68xkx" path="res://art_test/mystic_woods_free_2.1/sprites/characters/player.png" id="2_w3s4r"]
+[ext_resource type="Texture2D" uid="uid://h2ve0pm68xkx" path="res://assets/sprites/player/player.png" id="2_w3s4r"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uqvt0"]
 size = Vector2(10, 5)

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cmfi1pks3in4v"]
 
 [ext_resource type="Script" path="res://Button.gd" id="1_iylyu"]
-[ext_resource type="Texture2D" uid="uid://bc2666qrs16y6" path="res://art_test/Dungeon Tileset.png" id="2_ja41q"]
+[ext_resource type="Texture2D" uid="uid://bc2666qrs16y6" path="res://assets/tilesets/dungeon_tileset.png" id="2_ja41q"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pfu8c"]
 radius = 6.0

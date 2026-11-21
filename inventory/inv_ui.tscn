@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://csnc7y3vf3doy"]
 
 [ext_resource type="Script" path="res://inventory/Inv_UI.gd" id="1_nyalv"]
-[ext_resource type="Texture2D" uid="uid://c6b3dmkarp573" path="res://art_test/mystic_woods_free_2.1/sprites/objects/inventory-background.png" id="2_k42ml"]
+[ext_resource type="Texture2D" uid="uid://c6b3dmkarp573" path="res://assets/ui/inventory_background.png" id="2_k42ml"]
 [ext_resource type="PackedScene" uid="uid://c437v8c4t6i1v" path="res://inventory/inv_ui_slot.tscn" id="3_ebfij"]
 
 [node name="Inv_UI" type="Control"]

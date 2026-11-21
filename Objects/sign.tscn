@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://daced2bvardxd"]
 
-[ext_resource type="Texture2D" uid="uid://c8bvn5i6om77h" path="res://art_test/mystic_woods_free_2.1/sprites/objects/objects.png" id="1_0bpdo"]
+[ext_resource type="Texture2D" uid="uid://c8bvn5i6om77h" path="res://assets/sprites/objects/mystic_woods_objects.png" id="1_0bpdo"]
 [ext_resource type="Script" path="res://Objects/sign.gd" id="1_d1gc6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vivgq"]
