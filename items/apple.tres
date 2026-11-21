@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Item" format=3]
+
+[ext_resource type="Script" path="res://items/item.gd" id="1_item"]
+[ext_resource type="Texture2D" uid="uid://ckd7fryo4sbkm" path="res://assets/sprites/items/apple.png" id="2_tex"]
+
+[resource]
+script = ExtResource("1_item")
+name = "Apfel"
+texture = ExtResource("2_tex")

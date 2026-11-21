@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="Inventory" format=3]
+
+[ext_resource type="Script" path="res://items/inventory.gd" id="1_inv"]
+[ext_resource type="Script" path="res://items/inventory_slot.gd" id="2_slot"]
+
+[sub_resource type="Resource" id="Slot_1"]
+script = ExtResource("2_slot")
+
+[sub_resource type="Resource" id="Slot_2"]
+script = ExtResource("2_slot")
+
+[sub_resource type="Resource" id="Slot_3"]
+script = ExtResource("2_slot")
+
+[sub_resource type="Resource" id="Slot_4"]
+script = ExtResource("2_slot")
+
+[sub_resource type="Resource" id="Slot_5"]
+script = ExtResource("2_slot")
+
+[sub_resource type="Resource" id="Slot_6"]
+script = ExtResource("2_slot")
+
+[sub_resource type="Resource" id="Slot_7"]
+script = ExtResource("2_slot")
+
+[sub_resource type="Resource" id="Slot_8"]
+script = ExtResource("2_slot")
+
+[sub_resource type="Resource" id="Slot_9"]
+script = ExtResource("2_slot")
+
+[sub_resource type="Resource" id="Slot_10"]
+script = ExtResource("2_slot")
+
+[sub_resource type="Resource" id="Slot_11"]
+script = ExtResource("2_slot")
+
+[sub_resource type="Resource" id="Slot_12"]
+script = ExtResource("2_slot")
+
+[resource]
+script = ExtResource("1_inv")
+slots = Array[ExtResource("2_slot")]([SubResource("Slot_1"), SubResource("Slot_2"), SubResource("Slot_3"), SubResource("Slot_4"), SubResource("Slot_5"), SubResource("Slot_6"), SubResource("Slot_7"), SubResource("Slot_8"), SubResource("Slot_9"), SubResource("Slot_10"), SubResource("Slot_11"), SubResource("Slot_12")])
