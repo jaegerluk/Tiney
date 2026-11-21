@@ -1,0 +1,92 @@
+# Tiney – Design-Dokument
+
+> „Tiney“ ist ein Projektname und eine Erinnerung: **das Spiel klein halten.**
+
+## Kernidee
+Ein Top-down-Action-Adventure im Stil von *A Link to the Past*. Man wird ohne Tutorial direkt in den ersten Dungeon geworfen. Ein zentraler Hub verbindet drei Dungeons und das Finale. Das Besondere: **eine frei wählbare Schwierigkeit von 1,0 bis 10,0**, die sowohl die Werte der Gegner als auch den Aufbau der Räume verändert.
+
+## Held & Stil
+- Eigene Pixel-Art (alle aktuellen Grafiken sind heruntergeladene Platzhalter)
+- Held: cute, Twink-Ästhetik (ersetzt die Platzhalter-Katze)
+
+## Ablauf
+1. **Start in Dungeon 1**, ohne Intro und ohne Tutorial
+2. Boss besiegt → **1 von 3 magischen Kugeln**
+3. Weiter in den **Hub**: drei Türen zu den Dungeons und eine große Tür, die sich mit allen drei Kugeln öffnet → **Finale**
+4. Dungeon 2 und 3 sind vom Hub aus spielbar (Reihenfolge: *offen*)
+
+## Gebiete
+| Gebiet | Ästhetik | Status |
+|---|---|---|
+| Dungeon 1 | Kerker, Zombies | fest |
+| Hub | zentraler Raum, 3+1 Türen, Shop | fest |
+| Dungeon 2 | Wiese & Wald | fest |
+| Dungeon 3 | – | offen |
+| Finale | hinter der großen Tür, Mönch → Dämonengottheit | fest |
+| Testbereich | großer Bereich zum Testen von Mechaniken, **im fertigen Spiel nicht erreichbar** | fest |
+
+**Geheimwege** verbinden die Dungeons miteinander. Dazu kommen weitere Secrets.
+
+## Finale & Story
+1. Hinter der großen Tür wartet **ein Mönch, der den Helden aufhalten will**. Er ist der erste Endgegner.
+2. Nach seiner Niederlage stellt sich heraus: **Er war der Gute.** Die drei vereinten Kugeln befreien eine alte, versiegelte **Dämonengottheit**.
+3. **Die Dämonengottheit ist der wahre Endgegner.**
+4. Nach ihrem Sieg **setzt sich der Held selbst auf den finsteren Thron**, und das Spiel endet.
+5. Vielleicht: **kleine unterschiedliche Enden je nach Schwierigkeitsgrad**
+
+Ideen zur Vorbereitung der Wendung (offen):
+- Den Mönch schon früher kurz auftauchen lassen, zum Beispiel wie er im Hub warnt oder in einem Dungeon flieht
+- Inschriften und Wandbilder in den Dungeons, die im Nachhinein einen anderen Sinn ergeben
+- Kleine Veränderungen am Helden mit jeder Kugel, etwa an Farbe, Schatten oder Idle-Animation
+
+## Musik & Sound
+- Noch offen. Wie bei der Grafik zuerst Platzhalter, später etwas Eigenes.
+- Mindestens benötigt: ein Track pro Gebiet (Dungeon 1–3, Hub, Finale), Boss-Musik und kurze Jingles (Item gefunden, Kugel, Game Over)
+- Soundeffekte: Schwert, Treffer, Tür, Schalter, Pickup, Menü
+- Mögliche Wege:
+  - Selbst komponieren: Einsteigerfreundliche Chiptune-Tools sind BeepBox (im Browser), Bosca Ceoil oder FamiStudio; LMMS geht weiter.
+  - Freie Musik verwenden: z. B. OpenGameArt oder freesound. Auf die Lizenz achten, CC0 ist am einfachsten.
+  - Soundeffekte erzeugen: jsfxr oder ChipTone, schnell und passend zum Retro-Stil
+- Die Technik ist unabhängig davon: Ein Audio-Autoload übernimmt Musikwechsel mit Überblendung beim Gebietswechsel. Getrennte Lautstärken für Musik und Effekte.
+
+## Systeme
+**Fest geplant**
+- Items, die man im Laufe des Spiels findet
+- Verschiedene Schwerter und Rüstungen, die man findet oder kauft
+- Shop
+- Herzcontainer-artige Upgrades für mehr Lebensenergie
+- Sammelobjekte (ähnlich den goldenen Skulltulas)
+- Bosse pro Dungeon und einige Zwischenbosse (Inspiration: *The Binding of Isaac*)
+- Secrets und Geheimwege
+
+**Vielleicht**
+- Magieanzeige
+- Orden
+- Achievements
+
+## Schwierigkeit 1,0–10,0 (Kernmechanik)
+- Wird manuell gewählt, auf Dezimalstellen genau
+- **Stufenlose Skalierung:** Angriff, Leben und Tempo der Gegner werden über eine Funktion der Schwierigkeit *d* berechnet
+- **Feste Stufen** bei ganzen Zahlen (1, 2, …, 10): Es werden alternative, schwerere Raumvarianten geladen, z. B. mit einem Gegner mehr
+- **Kalibrierung:** 4–5 = normal. Darauf wird das Spiel gebaut und balanciert. 10 = absurd schwer, kaum schaffbar.
+
+**Technische Konsequenz (früh einplanen):**
+- Ein zentraler Wert `difficulty` (Autoload). Alle Gegnerwerte kommen aus *Basiswert × Multiplikator(d)*, nie fest im Gegner verdrahtet.
+- Vorschlag Multiplikator: exponentiell, z. B. `m(d) = k^(d − d_normal)` mit eigenem `k` pro Wert (Leben, Schaden, Tempo). So ist 10 deutlich mehr als „doppelt so schwer“.
+- Räume unterstützen von Anfang an Varianten, z. B. Gegner und Hindernisse mit einer Mindeststufe `min_tier`, die erst ab dieser Stufe erscheinen. So reicht eine Szene pro Raum statt zehn Kopien.
+
+## Offene Fragen
+- Standard-Schwierigkeit genau 4,5 oder 5,0?
+- Kann man die Schwierigkeit während des Spiels ändern? Gibt es Belohnungen oder Achievements für hohe Stufen?
+- Skaliert auch der Schaden, den der Spieler nimmt, oder nur die Gegnerwerte?
+- Thema von Dungeon 3
+- Enden je nach Schwierigkeit: Welche Stufen bekommen welches Ende?
+- Reihenfolge von Dungeon 2 und 3 frei wählbar?
+- Kommen Magie, Orden und Achievements dazu?
+
+## Umfang & Reihenfolge (gegen das Ausufern)
+1. **Meilenstein 1 – Vertical Slice:** Testbereich, Held mit Bewegung und Schwert, ein Gegnertyp, Schwierigkeitssystem (Skalierung + Raumvarianten), Raumwechsel, Türen, Schalter, Schlüssel
+2. **Meilenstein 2:** Dungeon 1 komplett mit Boss und Kugel, danach der Hub
+3. **Meilenstein 3:** Dungeon 2, Shop, Ausrüstung, Herzcontainer, Sammelobjekte
+4. **Danach:** Dungeon 3, Finale, Zwischenbosse, Secrets, optionale Systeme
+5. **Grafik:** Eigene Pixel-Art ersetzt die Platzhalter schrittweise, nachdem die Mechaniken stehen
