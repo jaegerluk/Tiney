@@ -32,6 +32,7 @@ Die Ausgabe darf kein `ERROR` und kein `SCRIPT ERROR` enthalten. Meldungen über
 | `docs/` | Design-Dokument |
 
 Szene und Skript liegen zusammen und tragen denselben Namen (`player/player.tscn`, `player/player.gd`).
+Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_switch.tscn`).
 
 ## Konventionen
 - **Benennung:** Dateien und Ordner in `snake_case`, `class_name` in `PascalCase`, Signale im Präteritum (`opened`, `health_changed`), private Member mit `_`-Präfix.
@@ -79,9 +80,14 @@ Szene und Skript liegen zusammen und tragen denselben Namen (`player/player.tscn
 ## Aktueller Stand
 - Godot 4.7, Ordnerstruktur angelegt, pixelgenaue Einstellungen gesetzt.
 - Der alte Prototyp ist entfernt. Er bleibt unter dem Tag `prototyp-alt` erreichbar (`git show prototyp-alt:<pfad>`).
-- Hauptszene: `world/test_area/test_area.tscn`.
+- Hauptszene: `world/test_area/test_area.tscn` (2×2 Bildschirme). Darin: Spieler, `RoomCamera` mit Grenzen, Schalter → Tür, Schild, Äpfel, HUD mit Lebensanzeige und Inventar.
+- Übernommen und neu aufgebaut: `Player` (Bewegung, Blickrichtung, Schwert-Hitbox, Leben), `Inventory`/`Item`/`Pickup`, `InventoryUI`, `HealthBar`, `FloorSwitch`, `SwitchDoor`, `SignPost`, `RoomCamera`.
+- Noch nicht vorhanden: Gegner, Raumwechsel, Treppen, Schlüssel, Schwierigkeits-Autoload.
 
 ## Entscheidungen
 - **Neuaufbau statt Weiterbau** des Prototyps. Übernommen werden Inventar, Schalter/Tür, Spieler-Animationen, Kamera-Grenzen, Schild und Lebensanzeige. Neu geschrieben werden Raumwechsel, Kampf und Gegner.
 - **Beim Upgrade auf 4.7 nicht alle Szenen per Skript neu gespeichert**, weil dabei UIDs verloren gingen. Szenen werden im Editor beim nächsten Speichern im neuen Format geschrieben.
 - **Alle Grafiken sind Platzhalter.** Eigene Pixel-Art kommt, wenn die Mechaniken stehen.
+- **Leben in halben Herzen** (`max_health = 6` = 3 Herzen). Die `HealthBar` ist ein Platzhalter für eine Herzanzeige.
+- **Schilder liest man mit `interact`**, wenn man davor steht und nach oben schaut (wie in ALttP). Im Prototyp erschien der Text automatisch.
+- **Das Inventar-Menü pausiert das Spiel** (`InventoryUI` läuft mit `process_mode = Always`).

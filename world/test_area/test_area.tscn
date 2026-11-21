@@ -1,3 +1,159 @@
 [gd_scene format=3]
 
+[ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
+[ext_resource type="Script" path="res://world/room_camera.gd" id="2_camera"]
+[ext_resource type="PackedScene" path="res://objects/floor_switch/floor_switch.tscn" id="3_switch"]
+[ext_resource type="PackedScene" path="res://objects/switch_door/switch_door.tscn" id="4_door"]
+[ext_resource type="PackedScene" path="res://objects/sign_post/sign_post.tscn" id="5_sign"]
+[ext_resource type="PackedScene" path="res://items/pickup.tscn" id="6_pickup"]
+[ext_resource type="Resource" path="res://items/apple.tres" id="7_apple"]
+[ext_resource type="PackedScene" path="res://ui/health_bar.tscn" id="8_health"]
+[ext_resource type="PackedScene" path="res://ui/inventory_ui.tscn" id="9_inventory"]
+
+[sub_resource type="RectangleShape2D" id="Shape_Top"]
+size = Vector2(512, 16)
+
+[sub_resource type="RectangleShape2D" id="Shape_Bottom"]
+size = Vector2(512, 16)
+
+[sub_resource type="RectangleShape2D" id="Shape_Left"]
+size = Vector2(16, 448)
+
+[sub_resource type="RectangleShape2D" id="Shape_Right"]
+size = Vector2(16, 448)
+
+[sub_resource type="RectangleShape2D" id="Shape_InnerTop"]
+size = Vector2(32, 96)
+
+[sub_resource type="RectangleShape2D" id="Shape_InnerBottom"]
+size = Vector2(32, 288)
+
 [node name="TestArea" type="Node2D"]
+
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -10
+offset_right = 512.0
+offset_bottom = 448.0
+color = Color(0.29, 0.36, 0.3, 1)
+
+[node name="Walls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Top" type="CollisionShape2D" parent="Walls"]
+position = Vector2(256, 8)
+shape = SubResource("Shape_Top")
+
+[node name="TopRect" type="ColorRect" parent="Walls"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 512.0
+offset_bottom = 16.0
+color = Color(0.17, 0.17, 0.22, 1)
+
+[node name="Bottom" type="CollisionShape2D" parent="Walls"]
+position = Vector2(256, 440)
+shape = SubResource("Shape_Bottom")
+
+[node name="BottomRect" type="ColorRect" parent="Walls"]
+offset_left = 0.0
+offset_top = 432.0
+offset_right = 512.0
+offset_bottom = 448.0
+color = Color(0.17, 0.17, 0.22, 1)
+
+[node name="Left" type="CollisionShape2D" parent="Walls"]
+position = Vector2(8, 224)
+shape = SubResource("Shape_Left")
+
+[node name="LeftRect" type="ColorRect" parent="Walls"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 16.0
+offset_bottom = 448.0
+color = Color(0.17, 0.17, 0.22, 1)
+
+[node name="Right" type="CollisionShape2D" parent="Walls"]
+position = Vector2(504, 224)
+shape = SubResource("Shape_Right")
+
+[node name="RightRect" type="ColorRect" parent="Walls"]
+offset_left = 496.0
+offset_top = 0.0
+offset_right = 512.0
+offset_bottom = 448.0
+color = Color(0.17, 0.17, 0.22, 1)
+
+[node name="InnerTop" type="CollisionShape2D" parent="Walls"]
+position = Vector2(248, 64)
+shape = SubResource("Shape_InnerTop")
+
+[node name="InnerTopRect" type="ColorRect" parent="Walls"]
+offset_left = 232.0
+offset_top = 16.0
+offset_right = 264.0
+offset_bottom = 112.0
+color = Color(0.17, 0.17, 0.22, 1)
+
+[node name="InnerBottom" type="CollisionShape2D" parent="Walls"]
+position = Vector2(248, 288)
+shape = SubResource("Shape_InnerBottom")
+
+[node name="InnerBottomRect" type="ColorRect" parent="Walls"]
+offset_left = 232.0
+offset_top = 144.0
+offset_right = 264.0
+offset_bottom = 432.0
+color = Color(0.17, 0.17, 0.22, 1)
+
+[node name="FloorSwitch" parent="." instance=ExtResource("3_switch")]
+position = Vector2(160, 128)
+
+[node name="SwitchDoor" parent="." instance=ExtResource("4_door")]
+position = Vector2(248, 128)
+
+[node name="SignPost" parent="." instance=ExtResource("5_sign")]
+position = Vector2(96, 216)
+text = "Testbereich: Der Schalter öffnet die Tür."
+
+[node name="Apple1" parent="." instance=ExtResource("6_pickup")]
+position = Vector2(360, 96)
+item = ExtResource("7_apple")
+
+[node name="Apple2" parent="." instance=ExtResource("6_pickup")]
+position = Vector2(392, 96)
+item = ExtResource("7_apple")
+
+[node name="Apple3" parent="." instance=ExtResource("6_pickup")]
+position = Vector2(376, 300)
+item = ExtResource("7_apple")
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector2(64, 96)
+
+[node name="CameraTarget" type="RemoteTransform2D" parent="Player"]
+remote_path = NodePath("../../RoomCamera")
+update_rotation = false
+update_scale = false
+
+[node name="RoomCamera" type="Camera2D" parent="." node_paths=PackedStringArray("top_left", "bottom_right")]
+position = Vector2(64, 96)
+script = ExtResource("2_camera")
+top_left = NodePath("../CameraBounds/TopLeft")
+bottom_right = NodePath("../CameraBounds/BottomRight")
+
+[node name="CameraBounds" type="Node2D" parent="."]
+
+[node name="TopLeft" type="Marker2D" parent="CameraBounds"]
+
+[node name="BottomRight" type="Marker2D" parent="CameraBounds"]
+position = Vector2(512, 448)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="HealthBar" parent="HUD" instance=ExtResource("8_health")]
+
+[node name="InventoryUI" parent="HUD" instance=ExtResource("9_inventory")]
+
+[connection signal="toggled" from="FloorSwitch" to="SwitchDoor" method="set_open"]
+[connection signal="health_changed" from="Player" to="HUD/HealthBar" method="show_health"]

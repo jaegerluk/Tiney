@@ -29,6 +29,7 @@ var _attacking: bool = false
 func _ready() -> void:
 	add_to_group("player")
 	health = max_health
+	health_changed.emit(health, max_health)
 	_anim_tree.animation_finished.connect(_on_animation_finished)
 	_sword_shape.disabled = true
 	_set_facing(facing)
