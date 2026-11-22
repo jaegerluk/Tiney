@@ -37,4 +37,12 @@ func run() -> void:
 	await frames(20)
 	check_eq(game.current_room.name, &"TestArea", "Zurück im Testbereich")
 	check_eq(player.global_position, Vector2(112, 416), "Spieler am Eingang 'from_room_2'")
+
+	# Tod: zurück an den Start mit vollem Leben
+	await game.change_room("res://world/test_area/test_room_2.tscn", &"from_test_area")
+	player.take_damage(99)
+	await frames(40)
+	check_eq(game.current_room.name, &"TestArea", "Nach dem Tod im Startraum")
+	check_eq(player.global_position, Vector2(64, 96), "Nach dem Tod am Start")
+	check_eq(player.health, player.max_health, "Nach dem Tod volles Leben")
 	game.queue_free()

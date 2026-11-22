@@ -3,6 +3,8 @@
 [ext_resource type="Script" path="res://player/player.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://h2ve0pm68xkx" path="res://assets/sprites/player/player.png" id="2_tex"]
 [ext_resource type="Resource" path="res://items/player_inventory.tres" id="3_inv"]
+[ext_resource type="Script" path="res://combat/hitbox.gd" id="4_hitbox"]
+[ext_resource type="Script" path="res://combat/hurtbox.gd" id="5_hurtbox"]
 
 [sub_resource type="Animation" id="Anim_RESET"]
 length = 0.001
@@ -286,6 +288,9 @@ transitions = ["Start", "idle", SubResource("Tr_start"), "idle", "walk", SubReso
 [sub_resource type="RectangleShape2D" id="BodyShape"]
 size = Vector2(10, 5)
 
+[sub_resource type="RectangleShape2D" id="HurtShape"]
+size = Vector2(10, 14)
+
 [sub_resource type="RectangleShape2D" id="SwordShape"]
 size = Vector2(10, 16)
 
@@ -310,10 +315,21 @@ shape = SubResource("BodyShape")
 collision_layer = 8
 collision_mask = 0
 monitoring = false
+script = ExtResource("4_hitbox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SwordHitbox"]
 shape = SubResource("SwordShape")
 disabled = true
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+script = ExtResource("5_hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -2)
+shape = SubResource("HurtShape")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

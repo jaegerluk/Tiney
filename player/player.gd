@@ -12,6 +12,10 @@ signal died
 @export var inventory: Inventory
 ## Abstand der Schwert-Hitbox vom Mittelpunkt in Blickrichtung.
 @export var sword_reach: float = 12.0
+## Sekunden Unverwundbarkeit nach einem Treffer.
+@export var invincible_time: float = 1.0
+## Sekunden ohne Steuerung beim Rückstoß.
+@export var knockback_time: float = 0.2
 
 var health: int
 ## Immer eine der vier Grundrichtungen.
@@ -21,11 +25,15 @@ var move_input: Vector2 = Vector2.ZERO
 
 var _attacking: bool = false
 var _controls_enabled: bool = true
+var _invincible_left: float = 0.0
+var _knockback_left: float = 0.0
+var _knockback_velocity: Vector2 = Vector2.ZERO
 
 @onready var _sprite: Sprite2D = $Sprite2D
 @onready var _anim_tree: AnimationTree = $AnimationTree
 @onready var _playback: AnimationNodeStateMachinePlayback = _anim_tree.get("parameters/playback")
-@onready var _sword_hitbox: Area2D = $SwordHitbox
+@onready var _sword_hitbox: Hitbox = $SwordHitbox
+@onready var _hurtbox: Hurtbox = $Hurtbox
 @onready var _sword_shape: CollisionShape2D = $SwordHitbox/CollisionShape2D
 
 
@@ -34,12 +42,25 @@ func _ready() -> void:
 	health = max_health
 	_anim_tree.animation_finished.connect(_on_animation_finished)
 	_sword_shape.disabled = true
+	_hurtbox.hurt.connect(_on_hurt)
 	_set_facing(facing)
 
 
-func _physics_process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	if _invincible_left > 0.0:
+		_invincible_left -= delta
+		_sprite.visible = _invincible_left <= 0.0 or int(_invincible_left * 20.0) % 2 == 0
+		if _invincible_left <= 0.0:
+			_hurtbox.recheck()
+
+
+func _physics_process(delta: float) -> void:
 	move_input = Vector2.ZERO
-	if not _controls_enabled:
+	if _knockback_left > 0.0:
+		_knockback_left -= delta
+		velocity = _knockback_velocity
+		_knockback_velocity = _knockback_velocity.move_toward(Vector2.ZERO, _knockback_velocity.length() * delta * 5.0)
+	elif not _controls_enabled:
 		velocity = Vector2.ZERO
 		_playback.travel("idle")
 	elif _attacking:
@@ -69,6 +90,19 @@ func take_damage(amount: int) -> void:
 	health_changed.emit(health, max_health)
 	if health == 0:
 		died.emit()
+
+
+func is_invincible() -> bool:
+	return _invincible_left > 0.0
+
+
+## Volles Leben, keine Nachwirkungen von Treffern (z. B. nach dem Tod).
+func revive() -> void:
+	health = max_health
+	_invincible_left = 0.0
+	_knockback_left = 0.0
+	_sprite.visible = true
+	health_changed.emit(health, max_health)
 
 
 func heal(amount: int) -> void:
@@ -113,6 +147,15 @@ func _start_attack() -> void:
 	_attacking = true
 	_sword_shape.set_deferred("disabled", false)
 	_playback.travel("attack")
+
+
+func _on_hurt(hitbox: Hitbox) -> void:
+	if is_invincible() or health <= 0:
+		return
+	_knockback_velocity = hitbox.knockback_direction(global_position) * hitbox.knockback
+	_knockback_left = knockback_time
+	_invincible_left = invincible_time
+	take_damage(hitbox.damage)
 
 
 func _on_animation_finished(anim_name: StringName) -> void:

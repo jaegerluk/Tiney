@@ -19,6 +19,7 @@ var _changing_room: bool = false
 
 func _ready() -> void:
 	_hud.show_health(_player.health, _player.max_health)
+	_player.died.connect(_on_player_died)
 	_load_room(start_room, start_entry)
 
 
@@ -53,6 +54,20 @@ func _load_room(room_path: String, entry: StringName) -> void:
 	_camera.set_bounds(room.camera_bounds())
 	_camera.global_position = _player.global_position
 	_camera.reset_smoothing()
+
+
+## Vorläufig: Bei Tod zurück an den Start, mit vollem Leben. Game Over kommt später.
+func _on_player_died() -> void:
+	if _changing_room:
+		return
+	_changing_room = true
+	_player.set_controls_enabled(false)
+	await _fade_to(1.0)
+	_player.revive()
+	_load_room(start_room, start_entry)
+	await _fade_to(0.0)
+	_player.set_controls_enabled(true)
+	_changing_room = false
 
 
 func _fade_to(alpha: float) -> void:
