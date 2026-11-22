@@ -6,11 +6,11 @@ extends Node2D
 signal dialog_requested(pages: Array, speaker: String, portrait: Texture2D)
 signal item_presented(icon: Texture2D, message: String)
 
-@export var seller_name: String = "Händler"
+@export var seller_name: String = "Merchant"
 @export var seller_portrait: Texture2D
 ## %d wird durch den Preis ersetzt.
-@export_multiline var too_expensive_text: String = "Das kostet %d Rubine. Komm wieder, wenn du genug hast."
-@export_multiline var cannot_carry_text: String = "Du kannst nichts mehr tragen."
+@export_multiline var too_expensive_text: String = "That costs %d rupees. Come back when you have enough."
+@export_multiline var cannot_carry_text: String = "You can't carry any more."
 
 
 func _ready() -> void:

@@ -63,7 +63,7 @@ shape = SubResource("Shape_ExitToRoom2")
 
 [node name="SignPost" parent="." instance=ExtResource("r5")]
 position = Vector2(128, 60)
-text = "Keller: Hierher fällt man durch das Loch in Raum 2. Unten geht es zurück."
+text = "Cellar: You land here when you fall through the hole in room 2. The exit below leads back."
 
 [node name="Rupee" parent="." instance=ExtResource("r6")]
 position = Vector2(180, 140)

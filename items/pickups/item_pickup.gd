@@ -25,7 +25,7 @@ func get_icon() -> Texture2D:
 
 
 func get_message() -> String:
-	return "Du hast: %s" % item.name if item else ""
+	return "You got: %s" % item.name if item else ""
 
 
 func _update_sprite() -> void:

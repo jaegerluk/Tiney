@@ -47,7 +47,8 @@ func _ready() -> void:
 
 ## Text für die Info-Box: Name, Preis, Beschreibung.
 func info_text() -> String:
-	var title := "%s – %d Rubine" % [item_name, price] if item_name != "" else "%d Rubine" % price
+	var cost := "1 rupee" if price == 1 else "%d rupees" % price
+	var title := "%s – %s" % [item_name, cost] if item_name != "" else cost
 	return title + ("\n" + description if description != "" else "")
 
 

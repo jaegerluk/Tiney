@@ -95,14 +95,15 @@ Ideen zur Vorbereitung der Wendung (offen):
 
 ## Figuren & Dialoge (entschieden)
 - **Dialoge:** Textbox unten mit Schreibmaschinen-Effekt, Interaktion zeigt alles bzw. blättert weiter, Spiel pausiert. Darüber seitlich Bild und Name des Sprechers. Schilder nutzen dieselbe Box ohne Bild.
-- **Gefangener** im Kerker deutet den Mönch an: „Die Kugeln dürfen niemals zusammenkommen.“
+- **Gefangener** im Kerker deutet den Mönch an: “The orbs must never be brought together.”
 - **Shop:** Ware liegt mit Preis auf der Theke, davorstellen zeigt Name, Preis und Beschreibung, Interaktion kauft. Der Ladenbesitzer spricht. Test-Angebot: Hinweis (1, nett, nicht hilfreich), Herz (5), Apfel (3), Heiltrank (30), Schlüssel (50, einmal).
 - **Zombie** (Gegner in Dungeon 1): bemerkt dich auf ~6 Tiles, schlurft langsam und stur hinterher, 4 Hiebe, 1 Herz Schaden.
 - **Zombie-König** (Platzhalter-Boss): Bossraum schließt sich, Boss-Leiste, Sturmangriff mit Ankündigung, ruft bei halbem Leben 2 Zombies (nie direkt am Spieler), 12 Hiebe. Belohnung: Herzcontainer + magische Kugel.
 
 ## Dungeon-Mechaniken (entschieden)
 - **Gittertüren:** schließen beim Betreten, öffnen sich, wenn alle Gegner besiegt sind, bleiben danach offen.
-- **Schalter:** grüne Bodenschalter schalten um. Orange Halteschalter halten eine Tür nur offen, solange etwas daraufsteht (Spieler oder Block). **Kristallschalter** reagieren auf Schwerthiebe, die Farbe zeigt die Art: blau/rot schaltet hin und her, grün öffnet für immer, gelb nur für einige Sekunden.
+- **Schalter:** grüne Bodenschalter schalten um. Orange Halteschalter halten eine Tür nur offen, solange etwas daraufsteht (Spieler oder Block). **Kristallschalter** reagieren auf Schwerthiebe, die Farbe zeigt die Art: blau/rot schaltet hin und her, grün öffnet für immer, gelb nur für einige Sekunden. Kann eine Tür hinter dem Spieler zufallen, gibt es auch innen einen Schalter (keine Softlocks).
+- **Sprache im Spiel:** Englisch.
 - **Schiebeblöcke:** kurz dagegen laufen schiebt ein Tile. Sie bleiben, wo sie sind (der Tod setzt sie über die Statue zurück). Ein Block auf einem Bodenschalter drückt ihn.
 - **Löcher:** pro Loch einstellbar. Mit Ziel fällt man ein Stockwerk tiefer, ohne Ziel kostet es ½ Herz und man steht wieder am letzten sicheren Boden.
 - **Kamera:** bildschirmweises Schieben wie in ALttP, pro Raum im Editor auf „mitlaufend“ umstellbar. Gegner bleiben dabei in ihrem Bildschirm. Treppen führen in andere Räume.

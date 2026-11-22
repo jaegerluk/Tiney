@@ -4,7 +4,7 @@ extends Pickup
 
 
 func get_message() -> String:
-	return "Du hast den großen Schlüssel!"
+	return "You got the Big Key!"
 
 
 func _apply(_player: Player) -> bool:

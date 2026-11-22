@@ -37,7 +37,7 @@ func run() -> void:
 	await frames(3)
 	var hud: HUD = game.get_node("HUD")
 	check(hud.get_node("%InfoBox").visible, "Beschreibung beim Davorstehen")
-	check(hud.get_node("%InfoLabel").text.begins_with("Heiltrank – 30 Rubine"), "Name und Preis in der Beschreibung")
+	check(hud.get_node("%InfoLabel").text.begins_with("Potion – 30 rupees"), "Name und Preis in der Beschreibung")
 	check(not get_tree().paused, "Spiel läuft dabei weiter")
 	player.global_position = Vector2(128, 170)
 	await frames(3)
@@ -87,7 +87,7 @@ func run() -> void:
 	await frames(3)
 	await tap("interact")
 	await frames(2)
-	check(box.is_running() and box.get_node("%SpeakerName").text == "Ladenbesitzer", "Ladenbesitzer spricht")
+	check(box.is_running() and box.get_node("%SpeakerName").text == "Shopkeeper", "Ladenbesitzer spricht")
 	await _close_dialog()
 
 	# Vorrat bleibt nach Raumwechsel

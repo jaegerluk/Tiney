@@ -77,7 +77,7 @@ shape = SubResource("Shape_ExitToTestArea")
 
 [node name="SignPost" parent="." instance=ExtResource("4_r")]
 position = Vector2(64, 64)
-text = "Raum 2: Die Tür braucht einen Schlüssel aus dem Testbereich. Dahinter: großer Schlüssel und Bosstür."
+text = "Room 2: This door needs a key from the test area. Beyond it: the big key and the boss door."
 
 [node name="LockedDoor" parent="." instance=ExtResource("5_r")]
 position = Vector2(128, 128)
@@ -104,9 +104,9 @@ facing = Vector2(0, -1)
 
 [node name="Prisoner" parent="." instance=ExtResource("npc_r")]
 position = Vector2(200, 72)
-display_name = "Gefangener"
+display_name = "Prisoner"
 portrait = ExtResource("prisoner_portrait")
-pages = Array[String](["Psst ... du da. Bist du auch hier unten gelandet?", "Ich sitze schon ewig in diesem Kerker. Nachts höre ich Schritte. Ein Mönch, glaube ich.", "Er murmelt immer dasselbe: „Die Kugeln dürfen niemals zusammenkommen.“", "Verrückter Kerl. Wahrscheinlich will er sie nur für sich selbst ..."])
+pages = Array[String](["Psst... you there. Did you end up down here too?", "I've been stuck in this dungeon forever. At night I hear footsteps. A monk, I think.", "He keeps muttering the same thing: “The orbs must never be brought together.”", "Crazy old man. He probably just wants them for himself..."])
 
 [node name="Sprite2D" parent="Prisoner"]
 texture = ExtResource("prisoner_tex")

@@ -37,7 +37,7 @@ func run() -> void:
 	await tap("interact")
 	await frames(2)
 	check(box.is_running(), "Gefangener spricht")
-	check_eq(box.get_node("%SpeakerName").text, "Gefangener", "Name angezeigt")
+	check_eq(box.get_node("%SpeakerName").text, "Prisoner", "Name angezeigt")
 	check(box.get_node("%PortraitPanel").visible, "Bild angezeigt")
 	var taps := 0
 	while box.is_running() and taps < 20:

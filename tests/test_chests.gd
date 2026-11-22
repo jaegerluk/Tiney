@@ -51,7 +51,7 @@ func run() -> void:
 	await tap("interact")
 	await frames(2)
 	check(hud.get_node("%MessageBox").visible, "Meldung sichtbar")
-	check_eq(hud.get_node("%MessageLabel").text, "Du hast den großen Schlüssel!", "Meldungstext")
+	check_eq(hud.get_node("%MessageLabel").text, "You got the Big Key!", "Meldungstext")
 	check_eq(GameState.big_keys(), 1, "Großer Schlüssel erhalten")
 	check(hud.get_node("%BigKeyIcon").visible, "HUD zeigt den großen Schlüssel")
 	await frames(110)

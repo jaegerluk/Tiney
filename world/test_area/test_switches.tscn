@@ -107,7 +107,7 @@ value = 20
 
 [node name="SignPost" parent="." instance=ExtResource("r11")]
 position = Vector2(136, 150)
-text = "Orange Schalter halten die Tür nur offen, solange etwas daraufsteht. Ein Block hilft.\n\nKristalle: blau schaltet um, grün öffnet für immer, gelb nur für kurze Zeit."
+text = "Orange switches only hold a door open while something stands on them. A block helps.\n\nCrystals: blue toggles, green opens for good, yellow only for a short time."
 
 [connection signal="toggled" from="HoldSwitch" to="DoorHold" method="set_open"]
 

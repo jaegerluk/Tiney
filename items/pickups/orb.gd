@@ -6,7 +6,7 @@ extends Pickup
 
 
 func get_message() -> String:
-	return "Du hast eine magische Kugel gefunden! (%d von 3)" % (GameState.orbs.size())
+	return "You found a magic orb! (%d of 3)" % (GameState.orbs.size())
 
 
 func _apply(_player: Player) -> bool:

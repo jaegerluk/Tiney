@@ -5,7 +5,7 @@ extends StaticBody2D
 
 signal save_requested(statue: SaveStatue)
 
-## Sekunden, die „Gespeichert“ sichtbar bleibt.
+## Sekunden, die „Saved“ sichtbar bleibt.
 @export var message_time: float = 1.5
 
 @onready var _bubble: Control = $TextBubble

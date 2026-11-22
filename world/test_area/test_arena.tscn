@@ -70,4 +70,4 @@ position = Vector2(160, 170)
 
 [node name="SignPost" parent="." instance=ExtResource("r9")]
 position = Vector2(100, 40)
-text = "Kampfraum: Die Tür öffnet sich erst, wenn alle Gegner besiegt sind."
+text = "Battle room: The door only opens once every enemy is defeated."

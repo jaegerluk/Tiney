@@ -4,7 +4,7 @@ extends Pickup
 
 
 func get_message() -> String:
-	return "Ein Herzcontainer! Deine Lebensenergie steigt."
+	return "A Heart Container! Your life energy grows."
 
 
 func _apply(player: Player) -> bool:

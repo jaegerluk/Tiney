@@ -27,7 +27,7 @@ func run() -> void:
 	check_eq(inv.selected_item(), potion, "Rechts: Heiltrank ausgewählt")
 	await tap("move_left")
 	check_eq(inv.selected_item(), apple, "Links: Apfel ausgewählt")
-	check_eq(game.get_node("HUD/InventoryUI/%ItemName").text, "Apfel", "Name im Menü")
+	check_eq(game.get_node("HUD/InventoryUI/%ItemName").text, "Apple", "Name im Menü")
 	await tap("menu")
 	check(not get_tree().paused, "Menü zu")
 	check_eq(hud.get_node("%EquippedIcon").texture, apple.texture, "HUD zeigt das ausgewählte Item")

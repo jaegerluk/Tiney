@@ -28,7 +28,7 @@ func open(player: Player) -> void:
 	if owner != null:
 		GameState.set_value(GameState.flag_id(self), true)
 	if content == null:
-		item_presented.emit(null, "Die Truhe ist leer.")
+		item_presented.emit(null, "The chest is empty.")
 		return
 	var pickup: Pickup = content.instantiate()
 	pickup._apply(player)

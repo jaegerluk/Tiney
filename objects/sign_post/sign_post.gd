@@ -5,7 +5,7 @@ extends StaticBody2D
 
 signal dialog_requested(pages: Array, speaker: String, portrait: Texture2D)
 
-@export_multiline var text: String = "Du liest ein Schild."
+@export_multiline var text: String = "You read a sign."
 
 
 func _ready() -> void:

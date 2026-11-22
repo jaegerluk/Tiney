@@ -66,7 +66,7 @@ shape = SubResource("Shape_ExitToTestArea")
 [node name="Shop" type="Node2D" parent="."]
 y_sort_enabled = true
 script = ExtResource("r6")
-seller_name = "Ladenbesitzer"
+seller_name = "Shopkeeper"
 seller_portrait = ExtResource("r5")
 
 [node name="Counter" type="StaticBody2D" parent="Shop"]
@@ -87,37 +87,37 @@ mouse_filter = 2
 color = Color(0.45, 0.3, 0.18, 1)
 
 [node name="Hint" parent="Shop" instance=ExtResource("r8")]
-item_name = "Hinweis"
-description = "Ein guter Rat vom Ladenbesitzer. Vielleicht."
+item_name = "Advice"
+description = "Some good advice from the shopkeeper. Probably."
 position = Vector2(72, 98)
 price = 1
-hint_pages = Array[String](["Ein Rat unter Freunden: Wenn dich ein Schleim angreift ...", "... dann schlag einfach zurück. Danke für deinen Rubin!"])
+hint_pages = Array[String](["A tip between friends: if a slime attacks you...", "...just hit it back. Thanks for the rupee!"])
 icon = ExtResource("r7")
 
 [node name="Heart" parent="Shop" instance=ExtResource("r8")]
-item_name = "Herz"
-description = "Heilt sofort ein Herz."
+item_name = "Heart"
+description = "Restores one heart right away."
 position = Vector2(104, 98)
 price = 5
 content = ExtResource("r9")
 
 [node name="Apple" parent="Shop" instance=ExtResource("r8")]
-item_name = "Apfel"
-description = "Heilt ½ Herz. Kommt ins Inventar."
+item_name = "Apple"
+description = "Restores half a heart. Goes into your inventory."
 position = Vector2(136, 98)
 price = 3
 content = ExtResource("r10")
 
 [node name="Potion" parent="Shop" instance=ExtResource("r8")]
-item_name = "Heiltrank"
-description = "Füllt dein Leben ganz auf. Kommt ins Inventar."
+item_name = "Potion"
+description = "Fully restores your health. Goes into your inventory."
 position = Vector2(168, 98)
 price = 30
 content = ExtResource("r11")
 
 [node name="SmallKey" parent="Shop" instance=ExtResource("r8")]
-item_name = "Kleiner Schlüssel"
-description = "Öffnet eine verschlossene Tür in diesem Dungeon."
+item_name = "Small Key"
+description = "Opens a locked door in this dungeon."
 position = Vector2(200, 98)
 price = 50
 stock = 1
@@ -125,9 +125,9 @@ content = ExtResource("r12")
 
 [node name="Shopkeeper" parent="." instance=ExtResource("r13")]
 position = Vector2(40, 76)
-display_name = "Ladenbesitzer"
+display_name = "Shopkeeper"
 portrait = ExtResource("r5")
-pages = Array[String](["Willkommen in meinem bescheidenen Laden!", "Stell dich vor eine Ware und sieh sie dir genau an, dann gehört sie dir. Gegen Rubine natürlich."])
+pages = Array[String](["Welcome to my humble shop!", "Step up to an item and take a good look, and it's yours. For rupees, of course."])
 
 [node name="Sprite2D" parent="Shopkeeper"]
 texture = ExtResource("r14")

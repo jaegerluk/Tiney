@@ -20,7 +20,7 @@ func run() -> void:
 	check(lock.is_locked, "Bossraum ist verschlossen")
 	check(king.active, "Boss aktiv")
 	check(hud.get_node("%BossPanel").visible, "Boss-Leiste sichtbar")
-	check_eq(hud.get_node("%BossName").text, "Zombie-König", "Boss-Name")
+	check_eq(hud.get_node("%BossName").text, "Zombie King", "Boss-Name")
 	check_eq(king.max_health, 12, "12 Hiebe bei 4,0")
 
 	# Sturmangriff kommt
@@ -70,7 +70,7 @@ func run() -> void:
 		await frames(3)
 		check_eq(GameState.orbs.size(), 1, "Kugel eingesammelt")
 		check(get_tree().paused, "Kugel wird hochgehalten (Pause)")
-		check_eq(hud.get_node("%MessageLabel").text, "Du hast eine magische Kugel gefunden! (1 von 3)", "Kugel-Meldung")
+		check_eq(hud.get_node("%MessageLabel").text, "You found a magic orb! (1 of 3)", "Kugel-Meldung")
 		for i in 200:
 			await frames(1)
 			if not get_tree().paused:

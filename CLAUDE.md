@@ -50,6 +50,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 
 ## Konventionen
 - **Benennung:** Dateien und Ordner in `snake_case`, `class_name` in `PascalCase`, Signale im Präteritum (`opened`, `health_changed`), private Member mit `_`-Präfix.
+- **Sprache:** Alle Texte, die der Spieler sieht (Dialoge, Schilder, Meldungen, Shop, Namen), sind **englisch**, direkt als Strings (kein Übersetzungssystem). Code-Kommentare, Tests, Commits und Doku bleiben deutsch.
 - **Statische Typisierung**, wo sinnvoll: `var speed: float = 80.0`, `func take_damage(amount: int) -> void`.
 - **Signale nach oben, Aufrufe nach unten:** Kinder kennen ihre Eltern nicht. Querverbindungen laufen über Signale, die im Editor oder in der Elternszene verbunden werden. Keine `get_node("../..")`-Ketten.
 - **Gruppen oder `class_name` statt `has_method`:** z. B. `body is Player` oder `body.is_in_group("player")`.
@@ -88,7 +89,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Gegner** erben von `Enemy` (`enemies/enemy.gd`), Basiswerte in `EnemyStats` (`enemies/<typ>/<typ>_stats.tres`). Verhalten in `_ai_velocity()`.
 - **Krüge/Gras:** `fixed_drop` (fester Inhalt) hat Vorrang vor `drop_table` (Zufall). Ohne beides kommt nichts.
 - **Böden** als `TileMapLayer` „Floor“ mit `assets/tilesets/basic_tileset.tres` (z_index −10).
-- **Schalter:** `FloorSwitch` (Modus TOGGLE = grün, `floor_switch.tscn`; HOLD = orange, `hold_switch.tscn`: an, solange Spieler oder Block daraufstehen). `CrystalSwitch` reagiert auf Treffer, Modus TOGGLE (blau/rot), ONCE (grün → grau) oder TIMED (gelb, `duration`). Alle senden `toggled(is_on)`, verbunden in der Raumszene, z. B. mit `SwitchDoor.set_open`. TOGGLE/ONCE bleiben gespeichert, HOLD/TIMED nicht.
+- **Schalter:** `FloorSwitch` (Modus TOGGLE = grün, `floor_switch.tscn`; HOLD = orange, `hold_switch.tscn`: an, solange Spieler oder Block daraufstehen). `CrystalSwitch` reagiert auf Treffer, Modus TOGGLE (blau/rot), ONCE (grün → grau) oder TIMED (gelb, `duration`). Alle senden `toggled(is_on)`, verbunden in der Raumszene, z. B. mit `SwitchDoor.set_open`. Eine `SwitchDoor` darf mehrere Schalter haben, sie ist offen, solange mindestens einer an ist. **Keine Softlocks:** Wo eine Tür hinter dem Spieler zufallen kann (Zeitschalter), gehört ein Schalter auch auf die Innenseite. TOGGLE/ONCE bleiben gespeichert, HOLD/TIMED nicht.
 - **Gittertüren:** `RoomLock` mit `ShutterDoor`-Kindern. Gegner aus dem Inspector oder alle im Raum. Signale `locked`/`unlocked`, z. B. `locked` → `ZombieKing.activate`.
 - **Boss:** Gegner mit `display_name` und Signal `boss_appeared` (HUD-Leiste). Belohnungen als Pickup-Szenen (`rewards`). Kugeln in `GameState.orbs`.
 - **Hitbox/Hurtbox:** Spieler-Hurtbox maskiert `enemy_attack`, Gegner-, NPC- und Zerbrechbares-Hurtboxen maskieren `player_attack`. Nach der Unverwundbarkeit prüft `Hurtbox.recheck()` noch überlappende Hitboxen.

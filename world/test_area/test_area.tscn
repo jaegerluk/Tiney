@@ -91,7 +91,7 @@ position = Vector2(256, 128)
 
 [node name="SignPost" parent="." instance=ExtResource("6_r")]
 position = Vector2(96, 216)
-text = "Testbereich: Der Schalter öffnet die Tür. Unten geht es in Raum 2."
+text = "Test area: The switch opens the door. Room 2 is through the south wall."
 
 [node name="Apple1" parent="." instance=ExtResource("8_r")]
 position = Vector2(360, 96)

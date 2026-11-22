@@ -5,6 +5,6 @@
 
 [resource]
 script = ExtResource("1_item")
-name = "Heiltrank"
+name = "Potion"
 texture = ExtResource("2_tex")
 heal_amount = 9999
