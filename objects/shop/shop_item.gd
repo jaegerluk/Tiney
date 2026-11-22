@@ -4,6 +4,13 @@ extends Node2D
 ## Inhalt ist eine Pickup-Szene oder (bei hint_pages) ein Hinweis des Händlers.
 
 signal buy_requested(item: ShopItem, player: Player)
+## Beschreibung anzeigen bzw. ausblenden, solange der Spieler vor der Ware steht.
+signal info_shown(text: String)
+signal info_hidden
+
+## Name und Beschreibung für die Info-Box beim Davorstehen.
+@export var item_name: String = ""
+@export_multiline var description: String = ""
 
 @export var price: int = 10
 ## Pickup-Szene, die man bekommt (z. B. res://items/pickups/heart.tscn).
@@ -28,8 +35,20 @@ func _ready() -> void:
 	_sprite.texture = icon if icon else _content_icon()
 	_price_label.text = str(price)
 	_update_visibility()
-	($InteractZone as InteractZone).interacted.connect(func(player: Player) -> void:
+	var zone := $InteractZone as InteractZone
+	zone.interacted.connect(func(player: Player) -> void:
 		buy_requested.emit(self, player))
+	zone.player_entered.connect(func(_player: Player) -> void:
+		if not is_sold_out():
+			info_shown.emit(info_text()))
+	zone.player_exited.connect(func(_player: Player) -> void:
+		info_hidden.emit())
+
+
+## Text für die Info-Box: Name, Preis, Beschreibung.
+func info_text() -> String:
+	var title := "%s – %d Rubine" % [item_name, price] if item_name != "" else "%d Rubine" % price
+	return title + ("\n" + description if description != "" else "")
 
 
 func is_sold_out() -> bool:
@@ -43,6 +62,8 @@ func mark_sold() -> void:
 		if owner != null:
 			GameState.set_value(GameState.flag_id(self), remaining)
 	_update_visibility()
+	if is_sold_out():
+		info_hidden.emit()
 
 
 func _update_visibility() -> void:

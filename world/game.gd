@@ -67,6 +67,7 @@ func _load_room(room_path: String, entry: StringName) -> void:
 ## Tauscht den Raum. Mit keep_drops werden die liegen gelassenen Drops des alten Raums gesichert.
 func _swap_room(room_path: String, keep_drops: bool) -> void:
 	_hud.hide_boss()
+	_hud.hide_info()
 	if current_room:
 		if keep_drops:
 			GameState.store_drops(current_room.scene_file_path, _collect_drops(current_room))
@@ -82,6 +83,8 @@ func _swap_room(room_path: String, keep_drops: bool) -> void:
 	room.item_presented.connect(present_item)
 	room.dialog_requested.connect(show_dialog)
 	room.boss_appeared.connect(_hud.show_boss)
+	room.info_shown.connect(_hud.show_info)
+	room.info_hidden.connect(_hud.hide_info)
 	current_room = room
 	GameState.current_dungeon = room.dungeon_id
 	_camera.set_bounds(room.camera_bounds())
@@ -97,6 +100,7 @@ func _place_player(position_: Vector2, facing: Vector2) -> void:
 ## Truheninhalt zeigen: Held hält ihn hoch, Meldung im HUD, Spiel kurz pausiert.
 func present_item(icon: Texture2D, message: String) -> void:
 	get_tree().paused = true
+	_hud.hide_info()
 	_player.hold_up(icon)
 	if message != "":
 		_hud.show_message(message)

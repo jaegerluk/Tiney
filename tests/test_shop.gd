@@ -30,6 +30,19 @@ func run() -> void:
 	await frames(20)
 	check_eq(game.current_room.name, &"TestShop", "Nordöffnung führt in den Shop")
 
+	# Davorstehen zeigt die Beschreibung
+	var potion_item: ShopItem = game.current_room.get_node("Shop/Potion")
+	player.global_position = potion_item.global_position + Vector2(0, 12)
+	player.face(Vector2.UP)
+	await frames(3)
+	var hud: HUD = game.get_node("HUD")
+	check(hud.get_node("%InfoBox").visible, "Beschreibung beim Davorstehen")
+	check(hud.get_node("%InfoLabel").text.begins_with("Heiltrank – 30 Rubine"), "Name und Preis in der Beschreibung")
+	check(not get_tree().paused, "Spiel läuft dabei weiter")
+	player.global_position = Vector2(128, 170)
+	await frames(3)
+	check(not hud.get_node("%InfoBox").visible, "Weggehen blendet die Beschreibung aus")
+
 	# Zu teuer
 	await _interact_with("Shop/Potion")
 	check(box.is_running(), "Zu teuer: Händler sagt etwas")

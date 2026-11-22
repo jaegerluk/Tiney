@@ -11,6 +11,8 @@ signal save_requested(statue: SaveStatue)
 signal item_presented(icon: Texture2D, message: String)
 signal dialog_requested(pages: Array, speaker: String, portrait: Texture2D)
 signal boss_appeared(boss: Enemy)
+signal info_shown(text: String)
+signal info_hidden
 
 @export var dungeon_id: StringName = &""
 ## Kamera schiebt bildschirmweise (ALttP). Aus = Kamera folgt dem Spieler frei.
@@ -40,7 +42,7 @@ func _connect_node(node: Node) -> void:
 		(node as Pit).fell_through.connect(exit_requested.emit)
 	elif node is SaveStatue:
 		(node as SaveStatue).save_requested.connect(save_requested.emit)
-	for signal_name: StringName in [&"item_presented", &"dialog_requested", &"boss_appeared"]:
+	for signal_name: StringName in [&"item_presented", &"dialog_requested", &"boss_appeared", &"info_shown", &"info_hidden"]:
 		if node.has_signal(signal_name):
 			var target := _forwarder(signal_name)
 			if not node.is_connected(signal_name, target):
@@ -53,6 +55,10 @@ func _forwarder(signal_name: StringName) -> Callable:
 			return item_presented.emit
 		&"dialog_requested":
 			return dialog_requested.emit
+		&"info_shown":
+			return info_shown.emit
+		&"info_hidden":
+			return info_hidden.emit
 		_:
 			return boss_appeared.emit
 

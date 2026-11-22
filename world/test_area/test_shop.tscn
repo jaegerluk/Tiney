@@ -87,27 +87,37 @@ mouse_filter = 2
 color = Color(0.45, 0.3, 0.18, 1)
 
 [node name="Hint" parent="Shop" instance=ExtResource("r8")]
+item_name = "Hinweis"
+description = "Ein guter Rat vom Ladenbesitzer. Vielleicht."
 position = Vector2(72, 98)
 price = 1
 hint_pages = Array[String](["Ein Rat unter Freunden: Wenn dich ein Schleim angreift ...", "... dann schlag einfach zurück. Danke für deinen Rubin!"])
 icon = ExtResource("r7")
 
 [node name="Heart" parent="Shop" instance=ExtResource("r8")]
+item_name = "Herz"
+description = "Heilt sofort ein Herz."
 position = Vector2(104, 98)
 price = 5
 content = ExtResource("r9")
 
 [node name="Apple" parent="Shop" instance=ExtResource("r8")]
+item_name = "Apfel"
+description = "Heilt ½ Herz. Kommt ins Inventar."
 position = Vector2(136, 98)
 price = 3
 content = ExtResource("r10")
 
 [node name="Potion" parent="Shop" instance=ExtResource("r8")]
+item_name = "Heiltrank"
+description = "Füllt dein Leben ganz auf. Kommt ins Inventar."
 position = Vector2(168, 98)
 price = 30
 content = ExtResource("r11")
 
 [node name="SmallKey" parent="Shop" instance=ExtResource("r8")]
+item_name = "Kleiner Schlüssel"
+description = "Öffnet eine verschlossene Tür in diesem Dungeon."
 position = Vector2(200, 98)
 price = 50
 stock = 1

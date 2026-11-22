@@ -4,6 +4,8 @@ extends Area2D
 ## wird `interacted` gesendet. Kind eines Objekts (Truhe, Schild, NPC, Shop-Ware …).
 
 signal interacted(player: Player)
+signal player_entered(player: Player)
+signal player_exited(player: Player)
 
 enum FacingRule {
 	## Spieler muss zum Elternobjekt schauen (von jeder Seite).
@@ -26,9 +28,11 @@ func _init() -> void:
 func _ready() -> void:
 	body_entered.connect(func(body: Node2D) -> void:
 		if body is Player:
-			_player = body)
+			_player = body
+			player_entered.emit(_player))
 	body_exited.connect(func(body: Node2D) -> void:
 		if body == _player:
+			player_exited.emit(_player)
 			_player = null)
 
 

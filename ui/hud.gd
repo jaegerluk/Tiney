@@ -16,6 +16,8 @@ extends CanvasLayer
 @onready var _message_box: Control = %MessageBox
 @onready var _message_label: Label = %MessageLabel
 @onready var _boss_panel: Control = %BossPanel
+@onready var _info_box: Control = %InfoBox
+@onready var _info_label: Label = %InfoLabel
 @onready var _boss_name: Label = %BossName
 @onready var _boss_bar: ProgressBar = %BossBar
 
@@ -29,6 +31,7 @@ func _ready() -> void:
 	GameState.big_keys_changed.connect(_on_big_keys_changed)
 	_message_box.visible = false
 	_boss_panel.visible = false
+	_info_box.visible = false
 	if inventory:
 		inventory.changed.connect(_on_inventory_changed)
 		_on_inventory_changed()
@@ -71,6 +74,16 @@ func hide_boss() -> void:
 
 func _on_boss_health_changed(current: int, _maximum: int) -> void:
 	_boss_bar.value = current
+
+
+## Info-Box (z. B. Beschreibung einer Ware); das Spiel läuft weiter.
+func show_info(text: String) -> void:
+	_info_label.text = text
+	_info_box.visible = true
+
+
+func hide_info() -> void:
+	_info_box.visible = false
 
 
 func show_message(text: String) -> void:
