@@ -68,15 +68,22 @@ Ideen zur Vorbereitung der Wendung (offen):
 - Wird manuell gewählt, auf Dezimalstellen genau
 - **Stufenlose Skalierung:** Angriff, Leben und Tempo der Gegner werden über eine Funktion der Schwierigkeit *d* berechnet
 - **Feste Stufen** bei ganzen Zahlen (1, 2, …, 10): Es werden alternative, schwerere Raumvarianten geladen, z. B. mit einem Gegner mehr
-- **Kalibrierung:** 4–5 = normal. Darauf wird das Spiel gebaut und balanciert. 10 = absurd schwer, kaum schaffbar.
+- **Kalibrierung:** **4,0 ist der Standard**: Bei 4,0 gelten die Basiswerte unverändert, darauf wird gebaut und balanciert. Der Weg zu schwierigeren Stufen ist der interessantere Teil. 10 = absurd schwer, kaum schaffbar.
 
 **Technische Konsequenz (früh einplanen):**
 - Ein zentraler Wert `difficulty` (Autoload). Alle Gegnerwerte kommen aus *Basiswert × Multiplikator(d)*, nie fest im Gegner verdrahtet.
 - Vorschlag Multiplikator: exponentiell, z. B. `m(d) = k^(d − d_normal)` mit eigenem `k` pro Wert (Leben, Schaden, Tempo). So ist 10 deutlich mehr als „doppelt so schwer“.
 - Räume unterstützen von Anfang an Varianten, z. B. Gegner und Hindernisse mit einer Mindeststufe `min_tier`, die erst ab dieser Stufe erscheinen. So reicht eine Szene pro Raum statt zehn Kopien.
 
+## Dungeon-Elemente (entschieden)
+- **Kleine Schlüssel gelten pro Dungeon** (wie ALttP). Der Zähler am Bildschirmrand zeigt die Schlüssel des aktuellen Dungeons.
+- **Schlüsseltüren** öffnen beim Dagegenlaufen und bleiben offen.
+- **Rubine** als Währung: grün 1, blau 5, rot 20. Höchstens 999.
+- **Krüge und Gras** gehen vorerst mit dem Schwert kaputt und lassen manchmal Rubine oder Herzen fallen. Heben und Werfen wie in ALttP kommt später.
+- **Türen und Durchgänge** laden einen anderen Raum (mit Abblenden).
+- **Erster Gegner: Schleim.** Hüpft herum und verfolgt den Spieler aus der Nähe.
+
 ## Offene Fragen
-- Standard-Schwierigkeit genau 4,5 oder 5,0?
 - Kann man die Schwierigkeit während des Spiels ändern? Gibt es Belohnungen oder Achievements für hohe Stufen?
 - Skaliert auch der Schaden, den der Spieler nimmt, oder nur die Gegnerwerte?
 - Thema von Dungeon 3
