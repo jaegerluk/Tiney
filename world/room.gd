@@ -32,6 +32,8 @@ func _ready() -> void:
 
 ## Reicht die Signale eines Objekts an Game weiter (Ausgänge, Statuen, Meldungen, Dialoge, Bosse).
 func _connect_node(node: Node) -> void:
+	if node is Enemy and screen_scroll:
+		(node as Enemy).confine_rect = screen_rect_at((node as Enemy).global_position)
 	if node is RoomExit:
 		(node as RoomExit).triggered.connect(exit_requested.emit)
 	elif node is Pit:
@@ -70,6 +72,14 @@ func get_entry(entry_name: StringName) -> RoomEntry:
 			return node
 	push_error("Raum %s: Eingang '%s' fehlt" % [scene_file_path, entry_name])
 	return null
+
+
+## Der Bildschirm (Viewport-Größe, im Raster der Raumgrenzen), in dem ein Punkt liegt.
+func screen_rect_at(point: Vector2) -> Rect2:
+	var bounds := camera_bounds()
+	var size := get_viewport_rect().size
+	var index := ((point - bounds.position) / size).floor()
+	return Rect2(bounds.position + index * size, size)
 
 
 func camera_bounds() -> Rect2:

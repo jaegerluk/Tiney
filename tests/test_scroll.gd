@@ -40,6 +40,21 @@ func run() -> void:
 	check(not get_tree().paused, "Danach geht es weiter")
 	check(player.global_position.y > 224 + 10, "Spieler ist in den neuen Bildschirm gerückt")
 
+	# Raum mit ausgeschaltetem Screen Scroll: Kamera läuft mit
+	var area_path: String = game.current_room.scene_file_path
+	game._swap_room(area_path, true)
+	game.current_room.screen_scroll = false
+	camera.screen_scroll = false
+	player.global_position = Vector2(150, 300)
+	camera.snap_to_target()
+	hold("move_right")
+	await frames(20)
+	hold("move_right", false)
+	await frames(2)
+	check(is_equal_approx(camera.global_position.x, player.global_position.x), "Ohne Screen Scroll folgt die Kamera dem Spieler")
+	check(not camera.is_scrolling(), "Kein bildschirmweises Schieben")
+	camera.screen_scroll = true
+
 	# Treppe nach unten (Raum 2 -> Keller) und wieder hoch
 	await game.change_room(ROOM2, &"from_test_area")
 	player.global_position = Vector2(224, 58)

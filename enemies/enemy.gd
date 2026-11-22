@@ -15,6 +15,11 @@ signal health_changed(current: int, maximum: int)
 ## Raumvariante: erscheint erst ab dieser Schwierigkeitsstufe.
 @export var min_tier: int = 0
 
+## Bereich, den der Gegner nicht verlassen darf (leer = keine Grenze).
+## Room setzt ihn in Räumen mit bildschirmweisem Scrollen auf den Start-Bildschirm.
+var confine_rect: Rect2 = Rect2()
+## Abstand zum Rand des Bereichs in Pixeln.
+var confine_margin: float = 8.0
 var max_health: int
 var health: int
 var damage: int
@@ -52,6 +57,9 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity = _ai_velocity(delta)
 	move_and_slide()
+	if confine_rect.has_area():
+		var inner := confine_rect.grow(-confine_margin)
+		global_position = global_position.clamp(inner.position, inner.end)
 
 
 func is_dead() -> bool:
