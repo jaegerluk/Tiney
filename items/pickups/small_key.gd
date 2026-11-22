@@ -1,10 +1,6 @@
 class_name KeyPickup
 extends Pickup
-## Kleiner Schlüssel. Gilt für den Dungeon des aktuellen Raums. Standardmäßig dauerhaft.
-
-
-func _init() -> void:
-	persistent = true
+## Kleiner Schlüssel. Gilt für den Dungeon des aktuellen Raums.
 
 
 func _apply(_player: Player) -> bool:

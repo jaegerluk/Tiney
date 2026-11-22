@@ -17,12 +17,17 @@ var current_dungeon: StringName = &"":
 
 var _keys: Dictionary[StringName, int] = {}
 var _flags: Dictionary[String, bool] = {}
+var _values: Dictionary[String, Variant] = {}
+## Liegen gelassene Drops je Raumpfad: [{"scene": Pfad, "position": Vector2}, ...]
+var _room_drops: Dictionary[String, Array] = {}
 
 
 func reset() -> void:
 	rupees = 0
 	_keys.clear()
 	_flags.clear()
+	_values.clear()
+	_room_drops.clear()
 	current_dungeon = &""
 	rupees_changed.emit(rupees)
 
@@ -67,6 +72,35 @@ func set_flag(id: String) -> void:
 
 func has_flag(id: String) -> bool:
 	return _flags.has(id)
+
+
+## Zustand eines Objekts (z. B. Schalter an/aus).
+func set_value(id: String, value: Variant) -> void:
+	_values[id] = value
+
+
+func get_value(id: String, default: Variant = null) -> Variant:
+	return _values.get(id, default)
+
+
+## true, wenn ein im Raum platziertes Objekt schon eingesammelt, zerstört oder getötet wurde.
+## Objekte ohne owner (zur Laufzeit erzeugt) sind nie „weg“.
+func is_gone(node: Node) -> bool:
+	return node.owner != null and has_flag(flag_id(node))
+
+
+## Merkt sich, dass ein im Raum platziertes Objekt weg ist. Ohne owner passiert nichts.
+func mark_gone(node: Node) -> void:
+	if node.owner != null:
+		set_flag(flag_id(node))
+
+
+func store_drops(room_path: String, drops: Array) -> void:
+	_room_drops[room_path] = drops.duplicate(true)
+
+
+func get_drops(room_path: String) -> Array:
+	return _room_drops.get(room_path, []).duplicate(true)
 
 
 ## Eindeutige ID für einen Knoten in einer Raumszene: "<Szenenpfad>:<Pfad im Raum>".

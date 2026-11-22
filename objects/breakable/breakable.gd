@@ -1,7 +1,7 @@
 class_name Breakable
 extends StaticBody2D
 ## Etwas, das ein Schwerthieb zerstört (Krug, Grasbüschel). Kann etwas fallen lassen.
-## Erscheint beim erneuten Betreten des Raums wieder.
+## Einmal zerstört, bleibt es weg (auch nach Raumwechsel).
 
 signal broken
 
@@ -15,6 +15,9 @@ var _broken: bool = false
 
 
 func _ready() -> void:
+	if GameState.is_gone(self):
+		queue_free()
+		return
 	($Hurtbox as Hurtbox).hurt.connect(_on_hurt)
 
 
@@ -22,6 +25,7 @@ func break_apart() -> void:
 	if _broken:
 		return
 	_broken = true
+	GameState.mark_gone(self)
 	$CollisionShape2D.set_deferred("disabled", true)
 	$Hurtbox.set_deferred("monitoring", false)
 	broken.emit()

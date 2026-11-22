@@ -40,12 +40,13 @@ func run() -> void:
 	check_eq(GameState.keys(), 1, "Schlüssel eingesammelt")
 	check_eq(hud.get_node("%KeyLabel").text, "1", "HUD zeigt 1 Schlüssel")
 
-	# Raum verlassen und zurück: Schlüssel kommt nicht wieder, Rubine schon
+	# Raum verlassen und zurück: nichts kommt wieder
 	await game.change_room(ROOM2, &"from_test_area")
 	await game.change_room(AREA, &"from_room_2")
 	await frames(2)
 	check(not game.current_room.has_node("SmallKey"), "Schlüssel bleibt weg")
-	check(game.current_room.has_node("Rupee1"), "Rubine erscheinen wieder")
+	check(not game.current_room.has_node("Rupee1"), "Rubine bleiben weg")
+	check(not game.current_room.has_node("Heart"), "Herz bleibt weg")
 	check_eq(GameState.keys(), 1, "Schlüssel noch im Besitz")
 
 	# Item ins Inventar

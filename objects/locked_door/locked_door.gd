@@ -13,7 +13,7 @@ var _opening: bool = false
 
 
 func _ready() -> void:
-	if GameState.has_flag(GameState.flag_id(self)):
+	if GameState.is_gone(self):
 		queue_free()
 		return
 	var sensor: Area2D = $Sensor
@@ -32,7 +32,7 @@ func _physics_process(_delta: float) -> void:
 
 func _open() -> void:
 	_opening = true
-	GameState.set_flag(GameState.flag_id(self))
+	GameState.mark_gone(self)
 	_blocker.set_deferred("disabled", true)
 	opened.emit()
 	var tween := create_tween()

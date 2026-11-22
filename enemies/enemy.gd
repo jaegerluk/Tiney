@@ -26,6 +26,10 @@ var _knockback_velocity: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
+	if GameState.is_gone(self):
+		_dead = true
+		queue_free()
+		return
 	add_to_group("enemies")
 	max_health = Difficulty.scaled_int(stats.max_health, Difficulty.Stat.HEALTH)
 	health = max_health
@@ -84,6 +88,7 @@ func _flash() -> void:
 
 func _die() -> void:
 	_dead = true
+	GameState.mark_gone(self)
 	velocity = Vector2.ZERO
 	$CollisionShape2D.set_deferred("disabled", true)
 	_hurtbox.set_deferred("monitoring", false)

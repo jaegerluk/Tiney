@@ -1,5 +1,5 @@
 extends TestCase
-## Krüge und Gras: Schwert zerstört sie, Drops kommen aus der DropTable, nach Raumwechsel wieder da.
+## Krüge und Gras: Schwert zerstört sie, Drops kommen aus der DropTable, zerstört bleibt zerstört.
 
 const AREA := "res://world/test_area/test_area.tscn"
 const ROOM2 := "res://world/test_area/test_room_2.tscn"
@@ -63,9 +63,10 @@ func run() -> void:
 	hold("move_up", false)
 	check(player.global_position.y > pot1.global_position.y + 6, "Krug blockiert")
 
-	# Raumwechsel: alles wieder da
+	# Raumwechsel: zerstört bleibt zerstört
 	await game.change_room(ROOM2, &"from_test_area")
 	await game.change_room(AREA, &"from_room_2")
 	await frames(2)
-	check(game.current_room.has_node("Pot2") and game.current_room.has_node("Grass1"), "Krug und Gras erscheinen wieder")
+	check(not game.current_room.has_node("Pot2") and not game.current_room.has_node("Grass1"), "Krug und Gras bleiben zerstört")
+	check(game.current_room.has_node("Pot1") and game.current_room.has_node("Grass2"), "Unberührte bleiben stehen")
 	game.queue_free()

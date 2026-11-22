@@ -38,11 +38,14 @@ func change_room(room_path: String, entry: StringName) -> void:
 
 func _load_room(room_path: String, entry: StringName) -> void:
 	if current_room:
+		GameState.store_drops(current_room.scene_file_path, _collect_drops(current_room))
 		_room_holder.remove_child(current_room)
 		current_room.queue_free()
 	var room: Room = (load(room_path) as PackedScene).instantiate()
 	room.apply_tier(Difficulty.tier())
 	_room_holder.add_child(room)
+	for drop in GameState.get_drops(room_path):
+		DropTable.spawn_scene(load(drop.scene), room, drop.position)
 	room.exit_requested.connect(change_room)
 	current_room = room
 	GameState.current_dungeon = room.dungeon_id
@@ -68,6 +71,15 @@ func _on_player_died() -> void:
 	await _fade_to(0.0)
 	_player.set_controls_enabled(true)
 	_changing_room = false
+
+
+## Liegen gelassene Drops eines Raums als speicherbare Liste.
+func _collect_drops(room: Room) -> Array:
+	var drops: Array = []
+	for node in get_tree().get_nodes_in_group(DropTable.DROP_GROUP):
+		if room.is_ancestor_of(node) and not node.is_queued_for_deletion():
+			drops.append({"scene": node.scene_file_path, "position": (node as Node2D).position})
+	return drops
 
 
 func _fade_to(alpha: float) -> void:

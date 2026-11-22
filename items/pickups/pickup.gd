@@ -5,11 +5,12 @@ extends Area2D
 signal collected
 
 ## Dauerhaft: Einmal aufgenommen, erscheint es beim erneuten Betreten des Raums nicht wieder.
-@export var persistent: bool = false
+## Gilt nur für im Raum platzierte Pickups; Drops verwaltet Game über DropTable.DROP_GROUP.
+@export var persistent: bool = true
 
 
 func _ready() -> void:
-	if persistent and GameState.has_flag(GameState.flag_id(self)):
+	if persistent and GameState.is_gone(self):
 		queue_free()
 		return
 	body_entered.connect(_on_body_entered)
@@ -23,6 +24,6 @@ func _apply(_player: Player) -> bool:
 func _on_body_entered(body: Node2D) -> void:
 	if body is Player and _apply(body as Player):
 		if persistent:
-			GameState.set_flag(GameState.flag_id(self))
+			GameState.mark_gone(self)
 		collected.emit()
 		queue_free()

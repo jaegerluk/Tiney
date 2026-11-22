@@ -17,6 +17,8 @@ var _direction: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	super()
+	if _dead:
+		return
 	_timer = randf_range(rest_time_min, rest_time_max)
 	_anim.play("idle")
 
