@@ -20,6 +20,7 @@ godot --headless --fixed-fps 60 --path . tests/run_tests.tscn -- test_rooms # ei
 ```
 Die Ausgabe darf kein `ERROR` und kein `SCRIPT ERROR` enthalten. Meldungen über „leaked“ RIDs beim Beenden sind harmlos.
 Der Test-Runner endet mit `ALLE TESTS OK` (Exit-Code 0) oder listet die fehlgeschlagenen Tests (Exit-Code 1).
+Er zählt über einen `Logger` (`tests/error_counter.gd`) auch Engine- und Skriptfehler während eines Tests als Fehlschlag, denn GDScript läuft nach einem Laufzeitfehler einfach weiter.
 `--script` ist für Prüfungen ungeeignet: Dort sind Autoloads nicht geladen, und `ResourceSaver` entfernt UIDs.
 
 **Tests schreiben:** `tests/test_<thema>.gd` mit `extends TestCase`, `run()` überschreiben (darf `await` nutzen).
@@ -33,15 +34,15 @@ Hilfen: `check`, `check_eq`, `frames(n)`, `hold(action)`, `tap(action)`. Der Run
 | `combat/` | `Hitbox`, `Hurtbox` |
 | `player/` | Spielerszene, Zustände, Hitbox/Hurtbox |
 | `enemies/` | ein Unterordner pro Gegnertyp, Basiswerte als `.tres` |
-| `npcs/` | Harmlose Figuren (Kuh …), ein Unterordner pro Typ |
-| `objects/` | Schalter, Türen, Truhen, Schilder, Treppen |
+| `npcs/` | Harmlose Figuren: `cow`, `talk_npc` (Dialog-NPC) |
+| `objects/` | Schalter, Türen (Schlüssel, Boss, Gitter + `room_lock`), Truhen, Schilder, Statuen, Treppen, Löcher, Schiebeblöcke, Shop, `interact_zone` |
 | `items/` | Inventar-Logik, Item-Ressourcen, `pickups/`, `drops/` (DropTables) |
-| `ui/` | HUD, Lebensanzeige, Inventar-/Menü-UI |
+| `ui/` | HUD, Lebensleiste, Dialogbox, Inventar-/Menü-UI |
 | `world/` | `game.tscn` (Hauptszene), `Room`, `RoomEntry`, Räume je Gebiet: `test_area/`, `hub/`, `dungeon_1/` … |
 | `assets/` | Grafik und Audio, nur genutzte Dateien, Quellen in `assets/CREDITS.md` |
 | `docs/` | Design-Dokument |
 | `tests/` | Headless-Tests und Runner |
-| `tools/` | Hilfsskripte außerhalb von Godot (z. B. `make_placeholders.py`) |
+| `tools/` | Hilfsskripte außerhalb von Godot: `make_placeholders.py` (Sprites), `room_builder.py` (Raumszenen mit Tiles), `tidy_tscn.py` (Reihenfolge in .tscn reparieren) |
 
 Szene und Skript liegen zusammen und tragen denselben Namen (`player/player.tscn`, `player/player.gd`).
 Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_switch.tscn`).
@@ -86,7 +87,28 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Gegner** erben von `Enemy` (`enemies/enemy.gd`), Basiswerte in `EnemyStats` (`enemies/<typ>/<typ>_stats.tres`). Verhalten in `_ai_velocity()`.
 - **Krüge/Gras:** `fixed_drop` (fester Inhalt) hat Vorrang vor `drop_table` (Zufall). Ohne beides kommt nichts.
 - **Böden** als `TileMapLayer` „Floor“ mit `assets/tilesets/basic_tileset.tres` (z_index −10).
+- **Gittertüren:** `RoomLock` mit `ShutterDoor`-Kindern. Gegner aus dem Inspector oder alle im Raum. Signale `locked`/`unlocked`, z. B. `locked` → `ZombieKing.activate`.
+- **Boss:** Gegner mit `display_name` und Signal `boss_appeared` (HUD-Leiste). Belohnungen als Pickup-Szenen (`rewards`). Kugeln in `GameState.orbs`.
 - **Hitbox/Hurtbox:** Spieler-Hurtbox maskiert `enemy_attack`, Gegner-, NPC- und Zerbrechbares-Hurtboxen maskieren `player_attack`. Nach der Unverwundbarkeit prüft `Hurtbox.recheck()` noch überlappende Hitboxen.
+
+## Interaktion, Dialoge, Präsentation
+- **`InteractZone`** (Area2D-Kind eines Objekts): „davorstehen, hinschauen, `interact`“. `facing_rule`: zum Objekt (`TOWARD_PARENT`) oder nach oben (`UP`). Genutzt von Truhe, Statue, Schild, NPC und Shop-Ware.
+- **Signale an Game über Room:** Jedes Objekt mit den Signalen `dialog_requested(pages, speaker, portrait)`, `item_presented(icon, message)` oder `boss_appeared(boss)` wird automatisch verbunden, auch wenn es erst zur Laufzeit in den Raum kommt (`child_entered_tree`). Ausgänge, Treppen, Löcher (`fell_through`) und Statuen verbindet Room über ihre Klassen.
+- **Dialog:** `Game.show_dialog()` pausiert das Spiel. Die `DialogBox` läuft mit `PROCESS_MODE_ALWAYS`.
+- **Hochhalten:** `Game.present_item()` pausiert ~1 s, `Player.hold_up()`, `HUD.show_message()`. Pickups mit `present_on_pickup` (Herzcontainer, Kugel, großer Schlüssel) tun das auch beim Aufheben.
+- Was das Spiel pausiert (Dialog, Präsentation, Menü, Bildschirm-Scroll), setzt `get_tree().paused`. Das Menü öffnet nicht, solange schon pausiert ist.
+
+## Leben, Items, Shop
+- **1 Herz = 20 LP** (`Player.HP_PER_HEART`), ½ Herz = 10. Gegnerschaden ist in LP angegeben, damit skalierter Schaden fein abgestuft ist. Gegnerleben zählt in Schwerthieben.
+- **Items** (`Item`): `heal_amount`, `consumable`. Auswahl im Menü (`Inventory.selected`), Benutzen mit `use_item`. Heil-Items werden bei vollem Leben nicht verbraucht.
+- **Shop:** Ein `Shop`-Knoten mit `ShopItem`-Kindern (Preis, Inhalt als Pickup-Szene oder `hint_pages`, Vorrat). Kaufen und Meldungen laufen über den Shop.
+
+## Kamera, Treppen, Löcher, Blöcke
+- **`RoomCamera`:** bildschirmweises Schieben (Bildschirm = Viewport 256×224), solange `Room.screen_scroll` an ist. Game pausiert dabei und rückt den Spieler `scroll_nudge` Pixel weiter. Sprünge über `teleport_distance` (Teleport, Sturz) lösen keinen Scroll aus, die Kamera springt mit.
+- **Räume** möglichst als Vielfache von 256×224 bauen.
+- **Treppen** (`Stairs`) sind `RoomExit`s mit Sprite und kleinem Auslösebereich in der Mitte.
+- **Löcher** (`Pit`, `@tool`, Größe im Inspector): mit `target_room` ein Stockwerk tiefer, sonst Schaden und `Player.last_safe_position`.
+- **Schiebeblöcke** sind `AnimatableBody2D`, denn ein per Code verschobener `StaticBody2D` löst keine zuverlässigen Überlappungen aus.
 
 ## Schwierigkeit (Kernmechanik, siehe design.md)
 - Autoload `Difficulty`: `value` (1,0–10,0, Standard **4,0** = Basiswerte), `multiplier(stat)` = k^(d − 4) mit k in `Difficulty.GROWTH` (Leben 1.15, Schaden 1.15, Tempo 1.04), `scaled_int()` rundet und gibt mindestens 1, `tier()` = ganzzahlige Stufe.
@@ -114,10 +136,23 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 ## Aktueller Stand
 - Godot 4.7, Ordnerstruktur angelegt, pixelgenaue Einstellungen gesetzt.
 - Der alte Prototyp ist entfernt. Er bleibt unter dem Tag `prototyp-alt` erreichbar (`git show prototyp-alt:<pfad>`).
-- Hauptszene: `world/game.tscn`, Startraum `world/test_area/test_area.tscn` (2×2 Bildschirme), verbunden mit `test_room_2.tscn` (Dungeon `test`).
-- Testbereich (Steinboden): Speicherstatue, Truhe (roter Rubin), Schalter → Tür, Schild, Äpfel, Rubine (1/5/20), Herz, Schlüssel, Krüge (Pot3 enthält einen Schlüssel), Gras, Kuh, zwei Schleime und ein dritter ab Stufe 6. In Raum 2: Schlüsseltür, dahinter Truhe mit großem Schlüssel und Bosstür in der Südwand. Dahinter `test_boss_room.tscn` (Platzhalter).
-- Vorhanden: `Player` (Bewegung, Schwert, Leben, Rückstoß, Unverwundbarkeit), Inventar, Pickups, HUD (Leben, Rubine, Schlüssel), Raumwechsel mit Überblendung, Persistenz (nichts erscheint neu), Speicherstatuen, Schlüsseltüren, Truhen, großer Schlüssel und Bosstür, Krüge/Gras mit festem oder zufälligem Inhalt, Gegner-Basis und Schleim, Kuh, Lebensanzeige in Herz-Abschnitten, Steinboden-TileSet, Schwierigkeit mit Raumvarianten, Headless-Tests.
-- Noch nicht vorhanden: Boss, große Truhen, Treppen, Scrollen zwischen Bildschirmen, Game Over, Speichern auf Festplatte mit Titelmenü, Heben und Werfen, Sound, Wand-Tiles.
+- Hauptszene: `world/game.tscn`. Startraum ist `world/test_area/test_area.tscn` (2×2 Bildschirme, Dungeon `test`).
+- Testräume in `world/test_area/`:
+  - `test_area` (Start): Statue, Truhe, Schalter + Schiebeblock → Tür, Schild, Rubine, Herz, Schlüssel, Krüge (Pot3 mit Schlüssel), Gras, Kuh, Loch, Schleime, Zombie.
+    Ausgänge: Nordwand → `test_shop`, Ostwand unten rechts → `test_arena`, Südwand → `test_room_2`.
+  - `test_room_2`: Gefangener (Dialog), Loch → `test_cellar`, Treppe → `test_cellar`, Schlüsseltür, Truhe mit großem Schlüssel, Bosstür → `test_boss_room`.
+  - `test_shop`: Ladenbesitzer, Ware auf der Theke.
+  - `test_arena`: Gittertür (RoomLock), Zombie, 2 Schleime.
+  - `test_boss_room`: Zombie-König hinter Gittertür.
+  - `test_cellar`: Keller mit Treppe zurück.
+- Vorhanden:
+  - Spieler: Bewegung, Schwert, Leben (LP), Rückstoß, Unverwundbarkeit, Stürze.
+  - Welt: Raumwechsel mit Überblendung, Bildschirm-Scrollen, Treppen, Löcher, Persistenz, Speicherstatuen.
+  - Objekte: Truhen, Schlüssel-, Boss- und Gittertüren, Schiebeblöcke, Krüge/Gras, Shop.
+  - Figuren: Dialoge mit NPCs und Schildern, Schleim, Zombie, Zombie-König (Boss-Gerüst), Kuh.
+  - UI und Items: Item-Auswahl und -Benutzung, HUD (Lebensleiste, Rubine, Schlüssel, Item, Boss-Leiste).
+  - Technik: Wand- und Boden-Tiles, Schwierigkeit mit Raumvarianten, Headless-Tests.
+- Noch nicht vorhanden: Game Over, Speichern auf Festplatte mit Titelmenü, Heben und Werfen, Sound, Dungeon-Item (z. B. Bogen), echter Dungeon 1.
 
 ## Entscheidungen
 - **Neuaufbau statt Weiterbau** des Prototyps. Übernommen werden Inventar, Schalter/Tür, Spieler-Animationen, Kamera-Grenzen, Schild und Lebensanzeige. Neu geschrieben werden Raumwechsel, Kampf und Gegner.

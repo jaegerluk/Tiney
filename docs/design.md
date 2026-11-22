@@ -88,6 +88,24 @@ Ideen zur Vorbereitung der Wendung (offen):
 - **Kuh:** harmlos, läuft gemächlich herum und versperrt den Weg. Ein Schwerthieb stößt sie nur zurück.
 - **Lebensanzeige:** ein Abschnitt pro Herz, jeweils voll, halb oder leer. Start mit 3 Herzen.
 
+## Leben & Items (entschieden)
+- **Lebensleiste:** durchgehender Strahl mit Trennstrichen pro Herz. Bei Schaden leuchtet der verlorene Teil kurz auf und läuft dann nach. Heilen und Herzcontainer füllen sich flüssig. Intern: 1 Herz = 20 Punkte, damit skalierter Schaden fein abgestuft ist. Bei 4,0 glatte Werte (½ Herz, 1 Herz).
+- **Herzen** werden immer aufgesammelt, auch bei vollem Leben. **Herzcontainer:** +1 Herz, Leben voll.
+- **Items** wählt man im Menü aus und benutzt sie mit der Item-Taste. Heilitems werden bei vollem Leben nicht verbraucht. Apfel heilt ½ Herz, Heiltrank alles.
+
+## Figuren & Dialoge (entschieden)
+- **Dialoge:** Textbox unten mit Schreibmaschinen-Effekt, Interaktion zeigt alles bzw. blättert weiter, Spiel pausiert. Darüber seitlich Bild und Name des Sprechers. Schilder nutzen dieselbe Box ohne Bild.
+- **Gefangener** im Kerker deutet den Mönch an: „Die Kugeln dürfen niemals zusammenkommen.“
+- **Shop:** Ware liegt mit Preis auf der Theke, davorstellen + Interaktion = kaufen. Der Ladenbesitzer spricht. Test-Angebot: Hinweis (1, nett, nicht hilfreich), Herz (5), Apfel (3), Heiltrank (30), Schlüssel (50, einmal).
+- **Zombie** (Gegner in Dungeon 1): bemerkt dich auf ~6 Tiles, schlurft langsam und stur hinterher, 4 Hiebe, 1 Herz Schaden.
+- **Zombie-König** (Platzhalter-Boss): Bossraum schließt sich, Boss-Leiste, Sturmangriff mit Ankündigung, ruft bei halbem Leben 2 Zombies, 12 Hiebe. Belohnung: Herzcontainer + magische Kugel.
+
+## Dungeon-Mechaniken (entschieden)
+- **Gittertüren:** schließen beim Betreten, öffnen sich, wenn alle Gegner besiegt sind, bleiben danach offen.
+- **Schiebeblöcke:** kurz dagegen laufen schiebt ein Tile. Sie bleiben, wo sie sind (der Tod setzt sie über die Statue zurück). Ein Block auf einem Bodenschalter drückt ihn.
+- **Löcher:** pro Loch einstellbar. Mit Ziel fällt man ein Stockwerk tiefer, ohne Ziel kostet es ½ Herz und man steht wieder am letzten sicheren Boden.
+- **Kamera:** bildschirmweises Schieben wie in ALttP. Treppen führen in andere Räume.
+
 ## Speichern & Tod (entschieden)
 - **Speicherstatuen** in der Welt: davorstellen, Interaktion → Spielstand gemerkt. Die Statue heilt nicht.
 - **Tod:** Alles wird auf den Stand der letzten Statue zurückgesetzt (Gegner, Krüge, Türen, Schalter, Rubine, Schlüssel, Inventar). Man erscheint mit vollem Leben an der Statue. Vor der ersten Statue gilt der Spielstart.
