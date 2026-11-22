@@ -62,6 +62,7 @@ func _load_room(room_path: String, entry: StringName) -> void:
 
 ## Tauscht den Raum. Mit keep_drops werden die liegen gelassenen Drops des alten Raums gesichert.
 func _swap_room(room_path: String, keep_drops: bool) -> void:
+	_hud.hide_boss()
 	if current_room:
 		if keep_drops:
 			GameState.store_drops(current_room.scene_file_path, _collect_drops(current_room))
@@ -76,6 +77,7 @@ func _swap_room(room_path: String, keep_drops: bool) -> void:
 	room.save_requested.connect(_on_save_requested)
 	room.item_presented.connect(present_item)
 	room.dialog_requested.connect(show_dialog)
+	room.boss_appeared.connect(_hud.show_boss)
 	current_room = room
 	GameState.current_dungeon = room.dungeon_id
 	_camera.set_bounds(room.camera_bounds())

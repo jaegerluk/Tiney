@@ -3,10 +3,13 @@ extends Area2D
 ## Basis für alles, was der Spieler durch Berühren aufnimmt. Unterklassen überschreiben _apply().
 
 signal collected
+signal item_presented(icon: Texture2D, message: String)
 
 ## Dauerhaft: Einmal aufgenommen, erscheint es beim erneuten Betreten des Raums nicht wieder.
 ## Gilt nur für im Raum platzierte Pickups; Drops verwaltet Game über DropTable.DROP_GROUP.
 @export var persistent: bool = true
+## Beim Aufheben hochhalten und Meldung zeigen (z. B. Herzcontainer, Kugel, großer Schlüssel).
+@export var present_on_pickup: bool = false
 
 
 func _ready() -> void:
@@ -37,4 +40,6 @@ func _on_body_entered(body: Node2D) -> void:
 		if persistent:
 			GameState.mark_gone(self)
 		collected.emit()
+		if present_on_pickup:
+			item_presented.emit(get_icon(), get_message())
 		queue_free()

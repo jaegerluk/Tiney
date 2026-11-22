@@ -10,6 +10,7 @@ signal exit_requested(target_room: String, target_entry: StringName)
 signal save_requested(statue: SaveStatue)
 signal item_presented(icon: Texture2D, message: String)
 signal dialog_requested(pages: Array, speaker: String, portrait: Texture2D)
+signal boss_appeared(boss: Enemy)
 
 @export var dungeon_id: StringName = &""
 @export var camera_top_left: Marker2D
@@ -22,14 +23,32 @@ func _ready() -> void:
 	if not _tier_applied:
 		apply_tier(Difficulty.tier())
 	for node in _all_children(self):
-		if node is RoomExit:
-			(node as RoomExit).triggered.connect(exit_requested.emit)
-		elif node is SaveStatue:
-			(node as SaveStatue).save_requested.connect(save_requested.emit)
-		if node.has_signal(&"item_presented"):
-			node.connect(&"item_presented", item_presented.emit)
-		if node.has_signal(&"dialog_requested"):
-			node.connect(&"dialog_requested", dialog_requested.emit)
+		_connect_node(node)
+	# Zur Laufzeit hinzugefügte Objekte (Drops, Boss-Belohnungen, gerufene Gegner) ebenfalls verbinden.
+	child_entered_tree.connect(_connect_node)
+
+
+## Reicht die Signale eines Objekts an Game weiter (Ausgänge, Statuen, Meldungen, Dialoge, Bosse).
+func _connect_node(node: Node) -> void:
+	if node is RoomExit:
+		(node as RoomExit).triggered.connect(exit_requested.emit)
+	elif node is SaveStatue:
+		(node as SaveStatue).save_requested.connect(save_requested.emit)
+	for signal_name: StringName in [&"item_presented", &"dialog_requested", &"boss_appeared"]:
+		if node.has_signal(signal_name):
+			var target := _forwarder(signal_name)
+			if not node.is_connected(signal_name, target):
+				node.connect(signal_name, target)
+
+
+func _forwarder(signal_name: StringName) -> Callable:
+	match signal_name:
+		&"item_presented":
+			return item_presented.emit
+		&"dialog_requested":
+			return dialog_requested.emit
+		_:
+			return boss_appeared.emit
 
 
 ## Entfernt alle Knoten, deren `min_tier` höher als die Stufe ist. Vor add_child aufrufen.

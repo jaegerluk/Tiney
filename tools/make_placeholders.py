@@ -499,6 +499,23 @@ def shutter_door() -> list[list[tuple]]:
     return px
 
 
+ORB = [  # linke Hälfte, leuchtende Kugel
+    "........",
+    "........",
+    ".....ooo",
+    "....obbb",
+    "...obwwb",
+    "..obwwbb",
+    "..obwbbb",
+    "..obbbbb",
+    "..obbbbb",
+    "..obbbbp",
+    "...obbpp",
+    "....oppp",
+    ".....ooo",
+]
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -516,6 +533,7 @@ def main() -> None:
     write_png(ROOT / "assets" / "tilesets" / "dungeon_walls.png", dungeon_walls())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
+    write_png(out / "pickups" / "orb.png", from_map(ORB, {"b": (120, 90, 230, 255), "w": (220, 210, 255, 255), "p": (70, 40, 150, 255)}, mirror=True))
     write_png(out / "objects" / "shutter_door.png", shutter_door())
     write_png(out / "enemies" / "zombie.png", zombie_sheet())
     write_png(out / "enemies" / "zombie_king.png", zombie_king_sheet())

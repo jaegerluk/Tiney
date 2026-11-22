@@ -1,10 +1,14 @@
 class_name Enemy
 extends CharacterBody2D
 ## Basis für alle Gegner. Werte kommen aus `stats` und werden beim Spawn mit Difficulty skaliert.
-## Unterklassen überschreiben _ai_velocity() und optional _play_death().
+## Unterklassen überschreiben _ai_velocity() und optional _play_death() / _on_died().
 ## Szene braucht: Sprite2D, Hurtbox (Maske player_attack), Hitbox (Ebene enemy_attack).
 
 signal died
+signal health_changed(current: int, maximum: int)
+
+## Name für die Boss-Lebensleiste.
+@export var display_name: String = ""
 
 @export var stats: EnemyStats
 @export var drop_table: DropTable
@@ -66,6 +70,11 @@ func _play_death() -> void:
 	tween.tween_callback(queue_free)
 
 
+## Hook nach dem Tod (vor Drop und Todesanimation).
+func _on_died() -> void:
+	pass
+
+
 func find_player() -> Player:
 	return get_tree().get_first_node_in_group("player") as Player
 
@@ -73,7 +82,8 @@ func find_player() -> Player:
 func _on_hurt(hitbox: Hitbox) -> void:
 	if _dead:
 		return
-	health -= hitbox.damage
+	health = maxi(health - hitbox.damage, 0)
+	health_changed.emit(health, max_health)
 	_flash()
 	_knockback_velocity = hitbox.knockback_direction(global_position) * hitbox.knockback * (1.0 - stats.knockback_resistance)
 	_knockback_left = 0.15
@@ -94,6 +104,7 @@ func _die() -> void:
 	_hurtbox.set_deferred("monitoring", false)
 	_hitbox.set_deferred("monitorable", false)
 	died.emit()
+	_on_died()
 	if drop_table:
 		drop_table.spawn(get_parent(), position)
 	_play_death()

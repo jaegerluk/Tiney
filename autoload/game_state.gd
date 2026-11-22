@@ -5,6 +5,7 @@ signal rupees_changed(amount: int)
 signal keys_changed(dungeon: StringName, amount: int)
 signal big_keys_changed(dungeon: StringName, amount: int)
 signal dungeon_changed(dungeon: StringName)
+signal orbs_changed(count: int)
 
 const MAX_RUPEES := 999
 
@@ -20,6 +21,8 @@ var current_dungeon: StringName = &"":
 var _keys: Dictionary[StringName, int] = {}
 ## Große Schlüssel pro Dungeon. Werden an der Bosstür verbraucht.
 var _big_keys: Dictionary[StringName, int] = {}
+## Magische Kugeln (IDs, z. B. der Dungeon). Drei öffnen die große Tür.
+var orbs: Array[StringName] = []
 var _flags: Dictionary[String, bool] = {}
 var _values: Dictionary[String, Variant] = {}
 ## Liegen gelassene Drops je Raumpfad: [{"scene": Pfad, "position": Vector2}, ...]
@@ -30,6 +33,7 @@ func reset() -> void:
 	rupees = 0
 	_keys.clear()
 	_big_keys.clear()
+	orbs.clear()
 	_flags.clear()
 	_values.clear()
 	_room_drops.clear()
@@ -91,6 +95,12 @@ func use_big_key(dungeon: StringName = &"") -> bool:
 	return true
 
 
+func add_orb(id: StringName) -> void:
+	if not orbs.has(id):
+		orbs.append(id)
+	orbs_changed.emit(orbs.size())
+
+
 func set_flag(id: String) -> void:
 	_flags[id] = true
 
@@ -134,6 +144,7 @@ func snapshot() -> Dictionary:
 		"rupees": rupees,
 		"keys": _keys.duplicate(),
 		"big_keys": _big_keys.duplicate(),
+		"orbs": orbs.duplicate(),
 		"flags": _flags.duplicate(),
 		"values": _values.duplicate(true),
 		"room_drops": _room_drops.duplicate(true),
@@ -145,6 +156,8 @@ func restore(data: Dictionary) -> void:
 	rupees = data.rupees
 	_keys.assign(data["keys"])
 	_big_keys.assign(data.get("big_keys", {}))
+	orbs.assign(data.get("orbs", []))
+	orbs_changed.emit(orbs.size())
 	_flags.assign(data.flags)
 	_values.assign(data["values"].duplicate(true))
 	_room_drops.assign(data.room_drops.duplicate(true))
