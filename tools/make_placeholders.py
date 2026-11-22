@@ -568,6 +568,78 @@ def puddle() -> list[list[tuple]]:
     return px
 
 
+def hold_switch() -> list[list[tuple]]:
+    """32x16: orangefarbener Halteschalter, links oben (aus), rechts gedrückt (an)."""
+    rim, rim_dark = (120, 110, 100, 255), (80, 72, 66, 255)
+    up, up_light, down, down_dark = (230, 140, 40, 255), (255, 190, 90, 255), (170, 90, 20, 255), (120, 60, 10, 255)
+    px = [[(0, 0, 0, 0)] * 32 for _ in range(16)]
+    for f in range(2):
+        ox = f * 16
+        for y in range(1, 15):
+            for x in range(1, 15):
+                edge = x in (1, 14) or y in (1, 14)
+                ring = x in (2, 13) or y in (2, 13)
+                if edge:
+                    px[y][ox + x] = OUTLINE
+                elif ring:
+                    px[y][ox + x] = rim if (x + y) % 2 else rim_dark
+                elif f == 0:
+                    px[y][ox + x] = up_light if y <= 5 else up
+                else:
+                    px[y][ox + x] = down_dark if y >= 10 else down
+    return px
+
+
+CRYSTAL = [  # 16x24, nicht gespiegelt; k = Kristall hell, c = Kristall, d = Kristall dunkel
+    "................",
+    ".......oo.......",
+    "......okco......",
+    ".....okkcco.....",
+    ".....okccdo.....",
+    "....okkccddo....",
+    "....okcccddo....",
+    "....okcccddo....",
+    "....okcccddo....",
+    ".....okccdo.....",
+    ".....okccdo.....",
+    "......occo......",
+    ".......oo.......",
+    "....oooooooo....",
+    "...osssssssso...",
+    "...ossllllsso...",
+    "....osssssso....",
+    "....osssssso....",
+    "....osssssso....",
+    "...osssssssso...",
+    "...oddddddddo...",
+    "...oooooooooo...",
+]
+CRYSTAL_COLORS = [  # (hell, mittel, dunkel) je Frame
+    ((170, 210, 255), (70, 130, 230), (40, 70, 160)),     # Umschalter aus: blau
+    ((255, 170, 170), (220, 60, 60), (140, 30, 30)),      # Umschalter an: rot
+    ((180, 255, 180), (60, 190, 90), (30, 110, 50)),      # Einmalig bereit: grün
+    ((200, 200, 200), (130, 130, 130), (80, 80, 80)),     # Einmalig benutzt: grau
+    ((255, 245, 160), (230, 200, 40), (150, 120, 20)),    # Zeit bereit: gelb
+    ((255, 220, 150), (250, 140, 30), (170, 80, 10)),     # Zeit läuft: orange
+]
+
+
+def crystal_sheet() -> list[list[tuple]]:
+    """96x24: sechs Zustände des Kristallschalters."""
+    stone = {"s": (140, 140, 155, 255), "l": (190, 190, 205, 255), "d": (95, 95, 110, 255)}
+    px = [[(0, 0, 0, 0)] * 96 for _ in range(24)]
+    for f, (k, c, d) in enumerate(CRYSTAL_COLORS):
+        pal = {".": (0, 0, 0, 0), "o": OUTLINE, "k": (*k, 255), "c": (*c, 255), **stone}
+        for y, line in enumerate(CRYSTAL):
+            for x, ch in enumerate(line):
+                if ch == "d" and y < 13:
+                    col = (*d, 255)
+                else:
+                    col = pal[ch]
+                px[y + 1][f * 16 + x] = col
+    return px
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -585,6 +657,8 @@ def main() -> None:
     write_png(ROOT / "assets" / "tilesets" / "dungeon_walls.png", dungeon_walls())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
+    write_png(out / "objects" / "hold_switch.png", hold_switch())
+    write_png(out / "objects" / "crystal_switch.png", crystal_sheet())
     write_png(out / "objects" / "save_puddle.png", puddle())
     write_png(out / "objects" / "stairs.png", stairs())
     write_png(out / "objects" / "push_block.png", push_block())

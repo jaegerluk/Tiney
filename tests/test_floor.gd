@@ -24,7 +24,7 @@ func run() -> void:
 	check(walls.get_used_cells().size() > 100, "Wände als Tiles gemalt")
 	check(walls.tile_set.get_physics_layer_collision_layer(0) == 1, "Wand-Tiles auf Ebene world")
 	var player: Player = game.get_node("Player")
-	player.global_position = Vector2(40, 96)
+	player.global_position = Vector2(40, 60)  # neben der Westöffnung (y 96-128)
 	hold("move_left")
 	await frames(40)
 	hold("move_left", false)

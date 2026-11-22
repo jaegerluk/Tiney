@@ -20,6 +20,7 @@ godot --headless --fixed-fps 60 --path . tests/run_tests.tscn -- test_rooms # ei
 ```
 Die Ausgabe darf kein `ERROR` und kein `SCRIPT ERROR` enthalten. Meldungen über „leaked“ RIDs beim Beenden sind harmlos.
 Der Test-Runner endet mit `ALLE TESTS OK` (Exit-Code 0) oder listet die fehlgeschlagenen Tests (Exit-Code 1).
+**Commit nur, wenn der Runner mit Exit-Code 0 endet.** Den Exit-Code direkt prüfen, nicht über eine gefilterte Ausgabe (ein `grep` in der Befehlskette verdeckt Fehlschläge).
 Er zählt über einen `Logger` (`tests/error_counter.gd`) auch Engine- und Skriptfehler während eines Tests als Fehlschlag, denn GDScript läuft nach einem Laufzeitfehler einfach weiter.
 `--script` ist für Prüfungen ungeeignet: Dort sind Autoloads nicht geladen, und `ResourceSaver` entfernt UIDs.
 
@@ -87,6 +88,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Gegner** erben von `Enemy` (`enemies/enemy.gd`), Basiswerte in `EnemyStats` (`enemies/<typ>/<typ>_stats.tres`). Verhalten in `_ai_velocity()`.
 - **Krüge/Gras:** `fixed_drop` (fester Inhalt) hat Vorrang vor `drop_table` (Zufall). Ohne beides kommt nichts.
 - **Böden** als `TileMapLayer` „Floor“ mit `assets/tilesets/basic_tileset.tres` (z_index −10).
+- **Schalter:** `FloorSwitch` (Modus TOGGLE = grün, `floor_switch.tscn`; HOLD = orange, `hold_switch.tscn`: an, solange Spieler oder Block daraufstehen). `CrystalSwitch` reagiert auf Treffer, Modus TOGGLE (blau/rot), ONCE (grün → grau) oder TIMED (gelb, `duration`). Alle senden `toggled(is_on)`, verbunden in der Raumszene, z. B. mit `SwitchDoor.set_open`. TOGGLE/ONCE bleiben gespeichert, HOLD/TIMED nicht.
 - **Gittertüren:** `RoomLock` mit `ShutterDoor`-Kindern. Gegner aus dem Inspector oder alle im Raum. Signale `locked`/`unlocked`, z. B. `locked` → `ZombieKing.activate`.
 - **Boss:** Gegner mit `display_name` und Signal `boss_appeared` (HUD-Leiste). Belohnungen als Pickup-Szenen (`rewards`). Kugeln in `GameState.orbs`.
 - **Hitbox/Hurtbox:** Spieler-Hurtbox maskiert `enemy_attack`, Gegner-, NPC- und Zerbrechbares-Hurtboxen maskieren `player_attack`. Nach der Unverwundbarkeit prüft `Hurtbox.recheck()` noch überlappende Hitboxen.
@@ -146,6 +148,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
   - `test_arena`: Gittertür (RoomLock), Zombie, 2 Schleime.
   - `test_boss_room`: Zombie-König hinter Gittertür.
   - `test_cellar`: Keller mit Treppe zurück.
+  - `test_switches` (Westöffnung des Startraums, 2 Bildschirme breit): Halteschalter mit Block, Kristallschalter in allen drei Modi.
 - Vorhanden:
   - Spieler: Bewegung, Schwert, Leben (LP), Rückstoß, Unverwundbarkeit, Stürze.
   - Welt: Raumwechsel mit Überblendung, Bildschirm-Scrollen, Treppen, Löcher, Persistenz, Speicherstatuen.
