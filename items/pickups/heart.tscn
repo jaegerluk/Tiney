@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/pickups/heart.png" id="2_tex"]
 
 [sub_resource type="CircleShape2D" id="Shape"]
-radius = 6.0
+radius = 4.0
 
 [node name="HeartPickup" type="Area2D"]
 collision_layer = 32

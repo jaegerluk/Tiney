@@ -58,21 +58,20 @@ RUPEE_COLORS = {
     "red": {"w": (255, 230, 230, 255), "l": (255, 120, 120, 255), "m": (200, 30, 50, 255)},
 }
 
-HEART = [
-    "........",
-    "........",
-    "..oooo..",
-    ".orrrro.",
-    "orwrrrro",
-    "orwrrrrr",
-    "orrrrrrr",
-    ".orrrrrr",
-    "..orrrrr",
-    "...orrrr",
-    "....orrr",
-    ".....orr",
-    "......or",
-    ".......o",
+HEART = [  # kleines Herz (8x7) mittig auf 16x16, nicht gespiegelt
+    "................",
+    "................",
+    "................",
+    "................",
+    "................",
+    "................",
+    ".....oo..oo.....",
+    "....orroorro....",
+    "....orwrrrro....",
+    "....orrrrrro....",
+    ".....orrrro.....",
+    "......orro......",
+    ".......oo.......",
 ]
 
 KEY = [  # volle Breite, nicht gespiegelt
@@ -189,7 +188,7 @@ def main() -> None:
     for name, colors in RUPEE_COLORS.items():
         write_png(out / "pickups" / f"rupee_{name}.png", from_map(RUPEE, colors, mirror=True))
     write_png(out / "pickups" / "heart.png",
-              from_map(HEART, {"r": (220, 40, 60, 255), "w": (255, 200, 200, 255)}, mirror=True))
+              from_map(HEART, {"r": (220, 40, 60, 255), "w": (255, 200, 200, 255)}))
     write_png(out / "pickups" / "small_key.png",
               from_map(KEY, {"y": (240, 200, 60, 255)}))
     write_png(out / "objects" / "pot.png",
