@@ -1,6 +1,6 @@
 class_name SaveStatue
 extends StaticBody2D
-## Speicherstatue. Davor stehen, nach oben schauen, "interact": Der Spielstand wird gemerkt (ohne Heilen).
+## Speicherstatue in einer Wasserpfütze. Wer die Pfütze betritt, speichert automatisch (ohne Heilen).
 ## Nach dem Tod erscheint der Spieler am RespawnPoint mit vollem Leben.
 
 signal save_requested(statue: SaveStatue)
@@ -14,9 +14,10 @@ signal save_requested(statue: SaveStatue)
 
 func _ready() -> void:
 	_bubble.visible = false
-	($InteractZone as InteractZone).interacted.connect(func(_player: Player) -> void:
-		save_requested.emit(self)
-		_show_message())
+	($Puddle as Area2D).body_entered.connect(func(body: Node2D) -> void:
+		if body is Player:
+			save_requested.emit(self)
+			_show_message())
 
 
 func respawn_position() -> Vector2:

@@ -14,17 +14,18 @@ func run() -> void:
 	await _step_on(game, player, "Rupee1")
 	check_eq(GameState.rupees, 1, "Ein Rubin vor dem Speichern")
 
-	# Nach unten schauend: kein Speichern
+	# Neben der Pfütze: kein Speichern; in die Pfütze laufen: Speichern
 	player.global_position = statue.respawn_position()
-	player.face(Vector2.DOWN)
 	await frames(3)
-	await tap("interact")
-	check(not statue.get_node("TextBubble").visible, "Wegschauen speichert nicht")
+	check(not statue.get_node("TextBubble").visible, "Vor der Pfütze wird nicht gespeichert")
 	player.take_damage(1)
-	player.face(Vector2.UP)
-	await tap("interact")
-	await frames(2)
-	check(statue.get_node("TextBubble").visible, "Meldung „Gespeichert“")
+	hold("move_up")
+	for i in 30:
+		await frames(1)
+		if statue.get_node("TextBubble").visible:
+			break
+	hold("move_up", false)
+	check(statue.get_node("TextBubble").visible, "Pfütze betreten: Meldung „Gespeichert“")
 	check_eq(player.health, player.max_health - 1, "Statue heilt nicht")
 
 	# Danach: Rubin, Schlüssel, Krug, Schleim, Apfel

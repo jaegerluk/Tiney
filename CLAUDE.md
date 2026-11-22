@@ -75,7 +75,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Nichts erscheint neu.** Platzierte Pickups, Krüge/Gras, Gegner und Schlüsseltüren merken sich über `GameState.mark_gone(self)` / `is_gone(self)`, dass sie weg sind. Die ID ist `GameState.flag_id(self)` = Szenenpfad + Knotenpfad. Deshalb **Knoten mit Zustand nach dem Platzieren nicht mehr umbenennen.**
 - Zustände wie Schalter speichert `GameState.set_value/get_value`. Ein `FloorSwitch` sendet seinen Zustand beim Laden erneut über `toggled`.
 - Zur Laufzeit erzeugte Drops entstehen nur über `DropTable.spawn_scene()` (Gruppe `room_drops`). Game sichert sie beim Verlassen des Raums und erzeugt sie beim Betreten neu.
-- **Speicherstatuen:** `SaveStatue` sendet `save_requested`, `Room` reicht es an `Game.save_game()` weiter. Der Spielstand besteht aus `GameState.snapshot()`, `Inventory.snapshot()`, Raum, Respawn-Position und Blickrichtung. Er liegt nur im Speicher. Der Start zählt als erster Spielstand. Beim Tod wird alles darauf zurückgesetzt, der Spieler bekommt volles Leben. Neue Zustände, die zurückgesetzt werden sollen, gehören deshalb in `GameState` (oder in einen eigenen Snapshot).
+- **Speicherstatuen:** Die Statue steht in einer Pfütze (Area `Puddle`). Betreten speichert automatisch. `SaveStatue` sendet `save_requested`, `Room` reicht es an `Game.save_game()` weiter. Der Spielstand besteht aus `GameState.snapshot()`, `Inventory.snapshot()`, Raum, Respawn-Position und Blickrichtung. Er liegt nur im Speicher. Der Start zählt als erster Spielstand. Beim Tod wird alles darauf zurückgesetzt, der Spieler bekommt volles Leben. Neue Zustände, die zurückgesetzt werden sollen, gehören deshalb in `GameState` (oder in einen eigenen Snapshot).
 - Die Y-Sortierung ist in Game, RoomHolder und Raum aktiv. Boden hat `z_index = -10`, Wände `-5`.
 
 ## Dungeon-Objekte und Kampf
@@ -92,8 +92,8 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Hitbox/Hurtbox:** Spieler-Hurtbox maskiert `enemy_attack`, Gegner-, NPC- und Zerbrechbares-Hurtboxen maskieren `player_attack`. Nach der Unverwundbarkeit prüft `Hurtbox.recheck()` noch überlappende Hitboxen.
 
 ## Interaktion, Dialoge, Präsentation
-- **`InteractZone`** (Area2D-Kind eines Objekts): „davorstehen, hinschauen, `interact`“. `facing_rule`: zum Objekt (`TOWARD_PARENT`) oder nach oben (`UP`). Genutzt von Truhe, Statue, Schild, NPC und Shop-Ware.
-- **Signale an Game über Room:** Jedes Objekt mit den Signalen `dialog_requested(pages, speaker, portrait)`, `item_presented(icon, message)` oder `boss_appeared(boss)` wird automatisch verbunden, auch wenn es erst zur Laufzeit in den Raum kommt (`child_entered_tree`). Ausgänge, Treppen, Löcher (`fell_through`) und Statuen verbindet Room über ihre Klassen.
+- **`InteractZone`** (Area2D-Kind eines Objekts): „davorstehen, hinschauen, `interact`“. `facing_rule`: zum Objekt (`TOWARD_PARENT`) oder nach oben (`UP`). Genutzt von Truhe, Schild, NPC und Shop-Ware. Signale `interacted`, `player_entered`, `player_exited`.
+- **Signale an Game über Room:** Jedes Objekt mit den Signalen `dialog_requested(pages, speaker, portrait)`, `item_presented(icon, message)` `boss_appeared(boss)`, `info_shown(text)` oder `info_hidden` wird automatisch verbunden, auch wenn es erst zur Laufzeit in den Raum kommt (`child_entered_tree`). Ausgänge, Treppen, Löcher (`fell_through`) und Statuen verbindet Room über ihre Klassen.
 - **Dialog:** `Game.show_dialog()` pausiert das Spiel. Die `DialogBox` läuft mit `PROCESS_MODE_ALWAYS`.
 - **Hochhalten:** `Game.present_item()` pausiert ~1 s, `Player.hold_up()`, `HUD.show_message()`. Pickups mit `present_on_pickup` (Herzcontainer, Kugel, großer Schlüssel) tun das auch beim Aufheben.
 - Was das Spiel pausiert (Dialog, Präsentation, Menü, Bildschirm-Scroll), setzt `get_tree().paused`. Das Menü öffnet nicht, solange schon pausiert ist.
@@ -101,13 +101,14 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 ## Leben, Items, Shop
 - **1 Herz = 20 LP** (`Player.HP_PER_HEART`), ½ Herz = 10. Gegnerschaden ist in LP angegeben, damit skalierter Schaden fein abgestuft ist. Gegnerleben zählt in Schwerthieben.
 - **Items** (`Item`): `heal_amount`, `consumable`. Auswahl im Menü (`Inventory.selected`), Benutzen mit `use_item`. Heil-Items werden bei vollem Leben nicht verbraucht.
-- **Shop:** Ein `Shop`-Knoten mit `ShopItem`-Kindern (Preis, Inhalt als Pickup-Szene oder `hint_pages`, Vorrat). Kaufen und Meldungen laufen über den Shop.
+- **Shop:** Ein `Shop`-Knoten mit `ShopItem`-Kindern (Preis, Inhalt als Pickup-Szene oder `hint_pages`, Vorrat). Kaufen und Meldungen laufen über den Shop. Steht der Spieler vor einer Ware, zeigt das HUD `item_name`, Preis und `description` in der Info-Box (ohne Pause).
 
 ## Kamera, Treppen, Löcher, Blöcke
 - **`RoomCamera`:** bildschirmweises Schieben (Bildschirm = Viewport 256×224), solange `Room.screen_scroll` an ist. Game pausiert dabei und rückt den Spieler `scroll_nudge` Pixel weiter. Sprünge über `teleport_distance` (Teleport, Sturz) lösen keinen Scroll aus, die Kamera springt mit.
-- **Räume** möglichst als Vielfache von 256×224 bauen.
+- **Räume** möglichst als Vielfache von 256×224 bauen. Mitlaufende Kamera statt Schieben: am Raum `Screen Scroll` ausschalten.
+- **Gegner** bleiben in Räumen mit Bildschirm-Scrollen in ihrem Start-Bildschirm (`Enemy.confine_rect`, gesetzt von Room).
 - **Treppen** (`Stairs`) sind `RoomExit`s mit Sprite und kleinem Auslösebereich in der Mitte.
-- **Löcher** (`Pit`, `@tool`, Größe im Inspector): mit `target_room` ein Stockwerk tiefer, sonst Schaden und `Player.last_safe_position`.
+- **Löcher** (`Pit`, `@tool`, Größe im Inspector): mit `target_room` ein Stockwerk tiefer, sonst Schaden, etwas weiter weg von `Player.last_safe_position` abgesetzt, 0,4 s Sperre. Löcher wirken nur auf `Player.can_fall()`. `land_at()` bricht eine laufende Sturz-Animation ab (sonst bleibt der Spieler unsichtbar).
 - **Schiebeblöcke** sind `AnimatableBody2D`, denn ein per Code verschobener `StaticBody2D` löst keine zuverlässigen Überlappungen aus.
 
 ## Schwierigkeit (Kernmechanik, siehe design.md)

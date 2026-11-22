@@ -2,13 +2,13 @@
 
 [ext_resource type="Script" path="res://objects/save_statue/save_statue.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://assets/sprites/objects/save_statue.png" id="2_tex"]
-[ext_resource type="Script" path="res://objects/interact_zone/interact_zone.gd" id="zone_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/objects/save_puddle.png" id="puddle_tex"]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
 size = Vector2(14, 8)
 
 [sub_resource type="RectangleShape2D" id="UseShape"]
-size = Vector2(16, 12)
+size = Vector2(40, 24)
 
 [node name="SaveStatue" type="StaticBody2D"]
 collision_layer = 1
@@ -22,19 +22,22 @@ offset = Vector2(0, -12)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("BodyShape")
 
-[node name="InteractZone" type="Area2D" parent="."]
+[node name="Water" type="Sprite2D" parent="."]
+z_index = -6
+position = Vector2(0, 4)
+texture = ExtResource("puddle_tex")
+
+[node name="Puddle" type="Area2D" parent="."]
 collision_layer = 32
 collision_mask = 2
 monitorable = false
-script = ExtResource("zone_script")
-facing_rule = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractZone"]
-position = Vector2(0, 12)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Puddle"]
+position = Vector2(0, 4)
 shape = SubResource("UseShape")
 
 [node name="RespawnPoint" type="Marker2D" parent="."]
-position = Vector2(0, 12)
+position = Vector2(0, 22)
 
 [node name="TextBubble" type="PanelContainer" parent="."]
 z_index = 10

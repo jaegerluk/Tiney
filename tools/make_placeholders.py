@@ -553,6 +553,21 @@ def stairs() -> list[list[tuple]]:
     return px
 
 
+def puddle() -> list[list[tuple]]:
+    """48x32: flache Wasserpfütze (Oval) mit hellen Wellen."""
+    water, deep, light, edge = (70, 120, 190, 220), (55, 95, 160, 230), (150, 200, 240, 230), (40, 70, 120, 255)
+    px = [[(0, 0, 0, 0)] * 48 for _ in range(32)]
+    cx, cy, rx, ry = 23.5, 15.5, 23.5, 15.5
+    for y in range(32):
+        for x in range(48):
+            d = ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2
+            if d <= 1.0:
+                px[y][x] = edge if d > 0.82 else (deep if d > 0.55 else water)
+    for x, y in [(10, 10), (11, 10), (12, 10), (30, 8), (31, 8), (32, 8), (33, 8), (20, 22), (21, 22), (22, 22), (36, 19), (37, 19)]:
+        px[y][x] = light
+    return px
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -570,6 +585,7 @@ def main() -> None:
     write_png(ROOT / "assets" / "tilesets" / "dungeon_walls.png", dungeon_walls())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
+    write_png(out / "objects" / "save_puddle.png", puddle())
     write_png(out / "objects" / "stairs.png", stairs())
     write_png(out / "objects" / "push_block.png", push_block())
     write_png(out / "pickups" / "orb.png", from_map(ORB, {"b": (120, 90, 230, 255), "w": (220, 210, 255, 255), "p": (70, 40, 150, 255)}, mirror=True))

@@ -96,7 +96,7 @@ Ideen zur Vorbereitung der Wendung (offen):
 ## Figuren & Dialoge (entschieden)
 - **Dialoge:** Textbox unten mit Schreibmaschinen-Effekt, Interaktion zeigt alles bzw. blättert weiter, Spiel pausiert. Darüber seitlich Bild und Name des Sprechers. Schilder nutzen dieselbe Box ohne Bild.
 - **Gefangener** im Kerker deutet den Mönch an: „Die Kugeln dürfen niemals zusammenkommen.“
-- **Shop:** Ware liegt mit Preis auf der Theke, davorstellen + Interaktion = kaufen. Der Ladenbesitzer spricht. Test-Angebot: Hinweis (1, nett, nicht hilfreich), Herz (5), Apfel (3), Heiltrank (30), Schlüssel (50, einmal).
+- **Shop:** Ware liegt mit Preis auf der Theke, davorstellen zeigt Name, Preis und Beschreibung, Interaktion kauft. Der Ladenbesitzer spricht. Test-Angebot: Hinweis (1, nett, nicht hilfreich), Herz (5), Apfel (3), Heiltrank (30), Schlüssel (50, einmal).
 - **Zombie** (Gegner in Dungeon 1): bemerkt dich auf ~6 Tiles, schlurft langsam und stur hinterher, 4 Hiebe, 1 Herz Schaden.
 - **Zombie-König** (Platzhalter-Boss): Bossraum schließt sich, Boss-Leiste, Sturmangriff mit Ankündigung, ruft bei halbem Leben 2 Zombies, 12 Hiebe. Belohnung: Herzcontainer + magische Kugel.
 
@@ -104,10 +104,10 @@ Ideen zur Vorbereitung der Wendung (offen):
 - **Gittertüren:** schließen beim Betreten, öffnen sich, wenn alle Gegner besiegt sind, bleiben danach offen.
 - **Schiebeblöcke:** kurz dagegen laufen schiebt ein Tile. Sie bleiben, wo sie sind (der Tod setzt sie über die Statue zurück). Ein Block auf einem Bodenschalter drückt ihn.
 - **Löcher:** pro Loch einstellbar. Mit Ziel fällt man ein Stockwerk tiefer, ohne Ziel kostet es ½ Herz und man steht wieder am letzten sicheren Boden.
-- **Kamera:** bildschirmweises Schieben wie in ALttP. Treppen führen in andere Räume.
+- **Kamera:** bildschirmweises Schieben wie in ALttP, pro Raum im Editor auf „mitlaufend“ umstellbar. Gegner bleiben dabei in ihrem Bildschirm. Treppen führen in andere Räume.
 
 ## Speichern & Tod (entschieden)
-- **Speicherstatuen** in der Welt: davorstellen, Interaktion → Spielstand gemerkt. Die Statue heilt nicht.
+- **Speicherstatuen** stehen in einer Wasserpfütze. Wer die Pfütze betritt, speichert automatisch (kurze Meldung „Gespeichert“). Die Statue heilt nicht. Das Konzept wird später verfeinert (z. B. einzelne Pfützen in Türen).
 - **Tod:** Alles wird auf den Stand der letzten Statue zurückgesetzt (Gegner, Krüge, Türen, Schalter, Rubine, Schlüssel, Inventar). Man erscheint mit vollem Leben an der Statue. Vor der ersten Statue gilt der Spielstart.
 - Speichern auf Festplatte kommt später zusammen mit einem Titelmenü (Neues Spiel / Fortsetzen).
 
