@@ -6,21 +6,6 @@
 [ext_resource type="PackedScene" path="res://objects/sign_post/sign_post.tscn" id="4_r"]
 
 [ext_resource type="TileSet" path="res://assets/tilesets/basic_tileset.tres" id="tileset_r"]
-[sub_resource type="RectangleShape2D" id="Shape_TopLeft"]
-size = Vector2(112, 16)
-
-[sub_resource type="RectangleShape2D" id="Shape_TopRight"]
-size = Vector2(112, 16)
-
-[sub_resource type="RectangleShape2D" id="Shape_Bottom"]
-size = Vector2(256, 16)
-
-[sub_resource type="RectangleShape2D" id="Shape_Left"]
-size = Vector2(16, 224)
-
-[sub_resource type="RectangleShape2D" id="Shape_Right"]
-size = Vector2(16, 224)
-
 [sub_resource type="RectangleShape2D" id="Shape_ExitToRoom2"]
 size = Vector2(32, 8)
 
@@ -45,70 +30,10 @@ position = Vector2(256, 224)
 
 [node name="Entries" type="Node2D" parent="."]
 
-[node name="Walls" type="StaticBody2D" parent="."]
+[node name="Walls" type="TileMapLayer" parent="."]
 z_index = -5
-collision_layer = 1
-collision_mask = 0
-
-[node name="TopLeft" type="CollisionShape2D" parent="Walls"]
-position = Vector2(56.0, 8.0)
-shape = SubResource("Shape_TopLeft")
-
-[node name="TopLeftRect" type="ColorRect" parent="Walls"]
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 112.0
-offset_bottom = 16.0
-mouse_filter = 2
-color = Color(0.17, 0.17, 0.22, 1)
-
-[node name="TopRight" type="CollisionShape2D" parent="Walls"]
-position = Vector2(200.0, 8.0)
-shape = SubResource("Shape_TopRight")
-
-[node name="TopRightRect" type="ColorRect" parent="Walls"]
-offset_left = 144.0
-offset_top = 0.0
-offset_right = 256.0
-offset_bottom = 16.0
-mouse_filter = 2
-color = Color(0.17, 0.17, 0.22, 1)
-
-[node name="Bottom" type="CollisionShape2D" parent="Walls"]
-position = Vector2(128.0, 216.0)
-shape = SubResource("Shape_Bottom")
-
-[node name="BottomRect" type="ColorRect" parent="Walls"]
-offset_left = 0.0
-offset_top = 208.0
-offset_right = 256.0
-offset_bottom = 224.0
-mouse_filter = 2
-color = Color(0.17, 0.17, 0.22, 1)
-
-[node name="Left" type="CollisionShape2D" parent="Walls"]
-position = Vector2(8.0, 112.0)
-shape = SubResource("Shape_Left")
-
-[node name="LeftRect" type="ColorRect" parent="Walls"]
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 16.0
-offset_bottom = 224.0
-mouse_filter = 2
-color = Color(0.17, 0.17, 0.22, 1)
-
-[node name="Right" type="CollisionShape2D" parent="Walls"]
-position = Vector2(248.0, 112.0)
-shape = SubResource("Shape_Right")
-
-[node name="RightRect" type="ColorRect" parent="Walls"]
-offset_left = 240.0
-offset_top = 0.0
-offset_right = 256.0
-offset_bottom = 224.0
-mouse_filter = 2
-color = Color(0.17, 0.17, 0.22, 1)
+tile_map_data = PackedByteArray(0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 12, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 15, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1, 0, 1, 0, 0, 0, 0, 0, 15, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 1, 0, 1, 0, 0, 0, 0, 0, 15, 0, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 1, 0, 0, 0, 0, 0, 0, 0, 15, 0, 4, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 1, 0, 0, 0, 0, 0, 0, 0, 15, 0, 5, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 1, 0, 0, 0, 0, 0, 0, 0, 15, 0, 6, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 1, 0, 0, 0, 0, 0, 0, 0, 15, 0, 7, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 1, 0, 0, 0, 0, 0, 0, 0, 15, 0, 8, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 1, 0, 0, 0, 0, 0, 0, 0, 15, 0, 9, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 1, 0, 0, 0, 0, 0, 0, 0, 15, 0, 10, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 1, 0, 0, 0, 0, 0, 0, 0, 15, 0, 11, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 12, 0, 1, 0, 0, 0, 0, 0, 0, 0, 15, 0, 12, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 13, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 13, 0, 1, 0, 0, 0, 0, 0, 0, 0, 3, 0, 13, 0, 1, 0, 0, 0, 0, 0, 0, 0, 4, 0, 13, 0, 1, 0, 1, 0, 0, 0, 0, 0, 5, 0, 13, 0, 1, 0, 0, 0, 0, 0, 0, 0, 6, 0, 13, 0, 1, 0, 0, 0, 0, 0, 0, 0, 7, 0, 13, 0, 1, 0, 0, 0, 0, 0, 0, 0, 8, 0, 13, 0, 1, 0, 0, 0, 0, 0, 0, 0, 9, 0, 13, 0, 1, 0, 0, 0, 0, 0, 0, 0, 10, 0, 13, 0, 1, 0, 0, 0, 0, 0, 0, 0, 11, 0, 13, 0, 1, 0, 0, 0, 0, 0, 0, 0, 12, 0, 13, 0, 1, 0, 0, 0, 0, 0, 0, 0, 13, 0, 13, 0, 1, 0, 0, 0, 0, 0, 0, 0, 14, 0, 13, 0, 1, 0, 1, 0, 0, 0, 0, 0, 15, 0, 13, 0, 1, 0, 0, 0, 0, 0, 0, 0)
+tile_set = ExtResource("tileset_r")
 
 [node name="from_room_2" type="Marker2D" parent="Entries"]
 position = Vector2(128, 32)

@@ -1,6 +1,7 @@
 [gd_resource type="TileSet" format=3]
 
 [ext_resource type="Texture2D" path="res://assets/tilesets/stone_floor.png" id="1_floor"]
+[ext_resource type="Texture2D" path="res://assets/tilesets/dungeon_walls.png" id="2_walls"]
 
 [sub_resource type="TileSetAtlasSource" id="StoneFloor"]
 texture = ExtResource("1_floor")
@@ -9,5 +10,15 @@ texture = ExtResource("1_floor")
 2:0/0 = 0
 3:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="DungeonWalls"]
+texture = ExtResource("2_walls")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
 [resource]
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 0
 sources/0 = SubResource("StoneFloor")
+sources/1 = SubResource("DungeonWalls")

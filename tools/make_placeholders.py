@@ -301,6 +301,30 @@ HEART_CONTAINER = [  # großes Herz mit goldenem Rand, linke Hälfte
 ]
 
 
+def dungeon_walls() -> list[list[tuple]]:
+    """32x16: zwei Varianten Steinziegel (Wand von oben), kachelbar."""
+    brick, light, mortar, dark = (62, 62, 76, 255), (80, 80, 96, 255), (34, 34, 44, 255), (50, 50, 62, 255)
+    px = [[brick for _ in range(32)] for _ in range(16)]
+    for v in range(2):
+        ox = v * 16
+        for y in range(16):
+            row = y // 4
+            shift = 4 if row % 2 else 0
+            for x in range(16):
+                if y % 4 == 3 or (x + shift) % 8 == 7:
+                    px[y][ox + x] = mortar
+                elif y % 4 == 0:
+                    px[y][ox + x] = light
+        if v == 1:  # Riss und dunklere Steine
+            for x, y in [(2, 5), (3, 6), (4, 6), (5, 7), (9, 9), (10, 10), (11, 10)]:
+                px[y][ox + x] = mortar
+            for x in range(8, 15):
+                for y in (12, 13):
+                    if px[y][ox + x] == brick:
+                        px[y][ox + x] = dark
+    return px
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -315,6 +339,7 @@ def main() -> None:
               from_map(GRASS, {"g": (60, 160, 60, 255), "l": (120, 210, 90, 255), "d": (30, 100, 40, 255)}, mirror=True))
     write_png(out / "objects" / "locked_door.png", locked_door())
     write_png(ROOT / "assets" / "tilesets" / "stone_floor.png", stone_floor())
+    write_png(ROOT / "assets" / "tilesets" / "dungeon_walls.png", dungeon_walls())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
     write_png(out / "pickups" / "heart_container.png", from_map(HEART_CONTAINER, {"r": (220, 40, 60, 255), "w": (255, 200, 200, 255), "y": (240, 200, 60, 255)}, mirror=True))
