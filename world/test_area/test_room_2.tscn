@@ -1,0 +1,130 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://world/room.gd" id="1_r"]
+[ext_resource type="Script" path="res://world/room_entry.gd" id="2_r"]
+[ext_resource type="PackedScene" path="res://objects/room_exit/room_exit.tscn" id="3_r"]
+[ext_resource type="PackedScene" path="res://objects/sign_post/sign_post.tscn" id="4_r"]
+
+[sub_resource type="RectangleShape2D" id="Shape_TopLeft"]
+size = Vector2(112, 16)
+
+[sub_resource type="RectangleShape2D" id="Shape_TopRight"]
+size = Vector2(112, 16)
+
+[sub_resource type="RectangleShape2D" id="Shape_Bottom"]
+size = Vector2(256, 16)
+
+[sub_resource type="RectangleShape2D" id="Shape_Left"]
+size = Vector2(16, 224)
+
+[sub_resource type="RectangleShape2D" id="Shape_Right"]
+size = Vector2(16, 224)
+
+[sub_resource type="RectangleShape2D" id="Shape_ExitToTestArea"]
+size = Vector2(32, 8)
+
+[node name="TestRoom2" type="Node2D" node_paths=PackedStringArray("camera_top_left", "camera_bottom_right")]
+y_sort_enabled = true
+script = ExtResource("1_r")
+dungeon_id = &"test"
+camera_top_left = NodePath("CameraBounds/TopLeft")
+camera_bottom_right = NodePath("CameraBounds/BottomRight")
+
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -10
+offset_right = 256.0
+offset_bottom = 224.0
+mouse_filter = 2
+color = Color(0.27, 0.3, 0.4, 1)
+
+[node name="CameraBounds" type="Node2D" parent="."]
+
+[node name="TopLeft" type="Marker2D" parent="CameraBounds"]
+
+[node name="BottomRight" type="Marker2D" parent="CameraBounds"]
+position = Vector2(256, 224)
+
+[node name="Entries" type="Node2D" parent="."]
+
+[node name="Walls" type="StaticBody2D" parent="."]
+z_index = -5
+collision_layer = 1
+collision_mask = 0
+
+[node name="TopLeft" type="CollisionShape2D" parent="Walls"]
+position = Vector2(56.0, 8.0)
+shape = SubResource("Shape_TopLeft")
+
+[node name="TopLeftRect" type="ColorRect" parent="Walls"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 112.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.17, 0.17, 0.22, 1)
+
+[node name="TopRight" type="CollisionShape2D" parent="Walls"]
+position = Vector2(200.0, 8.0)
+shape = SubResource("Shape_TopRight")
+
+[node name="TopRightRect" type="ColorRect" parent="Walls"]
+offset_left = 144.0
+offset_top = 0.0
+offset_right = 256.0
+offset_bottom = 16.0
+mouse_filter = 2
+color = Color(0.17, 0.17, 0.22, 1)
+
+[node name="Bottom" type="CollisionShape2D" parent="Walls"]
+position = Vector2(128.0, 216.0)
+shape = SubResource("Shape_Bottom")
+
+[node name="BottomRect" type="ColorRect" parent="Walls"]
+offset_left = 0.0
+offset_top = 208.0
+offset_right = 256.0
+offset_bottom = 224.0
+mouse_filter = 2
+color = Color(0.17, 0.17, 0.22, 1)
+
+[node name="Left" type="CollisionShape2D" parent="Walls"]
+position = Vector2(8.0, 112.0)
+shape = SubResource("Shape_Left")
+
+[node name="LeftRect" type="ColorRect" parent="Walls"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 16.0
+offset_bottom = 224.0
+mouse_filter = 2
+color = Color(0.17, 0.17, 0.22, 1)
+
+[node name="Right" type="CollisionShape2D" parent="Walls"]
+position = Vector2(248.0, 112.0)
+shape = SubResource("Shape_Right")
+
+[node name="RightRect" type="ColorRect" parent="Walls"]
+offset_left = 240.0
+offset_top = 0.0
+offset_right = 256.0
+offset_bottom = 224.0
+mouse_filter = 2
+color = Color(0.17, 0.17, 0.22, 1)
+
+[node name="from_test_area" type="Marker2D" parent="Entries"]
+position = Vector2(128, 32)
+script = ExtResource("2_r")
+facing = Vector2(0, 1)
+
+[node name="ExitToTestArea" parent="." instance=ExtResource("3_r")]
+position = Vector2(128, 4)
+target_room = "res://world/test_area/test_area.tscn"
+target_entry = &"from_room_2"
+
+[node name="CollisionShape2D" parent="ExitToTestArea"]
+shape = SubResource("Shape_ExitToTestArea")
+
+[node name="SignPost" parent="." instance=ExtResource("4_r")]
+position = Vector2(64, 64)
+text = "Raum 2"
+

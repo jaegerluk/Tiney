@@ -1,0 +1,12 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/hud.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://ui/health_bar.tscn" id="2_health"]
+[ext_resource type="PackedScene" path="res://ui/inventory_ui.tscn" id="3_inventory"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_script")
+
+[node name="HealthBar" parent="." instance=ExtResource("2_health")]
+
+[node name="InventoryUI" parent="." instance=ExtResource("3_inventory")]

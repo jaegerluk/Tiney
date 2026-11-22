@@ -18,6 +18,7 @@ var health: int
 var facing: Vector2 = Vector2.DOWN
 
 var _attacking: bool = false
+var _controls_enabled: bool = true
 
 @onready var _sprite: Sprite2D = $Sprite2D
 @onready var _anim_tree: AnimationTree = $AnimationTree
@@ -29,14 +30,16 @@ var _attacking: bool = false
 func _ready() -> void:
 	add_to_group("player")
 	health = max_health
-	health_changed.emit(health, max_health)
 	_anim_tree.animation_finished.connect(_on_animation_finished)
 	_sword_shape.disabled = true
 	_set_facing(facing)
 
 
 func _physics_process(_delta: float) -> void:
-	if _attacking:
+	if not _controls_enabled:
+		velocity = Vector2.ZERO
+		_playback.travel("idle")
+	elif _attacking:
 		velocity = Vector2.ZERO
 	else:
 		var input := Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -71,6 +74,16 @@ func heal(amount: int) -> void:
 
 func is_attacking() -> bool:
 	return _attacking
+
+
+## Sperrt die Steuerung, z. B. während eines Raumwechsels.
+func set_controls_enabled(enabled: bool) -> void:
+	_controls_enabled = enabled
+
+
+## Dreht den Spieler in eine der vier Grundrichtungen.
+func face(direction: Vector2) -> void:
+	_set_facing(direction)
 
 
 ## Bei Diagonalen bleibt die Blickrichtung erhalten, wenn sie Teil der Diagonale ist (wie in ALttP).
