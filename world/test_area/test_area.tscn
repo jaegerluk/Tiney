@@ -11,6 +11,8 @@
 [ext_resource type="PackedScene" path="res://items/pickups/rupee.tscn" id="9_r"]
 [ext_resource type="PackedScene" path="res://items/pickups/heart.tscn" id="10_r"]
 [ext_resource type="PackedScene" path="res://items/pickups/small_key.tscn" id="11_r"]
+[ext_resource type="PackedScene" path="res://objects/breakable/pot.tscn" id="12_r"]
+[ext_resource type="PackedScene" path="res://objects/breakable/grass.tscn" id="13_r"]
 
 [sub_resource type="RectangleShape2D" id="Shape_Top"]
 size = Vector2(512, 16)
@@ -205,5 +207,32 @@ position = Vector2(48, 192)
 
 [node name="SmallKey" parent="." instance=ExtResource("11_r")]
 position = Vector2(48, 300)
+
+[node name="Pot1" parent="." instance=ExtResource("12_r")]
+position = Vector2(176, 48)
+
+[node name="Pot2" parent="." instance=ExtResource("12_r")]
+position = Vector2(192, 48)
+
+[node name="Pot3" parent="." instance=ExtResource("12_r")]
+position = Vector2(208, 48)
+
+[node name="Grass1" parent="." instance=ExtResource("13_r")]
+position = Vector2(176, 200)
+
+[node name="Grass2" parent="." instance=ExtResource("13_r")]
+position = Vector2(192, 200)
+
+[node name="Grass3" parent="." instance=ExtResource("13_r")]
+position = Vector2(208, 200)
+
+[node name="Grass4" parent="." instance=ExtResource("13_r")]
+position = Vector2(176, 216)
+
+[node name="Grass5" parent="." instance=ExtResource("13_r")]
+position = Vector2(192, 216)
+
+[node name="Grass6" parent="." instance=ExtResource("13_r")]
+position = Vector2(208, 216)
 
 [connection signal="toggled" from="FloorSwitch" to="SwitchDoor" method="set_open"]
