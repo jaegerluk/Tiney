@@ -3,6 +3,8 @@ extends Area2D
 ## Stacheln (ein Tile). Ausgefahren sind sie eine Hitbox auf der Ebene enemy_attack.
 ## Modus ALWAYS: immer draußen. TIMED: abwechselnd draußen/drin, kurz vorher zittern die Spitzen.
 ## Schaden = Basiswert × Difficulty (Stat DAMAGE).
+## Taktende Stacheln laufen nur, solange sie auf dem Bildschirm sind; sonst sind sie eingefahren,
+## und beim Hereinkommen beginnt ihr Takt von vorn.
 
 enum Mode { ALWAYS, TIMED }
 
@@ -19,6 +21,7 @@ enum Mode { ALWAYS, TIMED }
 
 var is_up: bool = false
 var _time: float = 0.0
+var _active: bool = false
 
 @onready var _sprite: Sprite2D = $Sprite2D
 @onready var _hitbox: Hitbox = $Hitbox
@@ -28,17 +31,29 @@ var _time: float = 0.0
 func _ready() -> void:
 	_hitbox.damage = Difficulty.scaled_int(base_damage, Difficulty.Stat.DAMAGE)
 	_hitbox.knockback = knockback
-	_time = fposmod(phase_offset, up_time + down_time)
-	_apply(mode == Mode.ALWAYS or _time < up_time, false)
+	_restart()
+	_apply(mode == Mode.ALWAYS, false)
 
 
 func _physics_process(delta: float) -> void:
 	if mode == Mode.ALWAYS:
 		return
+	if not RoomCamera.is_on_screen(self):
+		if _active:
+			_active = false
+			_apply(false, false)
+		return
+	if not _active:
+		_active = true
+		_restart()
 	_time = fmod(_time + delta, up_time + down_time)
 	var up := _time < up_time
 	var warning := not up and _time >= up_time + down_time - warn_time
 	_apply(up, warning)
+
+
+func _restart() -> void:
+	_time = fposmod(phase_offset, up_time + down_time)
 
 
 func _apply(up: bool, warning: bool) -> void:

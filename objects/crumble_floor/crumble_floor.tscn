@@ -12,6 +12,7 @@ z_index = -7
 script = ExtResource("1_script")
 
 [node name="Pit" parent="." instance=ExtResource("3_pit")]
+z_index = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_tex")

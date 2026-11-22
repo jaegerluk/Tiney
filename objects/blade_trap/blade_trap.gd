@@ -2,7 +2,8 @@ class_name BladeTrap
 extends CharacterBody2D
 ## Klingenfalle, unzerstörbar. Körper auf Ebene 8 (Fallen): stößt an Wände und andere Fallen,
 ## blockiert den Spieler aber nicht. Schaden über die Hitbox (enemy_attack), skaliert mit Difficulty.
-## SENTRY (stahlblau): lauert; steht der Spieler in Zeile/Spalte mit freier Sicht, schießt sie los,
+## SENTRY (stahlblau): lauert; steht der Spieler in Zeile/Spalte mit freier Sicht und ist die Falle
+##   auf dem Bildschirm, schießt sie los,
 ##   prallt ab und kehrt langsam zur Ruheposition zurück.
 ## PATROL (bronze): pendelt ständig zwischen Start und Start + patrol_offset.
 
@@ -66,7 +67,7 @@ func _patrol(delta: float) -> void:
 
 func _look_for_player() -> void:
 	var player := get_tree().get_first_node_in_group("player") as Player
-	if player == null:
+	if player == null or not RoomCamera.is_on_screen(self):
 		return
 	var offset := player.global_position - global_position
 	var direction := Vector2.ZERO

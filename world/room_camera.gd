@@ -24,6 +24,12 @@ var _shake_left: float = 0.0
 var _shake_time: float = 0.0
 
 
+## true, wenn ein Knoten gerade im sichtbaren Bildschirm liegt (mit Rand in Pixeln).
+static func is_on_screen(node: CanvasItem, margin: float = 0.0) -> bool:
+	var point := node.get_global_transform_with_canvas().origin
+	return node.get_viewport_rect().grow(margin).has_point(point)
+
+
 func set_bounds(new_bounds: Rect2) -> void:
 	bounds = new_bounds
 	limit_left = roundi(bounds.position.x)

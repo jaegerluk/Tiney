@@ -16,8 +16,9 @@ func run() -> void:
 		await frames(1)
 		if i % 20 == 0:
 			positions.append(bat.global_position)
-		if bat.state == Bat.State.REST:
+		if bat.state == Bat.State.REST and not rested:
 			rested = true
+			check_eq(bat.get_node("Hitbox/CollisionShape2D").position.y, Bat.REST_ZONE_Y, "Sitzend: Trefferzone am Boden (beim Bild)")
 	check(bat.global_position.distance_to(Vector2(300, 300)) > 5.0 or rested, "Bewegt sich")
 	var dirs := 0
 	for i in range(2, positions.size()):

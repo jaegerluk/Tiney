@@ -22,6 +22,10 @@ var _flap: float = 0.0
 var _direction: Vector2 = Vector2.RIGHT
 var _bob: float = 0.0
 
+## Höhe der Treffer- und Schlagzone: im Flug auf Flügelhöhe, sitzend am Boden.
+const FLY_ZONE_Y := -5.0
+const REST_ZONE_Y := 1.0
+
 
 func _ready() -> void:
 	super()
@@ -52,14 +56,21 @@ func _ai_velocity(delta: float) -> Vector2:
 			if _timer <= 0.0:
 				state = State.REST
 				_timer = randf_range(rest_time_min, rest_time_max)
+				_set_zone_y(REST_ZONE_Y)
 			return _direction * move_speed
 
 
 func _start_flying() -> void:
 	state = State.FLY
+	_set_zone_y(FLY_ZONE_Y)
 	_timer = randf_range(fly_time_min, fly_time_max)
 	_sprite.frame = 0
 	_new_direction()
+
+
+func _set_zone_y(y: float) -> void:
+	($Hitbox/CollisionShape2D as CollisionShape2D).position.y = y
+	($Hurtbox/CollisionShape2D as CollisionShape2D).position.y = y
 
 
 func _new_direction() -> void:

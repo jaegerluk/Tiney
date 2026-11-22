@@ -23,11 +23,11 @@ func run() -> void:
 	var timed: Spikes = load("res://objects/spikes/spikes.tscn").instantiate()
 	timed.mode = Spikes.Mode.TIMED
 	timed.phase_offset = 1.6  # startet in der Ruhephase
-	timed.position = Vector2(300, 300)
+	timed.position = Vector2(200, 150)
 	add_child(timed)
 	await frames(2)
 	check(not timed.is_up, "Taktend: zuerst eingefahren")
-	player.global_position = Vector2(300, 298)
+	player.global_position = Vector2(200, 148)
 	await frames(30)
 	check_eq(player.health, player.max_health, "Eingefahren: kein Schaden")
 	await frames(70)
@@ -48,39 +48,55 @@ func run() -> void:
 	await frames(2)
 
 	# Lauernde Klingenfalle: Wand rechts bei x=300
-	var wall := _wall(Vector2(300, 400), Vector2(16, 64))
+	var wall := _wall(Vector2(240, 120), Vector2(16, 64))
 	var sentry: BladeTrap = load("res://objects/blade_trap/blade_trap.tscn").instantiate()
-	sentry.position = Vector2(100, 400)
+	sentry.position = Vector2(40, 120)
 	add_child(sentry)
 	var p2: Player = load("res://player/player.tscn").instantiate()
-	p2.position = Vector2(200, 200)
+	p2.position = Vector2(160, 200)
 	add_child(p2)
 	p2.set_controls_enabled(false)
 	await frames(10)
 	check_eq(sentry.state, BladeTrap.State.IDLE, "Spieler nicht in der Reihe: Falle lauert")
-	p2.global_position = Vector2(200, 402)
+	p2.global_position = Vector2(160, 122)
 	await frames(2)
 	check_eq(sentry.state, BladeTrap.State.ATTACK, "Spieler in der Reihe: Falle schießt los")
 	await frames(40)
 	check(p2.health < p2.max_health, "Falle trifft den Spieler")
-	p2.global_position = Vector2(200, 200)
+	p2.global_position = Vector2(160, 200)
 	for i in 120:
 		await frames(1)
 		if sentry.state == BladeTrap.State.RETURN:
 			break
 	check_eq(sentry.state, BladeTrap.State.RETURN, "An der Wand abgeprallt, kehrt zurück")
-	check(sentry.position.x < 300, "Nicht durch die Wand")
+	check(sentry.position.x < 240, "Nicht durch die Wand")
 	for i in 400:
 		await frames(1)
 		if sentry.state == BladeTrap.State.IDLE:
 			break
-	check_eq(sentry.position, Vector2(100, 400), "Zurück an der Ruheposition")
+	check_eq(sentry.position, Vector2(40, 120), "Zurück an der Ruheposition")
 
 	# Wand zwischen Falle und Spieler: keine Reaktion
-	var blocker := _wall(Vector2(150, 400), Vector2(16, 16))
-	p2.global_position = Vector2(220, 400)
+	var blocker := _wall(Vector2(100, 120), Vector2(16, 16))
+	p2.global_position = Vector2(160, 120)
 	await frames(10)
 	check_eq(sentry.state, BladeTrap.State.IDLE, "Wand dazwischen: Falle bleibt ruhig")
+
+	blocker.queue_free()
+	# Falle außerhalb des Bildschirms reagiert nicht
+	var off: BladeTrap = load("res://objects/blade_trap/blade_trap.tscn").instantiate()
+	off.position = Vector2(400, 60)
+	add_child(off)
+	p2.global_position = Vector2(200, 60)
+	await frames(10)
+	check_eq(off.state, BladeTrap.State.IDLE, "Falle außerhalb des Bildschirms bleibt ruhig")
+	off.queue_free()
+	var outside: Spikes = load("res://objects/spikes/spikes.tscn").instantiate()
+	outside.position = Vector2(600, 600)
+	add_child(outside)
+	await frames(200)
+	check(not outside.is_up, "Taktende Stacheln außerhalb des Bildschirms bleiben eingefahren")
+	outside.queue_free()
 
 	# Pendelnde Falle
 	var patrol: BladeTrap = load("res://objects/blade_trap/blade_trap.tscn").instantiate()
@@ -95,7 +111,7 @@ func run() -> void:
 		await frames(1)
 		max_x = maxf(max_x, patrol.position.x)
 	check(max_x > 560.0 and patrol.position.x < max_x, "Pendelt hin und zurück")
-	for n in [wall, blocker, sentry, patrol]:
+	for n in [wall, sentry, patrol]:
 		n.queue_free()
 
 	# Bröckelnde Platten: Reihe von 3, Spieler läuft von links darüber
