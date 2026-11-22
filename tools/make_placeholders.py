@@ -640,6 +640,76 @@ def crystal_sheet() -> list[list[tuple]]:
     return px
 
 
+def spikes_sheet() -> list[list[tuple]]:
+    """48x16: eingefahren (Löcher), Warnung (Spitzen schauen raus), ausgefahren."""
+    plate, plate_dark, hole = (90, 88, 100, 255), (70, 68, 80, 255), (30, 28, 36, 255)
+    steel, steel_light, steel_dark = (170, 175, 190, 255), (225, 230, 240, 255), (110, 115, 130, 255)
+    px = [[(0, 0, 0, 0)] * 48 for _ in range(16)]
+    spots = [(4, 4), (11, 4), (4, 11), (11, 11)]
+    for f in range(3):
+        ox = f * 16
+        for y in range(16):
+            for x in range(16):
+                px[y][ox + x] = plate_dark if x in (0, 15) or y in (0, 15) else plate
+        for sx, sy in spots:
+            for dy in (-1, 0, 1):
+                for dx in (-1, 0, 1):
+                    px[sy + dy][ox + sx + dx] = hole
+            if f == 1:
+                px[sy][ox + sx] = steel_light
+            elif f == 2:
+                for h in range(4):
+                    for dx in range(-(3 - h) // 2, (3 - h) // 2 + 1):
+                        x, y = sx + dx, sy + 1 - h
+                        px[y][ox + x] = steel_light if dx < 0 else (steel if dx == 0 else steel_dark)
+                px[sy + 1][ox + sx - 1] = steel_dark
+                px[sy + 1][ox + sx + 1] = steel_dark
+    return px
+
+
+def blade_sheet() -> list[list[tuple]]:
+    """32x16: Klingenfalle, links stahlblau (lauert), rechts bronze (pendelt)."""
+    colors = [((150, 170, 200, 255), (210, 225, 245, 255), (90, 105, 135, 255)),
+              ((190, 140, 70, 255), (240, 200, 130, 255), (120, 80, 35, 255))]
+    px = [[(0, 0, 0, 0)] * 32 for _ in range(16)]
+    for f, (mid, light, dark) in enumerate(colors):
+        ox = f * 16
+        for y in range(16):
+            for x in range(16):
+                cx, cy = x - 7.5, y - 7.5
+                spike = (abs(cx) < 1.5 or abs(cy) < 1.5) and max(abs(cx), abs(cy)) <= 7.5
+                diag = abs(abs(cx) - abs(cy)) < 1.2 and max(abs(cx), abs(cy)) <= 7
+                body = max(abs(cx), abs(cy)) <= 4.5
+                if body:
+                    edge = max(abs(cx), abs(cy)) > 3.6
+                    px[y][ox + x] = OUTLINE if edge else (light if cx + cy < -2 else (dark if cx + cy > 2 else mid))
+                elif spike or diag:
+                    px[y][ox + x] = light if cx + cy < 0 else dark
+        for x, y in [(7, 7), (8, 7), (7, 8), (8, 8)]:
+            px[y][ox + x] = OUTLINE
+    return px
+
+
+def crumble_sheet() -> list[list[tuple]]:
+    """32x16: rissige Bodenplatte, rechts kurz vor dem Zerfallen."""
+    base, light, mortar, crack = (96, 88, 80, 255), (116, 108, 98, 255), (56, 52, 48, 255), (35, 30, 28, 255)
+    px = [[base] * 32 for _ in range(16)]
+    cracks = [[(3, 3), (4, 4), (5, 4), (6, 5), (9, 9), (10, 10), (10, 11), (12, 6), (12, 7)],
+              [(2, 2), (3, 3), (4, 4), (5, 4), (6, 5), (7, 6), (8, 7), (9, 8), (9, 9), (10, 10), (10, 11), (11, 12),
+               (12, 6), (12, 7), (13, 8), (4, 10), (5, 11), (6, 11), (3, 12)]]
+    for f in range(2):
+        ox = f * 16
+        for y in range(16):
+            for x in range(16):
+                if x == 15 or y == 15:
+                    px[y][ox + x] = mortar
+                elif x == 0 or y == 0:
+                    px[y][ox + x] = light
+        for x, y in cracks[f]:
+            px[y][ox + x] = crack
+    return px
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -657,6 +727,9 @@ def main() -> None:
     write_png(ROOT / "assets" / "tilesets" / "dungeon_walls.png", dungeon_walls())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
+    write_png(out / "objects" / "spikes.png", spikes_sheet())
+    write_png(out / "objects" / "blade_trap.png", blade_sheet())
+    write_png(out / "objects" / "crumble_floor.png", crumble_sheet())
     write_png(out / "objects" / "hold_switch.png", hold_switch())
     write_png(out / "objects" / "crystal_switch.png", crystal_sheet())
     write_png(out / "objects" / "save_puddle.png", puddle())
