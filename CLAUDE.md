@@ -8,6 +8,7 @@ Spieldesign, Umfang und Meilensteine: **[docs/design.md](docs/design.md)**. Dies
 - Kleine, testbare Schritte, ein Feature nach dem anderen. Nach jedem Schritt headless prüfen, danach testet der Nutzer im Editor.
 - Nach jedem abgeschlossenen Schritt ein Commit mit klarer deutscher Nachricht. **Pushen nur auf Anweisung.**
 - Wichtige Entscheidungen immer hier (Technik) oder in `docs/design.md` (Spiel) festhalten, nicht nur im Chat.
+- **Design-Entscheidungen erfragen:** Alles, was der Spieler sieht oder spürt (Inhalte, Werte, Drops, Platzierung, Verhalten), vor dem Umsetzen kurz mit einer Zwischenfrage klären, mit Empfehlung. Technische Details selbst entscheiden.
 - Der Godot-Editor darf offen sein. Ausnahme: Bei Änderungen an `project.godot` sollte er geschlossen sein, sonst überschreibt er die Datei beim Speichern.
 
 ## Headless prüfen
