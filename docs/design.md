@@ -79,9 +79,17 @@ Ideen zur Vorbereitung der Wendung (offen):
 - **Kleine Schlüssel gelten pro Dungeon** (wie ALttP). Der Zähler am Bildschirmrand zeigt die Schlüssel des aktuellen Dungeons.
 - **Schlüsseltüren** öffnen beim Dagegenlaufen und bleiben offen.
 - **Rubine** als Währung: grün 1, blau 5, rot 20. Höchstens 999.
-- **Krüge und Gras** gehen vorerst mit dem Schwert kaputt und lassen manchmal Rubine oder Herzen fallen. Heben und Werfen wie in ALttP kommt später.
+- **Krüge und Gras** gehen vorerst mit dem Schwert kaputt. Jeder kann einen **festen Inhalt** haben (z. B. Schlüssel), sonst lassen sie zufällig Rubine oder Herzen fallen. Heben und Werfen wie in ALttP kommt später.
+- **Nichts erscheint neu:** Eingesammeltes, Zerstörtes und Getötetes bleibt weg, auch nach Raumwechsel. Liegen gelassene Drops bleiben liegen, Schalter behalten ihren Zustand.
 - **Türen und Durchgänge** laden einen anderen Raum (mit Abblenden).
 - **Erster Gegner: Schleim.** Hüpft herum und verfolgt den Spieler aus der Nähe.
+- **Kuh:** harmlos, läuft gemächlich herum und versperrt den Weg. Ein Schwerthieb stößt sie nur zurück.
+- **Lebensanzeige:** ein Abschnitt pro Herz, jeweils voll, halb oder leer. Start mit 3 Herzen.
+
+## Speichern & Tod (entschieden)
+- **Speicherstatuen** in der Welt: davorstellen, Interaktion → Spielstand gemerkt. Die Statue heilt nicht.
+- **Tod:** Alles wird auf den Stand der letzten Statue zurückgesetzt (Gegner, Krüge, Türen, Schalter, Rubine, Schlüssel, Inventar). Man erscheint mit vollem Leben an der Statue. Vor der ersten Statue gilt der Spielstart.
+- Speichern auf Festplatte kommt später zusammen mit einem Titelmenü (Neues Spiel / Fortsetzen).
 
 ## Offene Fragen
 - Kann man die Schwierigkeit während des Spiels ändern? Gibt es Belohnungen oder Achievements für hohe Stufen?

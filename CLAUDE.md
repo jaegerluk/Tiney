@@ -33,6 +33,7 @@ Hilfen: `check`, `check_eq`, `frames(n)`, `hold(action)`, `tap(action)`. Der Run
 | `combat/` | `Hitbox`, `Hurtbox` |
 | `player/` | Spielerszene, Zustände, Hitbox/Hurtbox |
 | `enemies/` | ein Unterordner pro Gegnertyp, Basiswerte als `.tres` |
+| `npcs/` | Harmlose Figuren (Kuh …), ein Unterordner pro Typ |
 | `objects/` | Schalter, Türen, Truhen, Schilder, Treppen |
 | `items/` | Inventar-Logik, Item-Ressourcen, `pickups/`, `drops/` (DropTables) |
 | `ui/` | HUD, Lebensanzeige, Inventar-/Menü-UI |
@@ -61,7 +62,8 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
   | 3 | `enemies` | Gegnerkörper |
   | 4 | `player_attack` | Schwert-Hitbox des Spielers |
   | 5 | `enemy_attack` | Gegner-Hitboxen |
-  | 6 | `triggers` | Pickups, Schalter, Schilder, Ausgänge (Maske: `player`) |
+  | 6 | `triggers` | Pickups, Schalter, Schilder, Statuen, Ausgänge (Maske: `player`) |
+  | 7 | `npcs` | NPC-Körper (Kuh). Spieler und Gegner maskieren `world` + `npcs` |
 - **Keine globalen Zustands-Flags** für einzelne Übergänge. Raumwechsel laufen datengetrieben über Ausgänge mit Ziel-Raum und Ziel-Marker.
 - `@export` für alles, was im Editor eingestellt werden soll. Keine Zahlen fest im Code, die Design-Werte sind.
 
@@ -69,7 +71,10 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - `world/game.tscn` ist die Hauptszene: Spieler, `RoomCamera`, HUD und Überblendung bleiben bestehen. Nur der Raum unter `RoomHolder` wird getauscht (`Game.change_room(pfad, eingang)`).
 - Jede Raumszene hat als Wurzel ein `Room` (`world/room.gd`) mit `dungeon_id`, zwei Kamera-Markern und einem Knoten `Entries` mit `RoomEntry`-Markern. Der Knotenname eines Eingangs ist seine ID.
 - Ausgänge sind `RoomExit`-Instanzen (`target_room`, `target_entry`). Eingänge so legen, dass der Spieler beim Ankommen nicht schon in einem Ausgang steht.
-- **Dauerhafte Objekte** (Schlüssel, Schlüsseltüren, später Truhen) merken sich ihren Zustand in `GameState` über `GameState.flag_id(self)` = Szenenpfad + Knotenpfad. Deshalb **Knoten mit Zustand nach dem Platzieren nicht mehr umbenennen.** Krüge, Gras, Gegner und Rubine erscheinen beim Wiederbetreten neu.
+- **Nichts erscheint neu.** Platzierte Pickups, Krüge/Gras, Gegner und Schlüsseltüren merken sich über `GameState.mark_gone(self)` / `is_gone(self)`, dass sie weg sind. Die ID ist `GameState.flag_id(self)` = Szenenpfad + Knotenpfad. Deshalb **Knoten mit Zustand nach dem Platzieren nicht mehr umbenennen.**
+- Zustände wie Schalter speichert `GameState.set_value/get_value`. Ein `FloorSwitch` sendet seinen Zustand beim Laden erneut über `toggled`.
+- Zur Laufzeit erzeugte Drops entstehen nur über `DropTable.spawn_scene()` (Gruppe `room_drops`). Game sichert sie beim Verlassen des Raums und erzeugt sie beim Betreten neu.
+- **Speicherstatuen:** `SaveStatue` sendet `save_requested`, `Room` reicht es an `Game.save_game()` weiter. Der Spielstand besteht aus `GameState.snapshot()`, `Inventory.snapshot()`, Raum, Respawn-Position und Blickrichtung. Er liegt nur im Speicher. Der Start zählt als erster Spielstand. Beim Tod wird alles darauf zurückgesetzt, der Spieler bekommt volles Leben. Neue Zustände, die zurückgesetzt werden sollen, gehören deshalb in `GameState` (oder in einen eigenen Snapshot).
 - Die Y-Sortierung ist in Game, RoomHolder und Raum aktiv. Boden hat `z_index = -10`, Wände `-5`.
 
 ## Dungeon-Objekte und Kampf
@@ -77,7 +82,9 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Schlüssel** gelten pro Dungeon (`GameState.keys(dungeon)`). Der HUD-Zähler zeigt den aktuellen Dungeon.
 - **Drops** über `DropTable`-Ressourcen (`items/drops/*.tres`): gewichtete Einträge plus `nothing_weight`.
 - **Gegner** erben von `Enemy` (`enemies/enemy.gd`), Basiswerte in `EnemyStats` (`enemies/<typ>/<typ>_stats.tres`). Verhalten in `_ai_velocity()`.
-- **Hitbox/Hurtbox:** Spieler-Hurtbox maskiert `enemy_attack`, Gegner- und Zerbrechbares-Hurtboxen maskieren `player_attack`. Nach der Unverwundbarkeit prüft `Hurtbox.recheck()` noch überlappende Hitboxen.
+- **Krüge/Gras:** `fixed_drop` (fester Inhalt) hat Vorrang vor `drop_table` (Zufall). Ohne beides kommt nichts.
+- **Böden** als `TileMapLayer` „Floor“ mit `assets/tilesets/basic_tileset.tres` (z_index −10).
+- **Hitbox/Hurtbox:** Spieler-Hurtbox maskiert `enemy_attack`, Gegner-, NPC- und Zerbrechbares-Hurtboxen maskieren `player_attack`. Nach der Unverwundbarkeit prüft `Hurtbox.recheck()` noch überlappende Hitboxen.
 
 ## Schwierigkeit (Kernmechanik, siehe design.md)
 - Autoload `Difficulty`: `value` (1,0–10,0, Standard **4,0** = Basiswerte), `multiplier(stat)` = k^(d − 4) mit k in `Difficulty.GROWTH` (Leben 1.15, Schaden 1.15, Tempo 1.04), `scaled_int()` rundet und gibt mindestens 1, `tier()` = ganzzahlige Stufe.
@@ -106,9 +113,9 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - Godot 4.7, Ordnerstruktur angelegt, pixelgenaue Einstellungen gesetzt.
 - Der alte Prototyp ist entfernt. Er bleibt unter dem Tag `prototyp-alt` erreichbar (`git show prototyp-alt:<pfad>`).
 - Hauptszene: `world/game.tscn`, Startraum `world/test_area/test_area.tscn` (2×2 Bildschirme), verbunden mit `test_room_2.tscn` (Dungeon `test`).
-- Testbereich: Schalter → Tür, Schild, Äpfel, Rubine (1/5/20), Herz, Schlüssel, Krüge, Gras, zwei Schleime und ein dritter ab Stufe 6. In Raum 2: Schlüsseltür mit rotem Rubin dahinter.
-- Vorhanden: `Player` (Bewegung, Schwert, Leben, Rückstoß, Unverwundbarkeit), Inventar, Pickups, HUD (Leben, Rubine, Schlüssel), Raumwechsel mit Überblendung, Schlüsseltüren, Krüge/Gras mit Drops, Gegner-Basis und Schleim, Schwierigkeit mit Raumvarianten, Headless-Tests.
-- Noch nicht vorhanden: Treppen, Scrollen zwischen Bildschirmen, Truhen, Game Over, Herzanzeige, Speichern, Heben und Werfen, Sound.
+- Testbereich (Steinboden): Speicherstatue, Schalter → Tür, Schild, Äpfel, Rubine (1/5/20), Herz, Schlüssel, Krüge (Pot3 enthält einen Schlüssel), Gras, Kuh, zwei Schleime und ein dritter ab Stufe 6. In Raum 2: Schlüsseltür mit rotem Rubin dahinter.
+- Vorhanden: `Player` (Bewegung, Schwert, Leben, Rückstoß, Unverwundbarkeit), Inventar, Pickups, HUD (Leben, Rubine, Schlüssel), Raumwechsel mit Überblendung, Persistenz (nichts erscheint neu), Speicherstatuen, Schlüsseltüren, Krüge/Gras mit festem oder zufälligem Inhalt, Gegner-Basis und Schleim, Kuh, Lebensanzeige in Herz-Abschnitten, Steinboden-TileSet, Schwierigkeit mit Raumvarianten, Headless-Tests.
+- Noch nicht vorhanden: Truhen, großer Schlüssel/Bosstür, Treppen, Scrollen zwischen Bildschirmen, Game Over, Speichern auf Festplatte mit Titelmenü, Heben und Werfen, Sound, Wand-Tiles.
 
 ## Entscheidungen
 - **Neuaufbau statt Weiterbau** des Prototyps. Übernommen werden Inventar, Schalter/Tür, Spieler-Animationen, Kamera-Grenzen, Schild und Lebensanzeige. Neu geschrieben werden Raumwechsel, Kampf und Gegner.
@@ -118,6 +125,6 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Schilder liest man mit `interact`**, wenn man davor steht und nach oben schaut (wie in ALttP). Im Prototyp erschien der Text automatisch.
 - **Das Inventar-Menü pausiert das Spiel** (`InventoryUI` läuft mit `process_mode = Always`).
 - **Persistente Hauptszene** statt `change_scene_to_file`: Spieler und HUD überleben den Raumwechsel; später lässt sich Scrollen zwischen Räumen ergänzen.
-- **Tod (vorläufig):** Abblenden, volles Leben, zurück zum Startraum. Rubine und Schlüssel bleiben.
-- **Spieler und Gegner kollidieren nicht miteinander**, nur ihre Hitboxen/Hurtboxen wirken (wie ALttP).
-- **Platzhalter-Sprites** für Rubine, Schlüssel, Herz, Krug, Gras, Schlüsseltür erzeugt `tools/make_placeholders.py`.
+- **Tod:** Alles auf den Stand der letzten Speicherstatue (Welt, Rubine, Schlüssel, Inventar), volles Leben an der Statue. Die Statue selbst heilt nicht.
+- **Spieler und Gegner kollidieren nicht miteinander**, nur ihre Hitboxen/Hurtboxen wirken (wie ALttP). NPCs wie die Kuh blockieren dagegen.
+- **Platzhalter-Sprites** für Rubine, Schlüssel, Herz, Krug, Gras, Schlüsseltür, Statue und Steinboden erzeugt `tools/make_placeholders.py`.
