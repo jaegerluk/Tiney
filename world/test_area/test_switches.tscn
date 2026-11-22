@@ -85,6 +85,11 @@ position = Vector2(448, 172)
 mode = 2
 duration = 4.0
 
+[node name="CrystalTimedInside" parent="." instance=ExtResource("r8")]
+position = Vector2(424, 48)
+mode = 2
+duration = 4.0
+
 [node name="RewardHold" parent="." instance=ExtResource("r9")]
 position = Vector2(64, 56)
 value = 20
@@ -111,3 +116,5 @@ text = "Orange Schalter halten die Tür nur offen, solange etwas daraufsteht. Ei
 [connection signal="toggled" from="CrystalOnce" to="DoorOnce" method="set_open"]
 
 [connection signal="toggled" from="CrystalTimed" to="DoorTimed" method="set_open"]
+
+[connection signal="toggled" from="CrystalTimedInside" to="DoorTimed" method="set_open"]

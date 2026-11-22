@@ -87,6 +87,26 @@ func run() -> void:
 	check(door_timed.is_open, "Nach 3 s noch offen")
 	await frames(80)
 	check(not door_timed.is_open and not timed.is_on, "Nach 4 s wieder zu")
+	# Eingesperrt? Der Kristall in der Kammer öffnet die Tür auch von innen.
+	var inside: CrystalSwitch = room.get_node("CrystalTimedInside")
+	var hit2 := Hitbox.new()
+	inside._on_hurt(hit2)
+	hit2.free()
+	await frames(2)
+	check(door_timed.is_open, "Kristall in der Kammer öffnet die Tür von innen")
+	await frames(260)
+	check(not door_timed.is_open, "Auch danach schließt sie nach Ablauf")
+	# Außen treffen, nach 2 s innen treffen: Tür bleibt offen, bis auch der innere abläuft
+	var hit3 := Hitbox.new()
+	timed._on_hurt(hit3)
+	await frames(120)
+	inside._on_hurt(hit3)
+	hit3.free()
+	await frames(150)
+	check(not timed.is_on and inside.is_on, "Äußerer abgelaufen, innerer läuft noch")
+	check(door_timed.is_open, "Tür bleibt offen, solange ein Schalter an ist")
+	await frames(120)
+	check(not door_timed.is_open, "Erst wenn beide abgelaufen sind, schließt sie")
 
 	# Raumwechsel: Umschalter und Einmalig bleiben, Block bleibt auf dem Halteschalter
 	player.global_position = Vector2(480, 176)
