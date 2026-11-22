@@ -183,6 +183,35 @@ def locked_door() -> list[list[tuple]]:
     return px
 
 
+def stone_floor() -> list[list[tuple]]:
+    """64x16: vier schlichte Steinplatten-Varianten mit Fuge rechts und unten."""
+    import random
+    rnd = random.Random(7)
+    base, light, dark, mortar = (86, 86, 98, 255), (100, 100, 112, 255), (74, 74, 86, 255), (56, 56, 66, 255)
+    px = [[base for _ in range(64)] for _ in range(16)]
+    for v in range(4):
+        ox = v * 16
+        for y in range(16):
+            for x in range(16):
+                if x == 15 or y == 15:
+                    px[y][ox + x] = mortar
+                elif x == 0 or y == 0:
+                    px[y][ox + x] = light
+                elif rnd.random() < 0.06:
+                    px[y][ox + x] = dark if rnd.random() < 0.6 else light
+        if v == 1:  # kleiner Riss
+            for x, y in [(4, 5), (5, 6), (6, 6), (7, 7), (8, 8), (8, 9), (9, 10)]:
+                px[y][ox + x] = mortar
+        elif v == 2:  # Platte zweigeteilt
+            for x in range(1, 15):
+                px[7][ox + x] = mortar
+                px[8][ox + x] = light
+        elif v == 3:  # Kiesel
+            for x, y in [(3, 3), (4, 3), (10, 9), (11, 9), (11, 10), (6, 11)]:
+                px[y][ox + x] = dark
+    return px
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -196,6 +225,7 @@ def main() -> None:
     write_png(out / "objects" / "grass.png",
               from_map(GRASS, {"g": (60, 160, 60, 255), "l": (120, 210, 90, 255), "d": (30, 100, 40, 255)}, mirror=True))
     write_png(out / "objects" / "locked_door.png", locked_door())
+    write_png(ROOT / "assets" / "tilesets" / "stone_floor.png", stone_floor())
     statue_rows = STATUE + ["........"] * (32 - len(STATUE))
     write_png(out / "objects" / "save_statue.png",
               from_map(statue_rows, {"s": (140, 140, 155, 255), "l": (190, 190, 205, 255), "d": (95, 95, 110, 255),
