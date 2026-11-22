@@ -64,6 +64,7 @@ func _ai_velocity(delta: float) -> Vector2:
 			_sprite.offset.x = 1.0 if int(_timer * 30.0) % 2 == 0 else -1.0
 			if _timer <= 0.0:
 				_state = State.CHARGE
+				Effects.shake(get_tree(), 1.0, 0.2)
 				_timer = charge_time
 				_charge_direction = global_position.direction_to(player.global_position)
 			return Vector2.ZERO
@@ -126,6 +127,7 @@ func _is_free_spot(local_spot: Vector2) -> bool:
 
 
 func _on_died() -> void:
+	Effects.shake(get_tree(), 4.0, 0.5)
 	for minion in _minions:
 		if is_instance_valid(minion) and minion is Enemy and not (minion as Enemy).is_dead():
 			minion.queue_free()

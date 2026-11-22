@@ -23,6 +23,7 @@ var _save: Dictionary = {}
 
 
 func _ready() -> void:
+	add_to_group(Effects.GAME_FEEL_GROUP)
 	_hud.show_health(_player.health, _player.max_health)
 	_player.died.connect(_on_player_died)
 	_camera.scroll_started.connect(_on_scroll_started)
@@ -148,6 +149,21 @@ func _on_player_died() -> void:
 	await _fade_to(0.0)
 	_player.set_controls_enabled(true)
 	_changing_room = false
+
+
+## Trefferstopp: Spielzeit kurz anhalten (Engine.time_scale), danach weiter.
+func hit_stop(duration: float) -> void:
+	Engine.time_scale = 0.0
+	await get_tree().create_timer(duration, true, false, true).timeout
+	Engine.time_scale = 1.0
+
+
+func shake(strength: float, duration: float) -> void:
+	_camera.shake(strength, duration)
+
+
+func _exit_tree() -> void:
+	Engine.time_scale = 1.0
 
 
 ## Debug: lädt den aktuellen Raum neu, der Spieler bleibt, wo er ist.

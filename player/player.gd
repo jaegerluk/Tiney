@@ -250,6 +250,8 @@ func _on_hurt(hitbox: Hitbox) -> void:
 	_knockback_left = knockback_time
 	_invincible_left = invincible_time
 	take_damage(hitbox.damage)
+	Effects.hit_stop(get_tree(), 0.07)
+	Effects.shake(get_tree(), 2.0, 0.15)
 
 
 func _on_animation_finished(anim_name: StringName) -> void:

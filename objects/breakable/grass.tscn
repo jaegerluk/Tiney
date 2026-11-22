@@ -16,6 +16,7 @@ collision_layer = 1
 collision_mask = 0
 script = ExtResource("1_script")
 drop_table = ExtResource("3_drops")
+debris_color = Color(0.35, 0.75, 0.3, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_tex")

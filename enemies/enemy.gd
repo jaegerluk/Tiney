@@ -73,9 +73,10 @@ func _ai_velocity(_delta: float) -> Vector2:
 
 ## Todesanimation; muss am Ende queue_free() aufrufen.
 func _play_death() -> void:
-	var tween := create_tween()
-	tween.tween_property(_sprite, "modulate:a", 0.0, 0.3)
-	tween.tween_callback(queue_free)
+	var tween := create_tween().set_parallel()
+	tween.tween_property(_sprite, "scale", Vector2(1.4, 0.6), 0.12)
+	tween.tween_property(_sprite, "modulate:a", 0.0, 0.25)
+	tween.chain().tween_callback(queue_free)
 
 
 ## Hook nach dem Tod (vor Drop und Todesanimation).
@@ -93,6 +94,7 @@ func _on_hurt(hitbox: Hitbox) -> void:
 	health = maxi(health - hitbox.damage, 0)
 	health_changed.emit(health, max_health)
 	_flash()
+	Effects.hit_stop(get_tree(), 0.05)
 	_knockback_velocity = hitbox.knockback_direction(global_position) * hitbox.knockback * (1.0 - stats.knockback_resistance)
 	_knockback_left = 0.15
 	if health <= 0:
@@ -112,6 +114,7 @@ func _die() -> void:
 	_hurtbox.set_deferred("monitoring", false)
 	_hitbox.set_deferred("monitorable", false)
 	died.emit()
+	Effects.burst(get_parent(), position, Color(0.85, 0.85, 0.9, 0.9), 10, 30.0, 0.45, 3.0)
 	_on_died()
 	if drop_table:
 		drop_table.spawn(get_parent(), position)

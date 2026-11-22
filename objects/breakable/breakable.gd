@@ -11,6 +11,8 @@ signal broken
 @export var drop_table: DropTable
 ## Raumvariante: erscheint erst ab dieser Schwierigkeitsstufe.
 @export var min_tier: int = 0
+## Farbe der Partikel beim Zerbrechen (Scherben, Halme).
+@export var debris_color: Color = Color(0.67, 0.4, 0.24)
 
 var _broken: bool = false
 
@@ -32,6 +34,7 @@ func break_apart() -> void:
 	$CollisionShape2D.set_deferred("disabled", true)
 	$Hurtbox.set_deferred("monitoring", false)
 	broken.emit()
+	Effects.burst(get_parent(), position, debris_color, 10, 55.0, 0.4, 2.0)
 	if fixed_drop:
 		DropTable.spawn_scene(fixed_drop, get_parent(), position)
 	elif drop_table:

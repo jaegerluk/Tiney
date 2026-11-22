@@ -55,6 +55,7 @@ func _on_hurt(_hitbox: Hitbox) -> void:
 	if _cooldown_left > 0.0:
 		return
 	_cooldown_left = cooldown
+	Effects.burst(get_parent(), position + Vector2(0, -10), Color(1, 1, 0.85), 8, 60.0, 0.3, 1.0)
 	match mode:
 		Mode.TOGGLE:
 			_set_on(not is_on)

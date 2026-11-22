@@ -19,6 +19,9 @@ var bounds: Rect2 = Rect2(-100000, -100000, 200000, 200000)
 var _screen: Vector2i = Vector2i.ZERO
 var _scrolling: bool = false
 var _last_target_position: Vector2 = Vector2.ZERO
+var _shake_strength: float = 0.0
+var _shake_left: float = 0.0
+var _shake_time: float = 0.0
 
 
 func set_bounds(new_bounds: Rect2) -> void:
@@ -40,6 +43,23 @@ func snap_to_target() -> void:
 		global_position = target.global_position
 	_last_target_position = target.global_position
 	reset_smoothing()
+
+
+## Bildschirmwackeln: zufälliger Versatz, klingt über `duration` ab.
+func shake(strength: float, duration: float) -> void:
+	if strength >= _shake_strength * (_shake_left / maxf(_shake_time, 0.001)):
+		_shake_strength = strength
+		_shake_left = duration
+		_shake_time = duration
+
+
+func _process(delta: float) -> void:
+	if _shake_left > 0.0:
+		_shake_left -= delta
+		var power := _shake_strength * maxf(_shake_left, 0.0) / maxf(_shake_time, 0.001)
+		offset = Vector2(randf_range(-power, power), randf_range(-power, power)).round()
+	elif offset != Vector2.ZERO:
+		offset = Vector2.ZERO
 
 
 func is_scrolling() -> bool:
