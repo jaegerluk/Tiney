@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" path="res://objects/breakable/grass.tscn" id="13_r"]
 [ext_resource type="PackedScene" path="res://enemies/slime/slime.tscn" id="14_r"]
 
+[ext_resource type="PackedScene" path="res://objects/save_statue/save_statue.tscn" id="statue_r"]
 [sub_resource type="RectangleShape2D" id="Shape_Top"]
 size = Vector2(512, 16)
 
@@ -208,6 +209,9 @@ position = Vector2(48, 192)
 
 [node name="SmallKey" parent="." instance=ExtResource("11_r")]
 position = Vector2(48, 300)
+
+[node name="SaveStatue" parent="." instance=ExtResource("statue_r")]
+position = Vector2(120, 64)
 
 [node name="Pot1" parent="." instance=ExtResource("12_r")]
 position = Vector2(176, 48)

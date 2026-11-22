@@ -30,7 +30,8 @@ def write_png(path: Path, pixels: list[list[tuple]]) -> None:
 def from_map(rows: list[str], palette: dict, mirror: bool = False) -> list[list[tuple]]:
     if mirror:
         rows = [r + r[::-1] for r in rows]
-    rows = rows + ["." * len(rows[0])] * (16 - len(rows))
+    height = max(16, len(rows))
+    rows = rows + ["." * len(rows[0])] * (height - len(rows))
     assert all(len(r) == 16 for r in rows), "jede Zeile muss 16 Pixel breit sein"
     pal = {".": (0, 0, 0, 0), "o": OUTLINE, **palette}
     return [[pal[c] for c in r] for r in rows]
@@ -126,6 +127,38 @@ GRASS = [
 ]
 
 
+STATUE = [  # linke Hälfte, 16x32
+    "........",
+    "........",
+    "......oo",
+    ".....obw",
+    ".....obb",
+    ".....obb",
+    "......oo",
+    ".....ooo",
+    "....osll",
+    "....osls",
+    "....osls",
+    "....osls",
+    "....osls",
+    "....osdd",
+    "....osdl",
+    "....osdd",
+    "....osls",
+    "....osls",
+    "....osls",
+    "....osls",
+    "....osls",
+    "....odss",
+    "...ooooo",
+    "..osllll",
+    "..osssss",
+    "..osssss",
+    "..oddddd",
+    "..oooooo",
+]
+
+
 def locked_door() -> list[list[tuple]]:
     """32x32: Holztür in Steinrahmen mit goldenem Schloss."""
     stone, stone_dark = (110, 110, 125, 255), (70, 70, 85, 255)
@@ -164,6 +197,10 @@ def main() -> None:
     write_png(out / "objects" / "grass.png",
               from_map(GRASS, {"g": (60, 160, 60, 255), "l": (120, 210, 90, 255), "d": (30, 100, 40, 255)}, mirror=True))
     write_png(out / "objects" / "locked_door.png", locked_door())
+    statue_rows = STATUE + ["........"] * (32 - len(STATUE))
+    write_png(out / "objects" / "save_statue.png",
+              from_map(statue_rows, {"s": (140, 140, 155, 255), "l": (190, 190, 205, 255), "d": (95, 95, 110, 255),
+                                     "b": (80, 160, 255, 255), "w": (220, 240, 255, 255)}, mirror=True))
 
 
 if __name__ == "__main__":

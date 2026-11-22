@@ -2,10 +2,12 @@ class_name Room
 extends Node2D
 ## Wurzel jeder Raumszene. Wird von Game geladen und wieder entfernt.
 ## - Ausgänge (RoomExit) melden sich über exit_requested nach oben.
+## - Speicherstatuen melden sich über save_requested nach oben.
 ## - Eingänge (RoomEntry) sind Marker; ihr Knotenname ist die Eingangs-ID.
 ## - Knoten mit `min_tier` über Difficulty.tier() werden beim Laden entfernt (Raumvarianten).
 
 signal exit_requested(target_room: String, target_entry: StringName)
+signal save_requested(statue: SaveStatue)
 
 @export var dungeon_id: StringName = &""
 @export var camera_top_left: Marker2D
@@ -20,6 +22,8 @@ func _ready() -> void:
 	for node in _all_children(self):
 		if node is RoomExit:
 			(node as RoomExit).triggered.connect(exit_requested.emit)
+		elif node is SaveStatue:
+			(node as SaveStatue).save_requested.connect(save_requested.emit)
 
 
 ## Entfernt alle Knoten, deren `min_tier` höher als die Stufe ist. Vor add_child aufrufen.

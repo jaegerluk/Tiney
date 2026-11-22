@@ -103,6 +103,28 @@ func get_drops(room_path: String) -> Array:
 	return _room_drops.get(room_path, []).duplicate(true)
 
 
+## Tiefe Kopie des gesamten Stands (für Speicherstatuen).
+func snapshot() -> Dictionary:
+	return {
+		"rupees": rupees,
+		"keys": _keys.duplicate(),
+		"flags": _flags.duplicate(),
+		"values": _values.duplicate(true),
+		"room_drops": _room_drops.duplicate(true),
+	}
+
+
+## Setzt alles auf einen mit snapshot() gemerkten Stand zurück.
+func restore(data: Dictionary) -> void:
+	rupees = data.rupees
+	_keys.assign(data["keys"])
+	_flags.assign(data.flags)
+	_values.assign(data["values"].duplicate(true))
+	_room_drops.assign(data.room_drops.duplicate(true))
+	rupees_changed.emit(rupees)
+	keys_changed.emit(current_dungeon, keys())
+
+
 ## Eindeutige ID für einen Knoten in einer Raumszene: "<Szenenpfad>:<Pfad im Raum>".
 ## Der Knoten muss Teil einer gespeicherten Szene sein (owner gesetzt).
 func flag_id(node: Node) -> String:
