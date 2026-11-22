@@ -1,0 +1,54 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://enemies/bat/bat.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/bat.png" id="2_tex"]
+[ext_resource type="Resource" path="res://enemies/bat/bat_stats.tres" id="3_stats"]
+[ext_resource type="Resource" path="res://items/drops/slime_drops.tres" id="4_drops"]
+[ext_resource type="Script" path="res://combat/hurtbox.gd" id="5_hurtbox"]
+[ext_resource type="Script" path="res://combat/hitbox.gd" id="6_hitbox"]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(10, 6)
+
+[sub_resource type="RectangleShape2D" id="HurtShape"]
+size = Vector2(14, 10)
+
+[sub_resource type="RectangleShape2D" id="HitShape"]
+size = Vector2(10, 8)
+
+[node name="Bat" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 65
+motion_mode = 1
+script = ExtResource("1_script")
+stats = ExtResource("3_stats")
+drop_table = ExtResource("4_drops")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_tex")
+offset = Vector2(0, -6)
+hframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BodyShape")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+script = ExtResource("5_hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -5)
+shape = SubResource("HurtShape")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+script = ExtResource("6_hitbox")
+knockback = 100.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, -5)
+shape = SubResource("HitShape")

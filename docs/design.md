@@ -97,6 +97,7 @@ Ideen zur Vorbereitung der Wendung (offen):
 - **Dialoge:** Textbox unten mit Schreibmaschinen-Effekt, Interaktion zeigt alles bzw. blättert weiter, Spiel pausiert. Darüber seitlich Bild und Name des Sprechers. Schilder nutzen dieselbe Box ohne Bild.
 - **Gefangener** im Kerker deutet den Mönch an: “The orbs must never be brought together.”
 - **Shop:** Ware liegt mit Preis auf der Theke, davorstellen zeigt Name, Preis und Beschreibung, Interaktion kauft. Der Ladenbesitzer spricht. Test-Angebot: Hinweis (1, nett, nicht hilfreich), Herz (5), Apfel (3), Heiltrank (30), Schlüssel (50, einmal).
+- **Fledermaus:** flattert in zufällige Richtungen, wechselt oft den Kurs, setzt sich ab und zu kurz hin. Fliegt über Löcher und Stacheln. 1 Hieb, ½ Herz.
 - **Zombie** (Gegner in Dungeon 1): bemerkt dich auf ~6 Tiles, schlurft langsam und stur hinterher, 4 Hiebe, 1 Herz Schaden.
 - **Zombie-König** (Platzhalter-Boss): Bossraum schließt sich, Boss-Leiste, Sturmangriff mit Ankündigung, ruft bei halbem Leben 2 Zombies (nie direkt am Spieler), 12 Hiebe. Belohnung: Herzcontainer + magische Kugel.
 
@@ -104,9 +105,18 @@ Ideen zur Vorbereitung der Wendung (offen):
 - **Gittertüren:** schließen beim Betreten, öffnen sich, wenn alle Gegner besiegt sind, bleiben danach offen.
 - **Schalter:** grüne Bodenschalter schalten um. Orange Halteschalter halten eine Tür nur offen, solange etwas daraufsteht (Spieler oder Block). **Kristallschalter** reagieren auf Schwerthiebe, die Farbe zeigt die Art: blau/rot schaltet hin und her, grün öffnet für immer, gelb nur für einige Sekunden. Kann eine Tür hinter dem Spieler zufallen, gibt es auch innen einen Schalter (keine Softlocks).
 - **Sprache im Spiel:** Englisch.
+- **Fallen:**
+  - **Stacheln:** dauerhaft oder taktend (1,5 s draußen, 1,5 s drin, kurz vorher Zittern), ½ Herz.
+  - **Klingenfallen:** stahlblau lauernd (schießt los, wenn man in Zeile/Spalte tritt, prallt ab, kehrt langsam zurück), bronze pendelnd. 1 Herz, unzerstörbar.
+  - **Bröckelnde Platten:** zerfallen kurz nach dem Betreten zu einem Loch; beim nächsten Betreten des Raums sind sie wieder ganz.
+  - Fallenschaden wächst mit der Schwierigkeit.
 - **Schiebeblöcke:** kurz dagegen laufen schiebt ein Tile. Sie bleiben, wo sie sind (der Tod setzt sie über die Statue zurück). Ein Block auf einem Bodenschalter drückt ihn.
 - **Löcher:** pro Loch einstellbar. Mit Ziel fällt man ein Stockwerk tiefer, ohne Ziel kostet es ½ Herz und man steht wieder am letzten sicheren Boden.
 - **Kamera:** bildschirmweises Schieben wie in ALttP, pro Raum im Editor auf „mitlaufend“ umstellbar. Gegner bleiben dabei in ihrem Bildschirm. Treppen führen in andere Räume.
+
+## Spielgefühl (entschieden)
+- Kurzer Trefferstopp bei Treffern, leichtes Bildschirmwackeln, wenn man getroffen wird, und beim Boss.
+- Partikel: Scherben, Halme, Rauch beim Gegnertod, Funken am Kristall. Gegner blitzen weiß auf und verpuffen.
 
 ## Speichern & Tod (entschieden)
 - **Speicherstatuen** stehen in einer Wasserpfütze. Wer die Pfütze betritt, speichert automatisch (kurze Meldung „Gespeichert“). Die Statue heilt nicht. Das Konzept wird später verfeinert (z. B. einzelne Pfützen in Türen).

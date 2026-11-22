@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://objects/sign_post/sign_post.tscn" id="r5"]
 [ext_resource type="PackedScene" path="res://items/pickups/rupee.tscn" id="r6"]
 [ext_resource type="PackedScene" path="res://objects/stairs/stairs.tscn" id="stairs_r"]
+[ext_resource type="PackedScene" path="res://enemies/bat/bat.tscn" id="bat_r"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ExitToTraps"]
 size = Vector2(8, 32)
@@ -44,6 +45,12 @@ position = Vector2(256, 224)
 position = Vector2(128, 100)
 script = ExtResource("r3")
 facing = Vector2(0, 1)
+
+[node name="Bat1" parent="." instance=ExtResource("bat_r")]
+position = Vector2(80, 150)
+
+[node name="Bat2" parent="." instance=ExtResource("bat_r")]
+position = Vector2(200, 160)
 
 [node name="ExitToTraps" parent="." instance=ExtResource("r4")]
 position = Vector2(4, 112)

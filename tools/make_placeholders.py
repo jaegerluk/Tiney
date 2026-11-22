@@ -710,6 +710,57 @@ def crumble_sheet() -> list[list[tuple]]:
     return px
 
 
+BAT_FRAMES = [
+    [  # Flügel oben
+        "................",
+        "..o..........o..",
+        ".obo........obo.",
+        ".obbo..oo..obbo.",
+        "obbbbooddoobbbbo",
+        "obbbbbdeedbbbbbo",
+        ".obbbbddddbbbbo.",
+        "..oo.oddddo.oo..",
+        "......oddo......",
+        ".......oo.......",
+    ],
+    [  # Flügel unten
+        "................",
+        "................",
+        "................",
+        ".......oo.......",
+        "......oddo......",
+        "..oooodeedoooo..",
+        ".obbbbddddbbbbo.",
+        "obbbbbbddbbbbbbo",
+        "obbo.obbbbo.obbo",
+        ".oo...oooo...oo.",
+    ],
+    [  # sitzend, Flügel angelegt
+        "................",
+        "................",
+        "................",
+        "................",
+        "......oooo......",
+        ".....obddbo.....",
+        "....obdeedbo....",
+        "....obddddbo....",
+        ".....obddbo.....",
+        "......oooo......",
+    ],
+]
+
+
+def bat_sheet() -> list[list[tuple]]:
+    """48x16: zwei Flügelschläge und sitzend."""
+    pal = {".": (0, 0, 0, 0), "o": OUTLINE, "b": (90, 60, 120, 255), "d": (60, 40, 80, 255), "e": (230, 50, 60, 255)}
+    px = [[(0, 0, 0, 0)] * 48 for _ in range(16)]
+    for f, rows in enumerate(BAT_FRAMES):
+        for y, line in enumerate(rows):
+            for x, c in enumerate(line):
+                px[y + 3][f * 16 + x] = pal[c]
+    return px
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -727,6 +778,7 @@ def main() -> None:
     write_png(ROOT / "assets" / "tilesets" / "dungeon_walls.png", dungeon_walls())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
+    write_png(out / "enemies" / "bat.png", bat_sheet())
     write_png(out / "objects" / "spikes.png", spikes_sheet())
     write_png(out / "objects" / "blade_trap.png", blade_sheet())
     write_png(out / "objects" / "crumble_floor.png", crumble_sheet())

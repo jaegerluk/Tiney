@@ -43,6 +43,8 @@ Hilfen: `check`, `check_eq`, `frames(n)`, `hold(action)`, `tap(action)`. Der Run
 | `assets/` | Grafik und Audio, nur genutzte Dateien, Quellen in `assets/CREDITS.md` |
 | `docs/` | Design-Dokument |
 | `tests/` | Headless-Tests und Runner |
+| `debug/` | Debug-Menü (F1, nur in Debug-Läufen) |
+| `effects/` | `Effects`: Partikel, Trefferstopp, Bildschirmwackeln |
 | `tools/` | Hilfsskripte außerhalb von Godot: `make_placeholders.py` (Sprites), `room_builder.py` (Raumszenen mit Tiles), `tidy_tscn.py` (Reihenfolge in .tscn reparieren) |
 
 Szene und Skript liegen zusammen und tragen denselben Namen (`player/player.tscn`, `player/player.gd`).
@@ -67,6 +69,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
   | 5 | `enemy_attack` | Gegner-Hitboxen |
   | 6 | `triggers` | Pickups, Schalter, Schilder, Statuen, Ausgänge (Maske: `player`) |
   | 7 | `npcs` | NPC-Körper (Kuh). Spieler und Gegner maskieren `world` + `npcs` |
+  | 8 | `traps` | Körper von Klingenfallen (stoßen an Wände und einander, blockieren den Spieler nicht). Name in `project.godot` noch nachtragen (Editor war offen) |
 - **Keine globalen Zustands-Flags** für einzelne Übergänge. Raumwechsel laufen datengetrieben über Ausgänge mit Ziel-Raum und Ziel-Marker.
 - `@export` für alles, was im Editor eingestellt werden soll. Keine Zahlen fest im Code, die Design-Werte sind.
 
@@ -90,8 +93,11 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Krüge/Gras:** `fixed_drop` (fester Inhalt) hat Vorrang vor `drop_table` (Zufall). Ohne beides kommt nichts.
 - **Böden** als `TileMapLayer` „Floor“ mit `assets/tilesets/basic_tileset.tres` (z_index −10).
 - **Schalter:** `FloorSwitch` (Modus TOGGLE = grün, `floor_switch.tscn`; HOLD = orange, `hold_switch.tscn`: an, solange Spieler oder Block daraufstehen). `CrystalSwitch` reagiert auf Treffer, Modus TOGGLE (blau/rot), ONCE (grün → grau) oder TIMED (gelb, `duration`). Alle senden `toggled(is_on)`, verbunden in der Raumszene, z. B. mit `SwitchDoor.set_open`. Eine `SwitchDoor` darf mehrere Schalter haben, sie ist offen, solange mindestens einer an ist. **Keine Softlocks:** Wo eine Tür hinter dem Spieler zufallen kann (Zeitschalter), gehört ein Schalter auch auf die Innenseite. TOGGLE/ONCE bleiben gespeichert, HOLD/TIMED nicht.
+- **Fallen:** `Spikes` (ALWAYS/TIMED, `phase_offset` für Wellen), `BladeTrap` (SENTRY stahlblau / PATROL bronze), `CrumbleFloor` (zerfällt zu einem `Pit`, zählt nicht als sicherer Boden, beim Wiederbetreten ganz, optional `regrow_time`). Fallenschaden ist ein Basiswert in LP und skaliert mit `Difficulty`.
 - **Gittertüren:** `RoomLock` mit `ShutterDoor`-Kindern. Gegner aus dem Inspector oder alle im Raum. Signale `locked`/`unlocked`, z. B. `locked` → `ZombieKing.activate`.
 - **Boss:** Gegner mit `display_name` und Signal `boss_appeared` (HUD-Leiste). Belohnungen als Pickup-Szenen (`rewards`). Kugeln in `GameState.orbs`.
+- **Spielgefühl:** `Effects.burst()` für Partikel, `Effects.hit_stop()` / `Effects.shake()` rufen Game über die Gruppe `game_feel` (Trefferstopp über `Engine.time_scale`). Breakables haben `debris_color`.
+- **Debug-Menü** (`debug/debug_menu.gd`, F1, zur Laufzeit angemeldet): Schwierigkeit, unverwundbar (`Player.god_mode`), Sachen geben, Teleport (`Game.teleport`), Raum zurücksetzen (`GameState.clear_room` + `Game.reload_room`), Gegner besiegen.
 - **Hitbox/Hurtbox:** Spieler-Hurtbox maskiert `enemy_attack`, Gegner-, NPC- und Zerbrechbares-Hurtboxen maskieren `player_attack`. Nach der Unverwundbarkeit prüft `Hurtbox.recheck()` noch überlappende Hitboxen.
 
 ## Interaktion, Dialoge, Präsentation
@@ -148,7 +154,8 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
   - `test_shop`: Ladenbesitzer, Ware auf der Theke.
   - `test_arena`: Gittertür (RoomLock), Zombie, 2 Schleime.
   - `test_boss_room`: Zombie-König hinter Gittertür.
-  - `test_cellar`: Keller mit Treppe zurück.
+  - `test_cellar`: Keller mit Treppe zurück, zwei Fledermäuse, Westöffnung → `test_traps`.
+  - `test_traps` (2 Bildschirme): Klingenfallen, Stachelwelle, Bröckelbrücke über Löchern.
   - `test_switches` (Westöffnung des Startraums, 2 Bildschirme breit): Halteschalter mit Block, Kristallschalter in allen drei Modi.
 - Vorhanden:
   - Spieler: Bewegung, Schwert, Leben (LP), Rückstoß, Unverwundbarkeit, Stürze.
