@@ -19,6 +19,7 @@
 [ext_resource type="TileSet" path="res://assets/tilesets/basic_tileset.tres" id="tileset_r"]
 [ext_resource type="PackedScene" path="res://objects/chest/chest.tscn" id="chest_r"]
 [ext_resource type="PackedScene" path="res://items/pickups/rupee_red.tscn" id="rupeered_r"]
+[ext_resource type="PackedScene" path="res://enemies/zombie/zombie.tscn" id="zombie_r"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ExitToShop"]
 size = Vector2(32, 8)
@@ -132,6 +133,9 @@ position = Vector2(150, 330)
 [node name="Chest" parent="." instance=ExtResource("chest_r")]
 position = Vector2(40, 40)
 content = ExtResource("rupeered_r")
+
+[node name="Zombie1" parent="." instance=ExtResource("zombie_r")]
+position = Vector2(440, 120)
 
 [node name="Pot1" parent="." instance=ExtResource("12_r")]
 position = Vector2(176, 48)

@@ -415,6 +415,65 @@ SCROLL = [  # Schriftrolle für den Hinweis, 16x16, nicht gespiegelt
 ]
 
 
+ZOMBIE_BODY = [
+    "................",
+    ".....oooooo.....",
+    "....oggggggo....",
+    "....ogegggego...",
+    "....oggggggo....",
+    "....ogdddddgo...",
+    ".....oggggo.....",
+    "....occcccco....",
+    "...occcccccco...",
+    "..ogocccccccogo.",
+    "..ogocccccccogo.",
+    "....occcccco....",
+    "....occcccco....",
+]
+ZOMBIE_LEGS = [
+    ["....oll..llo....", "....oll..llo....", "....oll...ooo...", "....ooo........."],
+    ["....oll..llo....", "....oll..llo....", "...ooo...llo....", ".........ooo...."],
+]
+ZOMBIE_PALETTE = {"g": (110, 160, 90, 255), "e": (200, 40, 40, 255), "d": (40, 50, 30, 255),
+                  "c": (90, 80, 110, 255), "l": (70, 60, 80, 255)}
+
+
+def zombie_sheet() -> list[list[tuple]]:
+    """32x20: zwei Lauf-Frames."""
+    pal = {".": (0, 0, 0, 0), "o": OUTLINE, **ZOMBIE_PALETTE}
+    rows = [[(0, 0, 0, 0)] * 32 for _ in range(20)]
+    for f in range(2):
+        frame = ZOMBIE_BODY + ZOMBIE_LEGS[f]
+        for y, line in enumerate(frame):
+            for x, c in enumerate(line):
+                rows[y + 2][f * 16 + x] = pal[c]
+    return rows
+
+
+def zombie_king_sheet() -> list[list[tuple]]:
+    """64x48: Zombie doppelt so groß, dunkler, mit goldener Krone."""
+    small = zombie_sheet()
+    out = [[(0, 0, 0, 0)] * 64 for _ in range(48)]
+    for y in range(20):
+        for x in range(32):
+            c = small[y][x]
+            if c[3] and c != OUTLINE:
+                c = (int(c[0] * 0.8), int(c[1] * 0.75), int(c[2] * 0.9), 255)
+            for dy in range(2):
+                for dx in range(2):
+                    out[y * 2 + dy + 8][x * 2 + dx] = c
+    gold, gold_dark = (240, 200, 60, 255), (170, 120, 20, 255)
+    for f in range(2):
+        ox = f * 32
+        for x in range(10, 22):
+            out[14][ox + x] = gold_dark
+            out[13][ox + x] = gold
+        for x in (10, 13, 16, 18, 21):
+            for y in (10, 11, 12):
+                out[y][ox + x] = gold
+    return out
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -432,6 +491,8 @@ def main() -> None:
     write_png(ROOT / "assets" / "tilesets" / "dungeon_walls.png", dungeon_walls())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
+    write_png(out / "enemies" / "zombie.png", zombie_sheet())
+    write_png(out / "enemies" / "zombie_king.png", zombie_king_sheet())
     write_png(out / "items" / "hint_scroll.png", from_map(SCROLL, {"p": (235, 220, 180, 255), "k": (120, 100, 80, 255)}))
     write_png(out / "items" / "potion.png", from_map(POTION, {"w": (240, 240, 255, 255), "l": (200, 200, 220, 255), "r": (220, 40, 70, 255), "d": (150, 20, 45, 255)}, mirror=True))
     for name, pal in NPC_PALETTES.items():
