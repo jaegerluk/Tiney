@@ -34,8 +34,9 @@ func run() -> void:
 	check(seen_charge, "Sturmangriff nach Ankündigung")
 
 	# Bis halbes Leben: Zombies erscheinen
-	player.global_position = Vector2(40, 190)
 	king.global_position = Vector2(180, 120)
+	player.global_position = king.global_position + Vector2(-40, 0)
+	await frames(2)
 	var hit := Hitbox.new()
 	hit.damage = 1
 	hit.knockback = 0.0
@@ -45,6 +46,7 @@ func run() -> void:
 	await frames(3)
 	var minions := game.current_room.get_children().filter(func(n: Node) -> bool: return n is Zombie)
 	check_eq(minions.size(), 2, "Bei halbem Leben: 2 Zombies")
+	check(minions.all(func(m) -> bool: return m.global_position.distance_to(player.global_position) >= 40.0), "Zombies erscheinen nicht am Spieler")
 
 	# Besiegen
 	for i in 6:

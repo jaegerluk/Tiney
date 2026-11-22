@@ -17,6 +17,8 @@ enum State { WALK, TELEGRAPH, CHARGE }
 @export var charge_interval_max: float = 4.0
 @export var minion_scene: PackedScene
 @export var minion_count: int = 2
+## Abstand der gerufenen Zombies zum König; sie erscheinen auf der vom Spieler abgewandten Seite.
+@export var summon_distance: float = 40.0
 ## Belohnungen beim Sieg (Pickup-Szenen), z. B. Herzcontainer und Kugel.
 @export var rewards: Array[PackedScene] = []
 @export var step_time: float = 0.3
@@ -91,12 +93,36 @@ func _summon() -> void:
 	_summoned = true
 	if minion_scene == null:
 		return
-	for i in minion_count:
+	for spot in _summon_spots(minion_count):
 		var minion: Node2D = minion_scene.instantiate()
-		var side := -1.0 if i % 2 == 0 else 1.0
-		minion.position = position + Vector2(side * 40.0, 0.0)
+		minion.position = spot
 		_minions.append(minion)
 		get_parent().add_child.call_deferred(minion)
+
+
+## Freie Stellen rund um den König (nicht in Wänden), die vom Spieler am weitesten entfernten zuerst.
+func _summon_spots(count: int) -> Array[Vector2]:
+	var parent := get_parent() as Node2D
+	var spots: Array[Vector2] = []
+	for i in 8:
+		var spot := position + Vector2.from_angle(i * TAU / 8.0) * summon_distance
+		if _is_free_spot(spot):
+			spots.append(spot)
+	var player := find_player()
+	if player:
+		spots.sort_custom(func(a: Vector2, b: Vector2) -> bool:
+			return parent.to_global(a).distance_to(player.global_position) > parent.to_global(b).distance_to(player.global_position))
+	return spots.slice(0, count)
+
+
+func _is_free_spot(local_spot: Vector2) -> bool:
+	var shape := RectangleShape2D.new()
+	shape.size = Vector2(12, 10)
+	var query := PhysicsShapeQueryParameters2D.new()
+	query.shape = shape
+	query.transform = Transform2D(0.0, (get_parent() as Node2D).to_global(local_spot))
+	query.collision_mask = 1 | 64
+	return get_world_2d().direct_space_state.intersect_shape(query, 1).is_empty()
 
 
 func _on_died() -> void:
