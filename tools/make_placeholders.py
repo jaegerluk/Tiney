@@ -397,6 +397,24 @@ POTION = [  # linke Hälfte, Flasche mit rotem Trank
 ]
 
 
+SCROLL = [  # Schriftrolle für den Hinweis, 16x16, nicht gespiegelt
+    "................",
+    "................",
+    "...oooooooooo...",
+    "..oppppppppppo..",
+    "..opoooooooopo..",
+    "...oppppppppo...",
+    "...opkkkkkkpo...",
+    "...oppppppppo...",
+    "...opkkkkkppo...",
+    "...oppppppppo...",
+    "...opkkkkkkpo...",
+    "..opoooooooopo..",
+    "..oppppppppppo..",
+    "...oooooooooo...",
+]
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -414,6 +432,7 @@ def main() -> None:
     write_png(ROOT / "assets" / "tilesets" / "dungeon_walls.png", dungeon_walls())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
+    write_png(out / "items" / "hint_scroll.png", from_map(SCROLL, {"p": (235, 220, 180, 255), "k": (120, 100, 80, 255)}))
     write_png(out / "items" / "potion.png", from_map(POTION, {"w": (240, 240, 255, 255), "l": (200, 200, 220, 255), "r": (220, 40, 70, 255), "d": (150, 20, 45, 255)}, mirror=True))
     for name, pal in NPC_PALETTES.items():
         sprite = npc(pal)

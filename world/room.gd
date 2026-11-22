@@ -26,8 +26,8 @@ func _ready() -> void:
 			(node as RoomExit).triggered.connect(exit_requested.emit)
 		elif node is SaveStatue:
 			(node as SaveStatue).save_requested.connect(save_requested.emit)
-		elif node is Chest:
-			(node as Chest).item_presented.connect(item_presented.emit)
+		if node.has_signal(&"item_presented"):
+			node.connect(&"item_presented", item_presented.emit)
 		if node.has_signal(&"dialog_requested"):
 			node.connect(&"dialog_requested", dialog_requested.emit)
 

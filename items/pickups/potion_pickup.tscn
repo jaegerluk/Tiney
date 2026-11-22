@@ -1,0 +1,7 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://items/pickups/item_pickup.tscn" id="1_base"]
+[ext_resource type="Resource" path="res://items/potion.tres" id="2_item"]
+
+[node name="PotionPickup" instance=ExtResource("1_base")]
+item = ExtResource("2_item")
