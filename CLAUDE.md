@@ -80,6 +80,8 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 ## Dungeon-Objekte und Kampf
 - **Pickups** erben von `Pickup` (`items/pickups/pickup.gd`) und überschreiben `_apply(player) -> bool`. `persistent = true` heißt: einmalig.
 - **Schlüssel** gelten pro Dungeon (`GameState.keys(dungeon)`). Der HUD-Zähler zeigt den aktuellen Dungeon.
+- **Großer Schlüssel** ebenfalls pro Dungeon (`GameState.big_keys()`), HUD-Symbol neben dem Zähler. Die Bosstür (`objects/boss_door`, eine `LockedDoor` mit `big_key = true`) verbraucht ihn.
+- **Truhen** (`Chest`): `content` ist eine Pickup-Szene. Öffnen von jeder Seite mit `interact`. Zustand über `GameState.set_value`. Die Truhe sendet `item_presented(icon, message)` über `Room` an `Game.present_item()`: Spiel pausiert, der Held hält das Item hoch (`Player.hold_up`), das HUD zeigt die Meldung (`HUD.show_message`). Pickups liefern dafür `get_icon()` und `get_message()`.
 - **Drops** über `DropTable`-Ressourcen (`items/drops/*.tres`): gewichtete Einträge plus `nothing_weight`.
 - **Gegner** erben von `Enemy` (`enemies/enemy.gd`), Basiswerte in `EnemyStats` (`enemies/<typ>/<typ>_stats.tres`). Verhalten in `_ai_velocity()`.
 - **Krüge/Gras:** `fixed_drop` (fester Inhalt) hat Vorrang vor `drop_table` (Zufall). Ohne beides kommt nichts.
@@ -113,9 +115,9 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - Godot 4.7, Ordnerstruktur angelegt, pixelgenaue Einstellungen gesetzt.
 - Der alte Prototyp ist entfernt. Er bleibt unter dem Tag `prototyp-alt` erreichbar (`git show prototyp-alt:<pfad>`).
 - Hauptszene: `world/game.tscn`, Startraum `world/test_area/test_area.tscn` (2×2 Bildschirme), verbunden mit `test_room_2.tscn` (Dungeon `test`).
-- Testbereich (Steinboden): Speicherstatue, Schalter → Tür, Schild, Äpfel, Rubine (1/5/20), Herz, Schlüssel, Krüge (Pot3 enthält einen Schlüssel), Gras, Kuh, zwei Schleime und ein dritter ab Stufe 6. In Raum 2: Schlüsseltür mit rotem Rubin dahinter.
-- Vorhanden: `Player` (Bewegung, Schwert, Leben, Rückstoß, Unverwundbarkeit), Inventar, Pickups, HUD (Leben, Rubine, Schlüssel), Raumwechsel mit Überblendung, Persistenz (nichts erscheint neu), Speicherstatuen, Schlüsseltüren, Krüge/Gras mit festem oder zufälligem Inhalt, Gegner-Basis und Schleim, Kuh, Lebensanzeige in Herz-Abschnitten, Steinboden-TileSet, Schwierigkeit mit Raumvarianten, Headless-Tests.
-- Noch nicht vorhanden: Truhen, großer Schlüssel/Bosstür, Treppen, Scrollen zwischen Bildschirmen, Game Over, Speichern auf Festplatte mit Titelmenü, Heben und Werfen, Sound, Wand-Tiles.
+- Testbereich (Steinboden): Speicherstatue, Truhe (roter Rubin), Schalter → Tür, Schild, Äpfel, Rubine (1/5/20), Herz, Schlüssel, Krüge (Pot3 enthält einen Schlüssel), Gras, Kuh, zwei Schleime und ein dritter ab Stufe 6. In Raum 2: Schlüsseltür, dahinter Truhe mit großem Schlüssel und Bosstür in der Südwand. Dahinter `test_boss_room.tscn` (Platzhalter).
+- Vorhanden: `Player` (Bewegung, Schwert, Leben, Rückstoß, Unverwundbarkeit), Inventar, Pickups, HUD (Leben, Rubine, Schlüssel), Raumwechsel mit Überblendung, Persistenz (nichts erscheint neu), Speicherstatuen, Schlüsseltüren, Truhen, großer Schlüssel und Bosstür, Krüge/Gras mit festem oder zufälligem Inhalt, Gegner-Basis und Schleim, Kuh, Lebensanzeige in Herz-Abschnitten, Steinboden-TileSet, Schwierigkeit mit Raumvarianten, Headless-Tests.
+- Noch nicht vorhanden: Boss, große Truhen, Treppen, Scrollen zwischen Bildschirmen, Game Over, Speichern auf Festplatte mit Titelmenü, Heben und Werfen, Sound, Wand-Tiles.
 
 ## Entscheidungen
 - **Neuaufbau statt Weiterbau** des Prototyps. Übernommen werden Inventar, Schalter/Tür, Spieler-Animationen, Kamera-Grenzen, Schild und Lebensanzeige. Neu geschrieben werden Raumwechsel, Kampf und Gegner.

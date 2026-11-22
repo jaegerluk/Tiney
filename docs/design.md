@@ -78,6 +78,8 @@ Ideen zur Vorbereitung der Wendung (offen):
 ## Dungeon-Elemente (entschieden)
 - **Kleine Schlüssel gelten pro Dungeon** (wie ALttP). Der Zähler am Bildschirmrand zeigt die Schlüssel des aktuellen Dungeons.
 - **Schlüsseltüren** öffnen beim Dagegenlaufen und bleiben offen.
+- **Großer Schlüssel:** einer pro Dungeon, öffnet die Bosstür und wird dabei verbraucht. Keine großen Truhen.
+- **Truhen** haben einen festen Inhalt, öffnen sich von jeder Seite per Interaktion und bleiben offen. Beim Öffnen hält der Held den Inhalt kurz hoch (Spiel pausiert), bei wichtigen Dingen mit Textmeldung („Du hast den großen Schlüssel!“), bei Rubinen ohne Text.
 - **Rubine** als Währung: grün 1, blau 5, rot 20. Höchstens 999.
 - **Krüge und Gras** gehen vorerst mit dem Schwert kaputt. Jeder kann einen **festen Inhalt** haben (z. B. Schlüssel), sonst lassen sie zufällig Rubine oder Herzen fallen. Heben und Werfen wie in ALttP kommt später.
 - **Nichts erscheint neu:** Eingesammeltes, Zerstörtes und Getötetes bleibt weg, auch nach Raumwechsel. Liegen gelassene Drops bleiben liegen, Schalter behalten ihren Zustand.
