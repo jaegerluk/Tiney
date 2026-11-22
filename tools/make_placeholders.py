@@ -474,6 +474,31 @@ def zombie_king_sheet() -> list[list[tuple]]:
     return out
 
 
+def shutter_door() -> list[list[tuple]]:
+    """64x32: links geschlossen (Gitter), rechts offen (nur Rahmen, Gitter im Boden)."""
+    frame, frame_dark = (110, 110, 125, 255), (70, 70, 85, 255)
+    bar, bar_light, floor_slot = (150, 155, 165, 255), (200, 205, 215, 255), (30, 30, 38, 255)
+    px = [[(0, 0, 0, 0)] * 64 for _ in range(32)]
+    for f in range(2):
+        ox = f * 32
+        for y in range(32):
+            for x in range(32):
+                if x in (0, 31) or y in (0, 31):
+                    px[y][ox + x] = OUTLINE
+                elif x < 4 or x > 27 or y < 4:
+                    px[y][ox + x] = frame_dark if (x + y) % 5 == 0 else frame
+                elif f == 0:
+                    if x % 5 == 1:
+                        px[y][ox + x] = OUTLINE
+                    elif x % 5 in (2, 3):
+                        px[y][ox + x] = bar_light if x % 5 == 2 else bar
+                    elif y in (12, 22):
+                        px[y][ox + x] = bar
+                elif y >= 28:
+                    px[y][ox + x] = floor_slot
+    return px
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -491,6 +516,7 @@ def main() -> None:
     write_png(ROOT / "assets" / "tilesets" / "dungeon_walls.png", dungeon_walls())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
+    write_png(out / "objects" / "shutter_door.png", shutter_door())
     write_png(out / "enemies" / "zombie.png", zombie_sheet())
     write_png(out / "enemies" / "zombie_king.png", zombie_king_sheet())
     write_png(out / "items" / "hint_scroll.png", from_map(SCROLL, {"p": (235, 220, 180, 255), "k": (120, 100, 80, 255)}))
