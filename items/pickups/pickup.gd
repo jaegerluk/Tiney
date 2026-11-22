@@ -16,6 +16,17 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 
+## Symbol zum Hochhalten (Truhe). Standard: Textur von Sprite2D.
+func get_icon() -> Texture2D:
+	var sprite := get_node_or_null("Sprite2D") as Sprite2D
+	return sprite.texture if sprite else null
+
+
+## Meldung beim Öffnen einer Truhe. Leer = keine Textmeldung.
+func get_message() -> String:
+	return ""
+
+
 ## Wirkung auf den Spieler. false = nicht aufgenommen (z. B. Inventar voll, Leben schon voll).
 func _apply(_player: Player) -> bool:
 	return false

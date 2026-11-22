@@ -1,9 +1,13 @@
 class_name LockedDoor
 extends StaticBody2D
 ## Schlüsseltür. Läuft der Spieler mit einem Schlüssel des aktuellen Dungeons dagegen, geht sie auf.
+## Mit big_key = true ist es eine Bosstür: Sie braucht den großen Schlüssel und verbraucht ihn.
 ## Bleibt dauerhaft offen (Merker in GameState).
 
 signal opened
+
+## Bosstür: braucht den großen Schlüssel statt eines kleinen.
+@export var big_key: bool = false
 
 var _player: Player = null
 var _opening: bool = false
@@ -26,8 +30,12 @@ func _physics_process(_delta: float) -> void:
 		return
 	var to_door := global_position - _player.global_position
 	var toward := Vector2(signf(to_door.x), 0.0) if absf(to_door.x) > absf(to_door.y) else Vector2(0.0, signf(to_door.y))
-	if _player.facing == toward and _player.move_input.dot(toward) > 0.5 and GameState.use_key():
+	if _player.facing == toward and _player.move_input.dot(toward) > 0.5 and _use_key():
 		_open()
+
+
+func _use_key() -> bool:
+	return GameState.use_big_key() if big_key else GameState.use_key()
 
 
 func _open() -> void:

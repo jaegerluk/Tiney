@@ -8,6 +8,7 @@ extends Node2D
 
 signal exit_requested(target_room: String, target_entry: StringName)
 signal save_requested(statue: SaveStatue)
+signal item_presented(icon: Texture2D, message: String)
 
 @export var dungeon_id: StringName = &""
 @export var camera_top_left: Marker2D
@@ -24,6 +25,8 @@ func _ready() -> void:
 			(node as RoomExit).triggered.connect(exit_requested.emit)
 		elif node is SaveStatue:
 			(node as SaveStatue).save_requested.connect(save_requested.emit)
+		elif node is Chest:
+			(node as Chest).item_presented.connect(item_presented.emit)
 
 
 ## Entfernt alle Knoten, deren `min_tier` höher als die Stufe ist. Vor add_child aufrufen.

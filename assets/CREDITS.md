@@ -13,6 +13,6 @@ Vor einer Veröffentlichung müssen alle Platzhalter ohne passende Lizenz entfer
 | `tilesets/dungeon_tileset.png` | unbekannt | **unbekannt, prüfen** |
 | `sprites/npcs/cow.png` | Sprout Lands (Free Basic Pack) von Cup Nooble | nur nicht-kommerziell, keine Weitergabe → `licenses/sprout_lands_read_me.txt` |
 | `sprites/enemies/slime.png` | Mystic Woods (Free) | nur nicht-kommerziell, keine Weitergabe → `licenses/mystic_woods_read_me.txt` |
-| `sprites/pickups/*.png` (Rubine, Herz, Schlüssel), `sprites/objects/pot.png`, `grass.png`, `locked_door.png`, `save_statue.png`, `tilesets/stone_floor.png` | eigene Platzhalter, erzeugt mit `tools/make_placeholders.py` | frei |
+| `sprites/pickups/*.png` (Rubine, Herz, Schlüssel), `sprites/objects/pot.png`, `grass.png`, `locked_door.png`, `save_statue.png`, `chest.png`, `boss_door.png`, `sprites/pickups/big_key.png`, `tilesets/stone_floor.png` | eigene Platzhalter, erzeugt mit `tools/make_placeholders.py` | frei |
 
 **Wichtig:** Mystic Woods (Free) und Sprout Lands (Free) dürfen nicht weitergegeben werden. Das Repo muss deshalb privat bleiben, solange diese Dateien enthalten sind.

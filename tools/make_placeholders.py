@@ -212,6 +212,76 @@ def stone_floor() -> list[list[tuple]]:
     return px
 
 
+BIG_KEY = [  # 16x16, nicht gespiegelt: großer Schlüssel mit rotem Stein
+    "................",
+    ".....oooooo.....",
+    "....oyyyyyyo....",
+    "...oyyorroyyo...",
+    "...oyorrrroyo...",
+    "...oyyorroyyo...",
+    "....oyyyyyyo....",
+    ".....ooyyoo.....",
+    ".......oyo......",
+    ".......oyyoo....",
+    ".......oyyyo....",
+    ".......oyo......",
+    ".......oyyoo....",
+    ".......oyyyo....",
+    "........ooo.....",
+]
+
+
+def chest() -> list[list[tuple]]:
+    """32x16: links geschlossen, rechts offen."""
+    wood, wood_dark, wood_light = (150, 95, 50, 255), (100, 60, 30, 255), (190, 130, 70, 255)
+    gold, gold_dark, inner = (240, 200, 60, 255), (170, 120, 20, 255), (40, 25, 15, 255)
+    px = [[(0, 0, 0, 0)] * 32 for _ in range(16)]
+    for frame in range(2):
+        ox = frame * 16
+        lid_bottom = 7 if frame == 0 else 4
+        for y in range(2, 15):
+            for x in range(1, 15):
+                edge = x in (1, 14) or y in (2, 14) or y == lid_bottom
+                if edge:
+                    c = OUTLINE
+                elif frame == 1 and 3 <= y < 7:
+                    c = inner
+                elif y < lid_bottom:
+                    c = wood_light
+                else:
+                    c = wood_dark if x % 4 == 0 else wood
+                px[y][ox + x] = c
+        if frame == 0:  # Schloss
+            for y in range(6, 10):
+                for x in range(7, 9):
+                    px[y][ox + x] = gold if y < 9 else gold_dark
+        for x in (3, 12):  # Beschläge
+            for y in range(lid_bottom + 1, 14):
+                px[y][ox + x] = gold_dark
+    return px
+
+
+def boss_door() -> list[list[tuple]]:
+    """32x32: dunkelrote Tür mit großem goldenen Schloss."""
+    px = locked_door()
+    red, red_dark, red_light = (120, 30, 40, 255), (80, 15, 25, 255), (160, 50, 60, 255)
+    for y in range(5, 31):
+        for x in range(5, 27):
+            if px[y][x] != OUTLINE:
+                px[y][x] = red_dark if x % 6 == 3 else (red_light if x % 6 == 4 else red)
+    gold, gold_dark = (240, 200, 60, 255), (170, 120, 20, 255)
+    for y in range(9, 25):
+        for x in range(9, 23):
+            edge = x in (9, 22) or y in (9, 24)
+            px[y][x] = OUTLINE if edge else (gold_dark if y > 20 else gold)
+    for y in range(12, 22):
+        for x in (15, 16):
+            px[y][x] = OUTLINE
+    for x in range(13, 19):
+        px[13][x] = OUTLINE
+    return px
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -226,6 +296,9 @@ def main() -> None:
               from_map(GRASS, {"g": (60, 160, 60, 255), "l": (120, 210, 90, 255), "d": (30, 100, 40, 255)}, mirror=True))
     write_png(out / "objects" / "locked_door.png", locked_door())
     write_png(ROOT / "assets" / "tilesets" / "stone_floor.png", stone_floor())
+    write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
+    write_png(out / "objects" / "chest.png", chest())
+    write_png(out / "objects" / "boss_door.png", boss_door())
     statue_rows = STATUE + ["........"] * (32 - len(STATUE))
     write_png(out / "objects" / "save_statue.png",
               from_map(statue_rows, {"s": (140, 140, 155, 255), "l": (190, 190, 205, 255), "d": (95, 95, 110, 255),

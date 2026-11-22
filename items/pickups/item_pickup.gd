@@ -20,5 +20,13 @@ func _apply(player: Player) -> bool:
 	return item != null and player.collect(item)
 
 
+func get_icon() -> Texture2D:
+	return item.texture if item else null
+
+
+func get_message() -> String:
+	return "Du hast: %s" % item.name if item else ""
+
+
 func _update_sprite() -> void:
 	_sprite.texture = item.texture if item else null

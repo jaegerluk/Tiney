@@ -307,6 +307,11 @@ offset = Vector2(0, -12)
 hframes = 6
 vframes = 10
 
+[node name="HeldItem" type="Sprite2D" parent="."]
+visible = false
+z_index = 5
+position = Vector2(0, -26)
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 4)
 shape = SubResource("BodyShape")

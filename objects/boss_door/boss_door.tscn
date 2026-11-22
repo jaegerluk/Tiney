@@ -1,0 +1,30 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://objects/locked_door/locked_door.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/objects/boss_door.png" id="2_tex"]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="SensorShape"]
+size = Vector2(40, 40)
+
+[node name="BossDoor" type="StaticBody2D"]
+collision_layer = 1
+collision_mask = 0
+script = ExtResource("1_script")
+big_key = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BodyShape")
+
+[node name="Sensor" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sensor"]
+shape = SubResource("SensorShape")

@@ -27,5 +27,9 @@ func _apply(_player: Player) -> bool:
 	return true
 
 
+func get_icon() -> Texture2D:
+	return TEXTURES.get(value, TEXTURES[1])
+
+
 func _update_sprite() -> void:
 	_sprite.texture = TEXTURES.get(value, TEXTURES[1])

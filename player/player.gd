@@ -119,6 +119,16 @@ func set_controls_enabled(enabled: bool) -> void:
 	_controls_enabled = enabled
 
 
+## Hält ein Item über den Kopf (null = wieder normal). Während des Hochhaltens ist das Spiel pausiert.
+func hold_up(icon: Texture2D) -> void:
+	var held: Sprite2D = $HeldItem
+	held.texture = icon
+	held.visible = icon != null
+	if icon != null:
+		_sprite.flip_h = false
+		_sprite.frame = 0
+
+
 ## Dreht den Spieler in eine der vier Grundrichtungen.
 func face(direction: Vector2) -> void:
 	_set_facing(direction)

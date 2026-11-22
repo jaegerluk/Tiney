@@ -3,6 +3,10 @@ extends Pickup
 ## Kleiner Schlüssel. Gilt für den Dungeon des aktuellen Raums.
 
 
+func get_message() -> String:
+	return "Du hast einen kleinen Schlüssel!"
+
+
 func _apply(_player: Player) -> bool:
 	GameState.add_key()
 	return true

@@ -3,6 +3,7 @@ extends Node
 
 signal rupees_changed(amount: int)
 signal keys_changed(dungeon: StringName, amount: int)
+signal big_keys_changed(dungeon: StringName, amount: int)
 signal dungeon_changed(dungeon: StringName)
 
 const MAX_RUPEES := 999
@@ -14,8 +15,11 @@ var current_dungeon: StringName = &"":
 		current_dungeon = value
 		dungeon_changed.emit(value)
 		keys_changed.emit(value, keys())
+		big_keys_changed.emit(value, big_keys())
 
 var _keys: Dictionary[StringName, int] = {}
+## Große Schlüssel pro Dungeon. Werden an der Bosstür verbraucht.
+var _big_keys: Dictionary[StringName, int] = {}
 var _flags: Dictionary[String, bool] = {}
 var _values: Dictionary[String, Variant] = {}
 ## Liegen gelassene Drops je Raumpfad: [{"scene": Pfad, "position": Vector2}, ...]
@@ -25,6 +29,7 @@ var _room_drops: Dictionary[String, Array] = {}
 func reset() -> void:
 	rupees = 0
 	_keys.clear()
+	_big_keys.clear()
 	_flags.clear()
 	_values.clear()
 	_room_drops.clear()
@@ -63,6 +68,26 @@ func use_key(dungeon: StringName = &"") -> bool:
 		return false
 	_keys[d] -= 1
 	keys_changed.emit(d, _keys[d])
+	return true
+
+
+func big_keys(dungeon: StringName = &"") -> int:
+	return _big_keys.get(_dungeon_or_current(dungeon), 0)
+
+
+func add_big_key(dungeon: StringName = &"") -> void:
+	var d := _dungeon_or_current(dungeon)
+	_big_keys[d] = big_keys(d) + 1
+	big_keys_changed.emit(d, _big_keys[d])
+
+
+## Verbraucht den großen Schlüssel. Gibt false zurück, wenn keiner da ist.
+func use_big_key(dungeon: StringName = &"") -> bool:
+	var d := _dungeon_or_current(dungeon)
+	if big_keys(d) <= 0:
+		return false
+	_big_keys[d] -= 1
+	big_keys_changed.emit(d, _big_keys[d])
 	return true
 
 
@@ -108,6 +133,7 @@ func snapshot() -> Dictionary:
 	return {
 		"rupees": rupees,
 		"keys": _keys.duplicate(),
+		"big_keys": _big_keys.duplicate(),
 		"flags": _flags.duplicate(),
 		"values": _values.duplicate(true),
 		"room_drops": _room_drops.duplicate(true),
@@ -118,11 +144,13 @@ func snapshot() -> Dictionary:
 func restore(data: Dictionary) -> void:
 	rupees = data.rupees
 	_keys.assign(data["keys"])
+	_big_keys.assign(data.get("big_keys", {}))
 	_flags.assign(data.flags)
 	_values.assign(data["values"].duplicate(true))
 	_room_drops.assign(data.room_drops.duplicate(true))
 	rupees_changed.emit(rupees)
 	keys_changed.emit(current_dungeon, keys())
+	big_keys_changed.emit(current_dungeon, big_keys())
 
 
 ## Eindeutige ID für einen Knoten in einer Raumszene: "<Szenenpfad>:<Pfad im Raum>".

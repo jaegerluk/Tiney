@@ -73,6 +73,7 @@ func _swap_room(room_path: String, keep_drops: bool) -> void:
 		DropTable.spawn_scene(load(drop.scene), room, drop.position)
 	room.exit_requested.connect(change_room)
 	room.save_requested.connect(_on_save_requested)
+	room.item_presented.connect(present_item)
 	current_room = room
 	GameState.current_dungeon = room.dungeon_id
 	_camera.set_bounds(room.camera_bounds())
@@ -83,6 +84,18 @@ func _place_player(position_: Vector2, facing: Vector2) -> void:
 	_player.face(facing)
 	_camera.global_position = position_
 	_camera.reset_smoothing()
+
+
+## Truheninhalt zeigen: Held hält ihn hoch, Meldung im HUD, Spiel kurz pausiert.
+func present_item(icon: Texture2D, message: String) -> void:
+	get_tree().paused = true
+	_player.hold_up(icon)
+	if message != "":
+		_hud.show_message(message)
+	await get_tree().create_timer(1.6 if message != "" else 0.7, true, false, true).timeout
+	_hud.hide_message()
+	_player.hold_up(null)
+	get_tree().paused = false
 
 
 func _on_save_requested(statue: SaveStatue) -> void:

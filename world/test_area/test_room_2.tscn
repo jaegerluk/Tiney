@@ -5,9 +5,11 @@
 [ext_resource type="PackedScene" path="res://objects/room_exit/room_exit.tscn" id="3_r"]
 [ext_resource type="PackedScene" path="res://objects/sign_post/sign_post.tscn" id="4_r"]
 [ext_resource type="PackedScene" path="res://objects/locked_door/locked_door.tscn" id="5_r"]
-[ext_resource type="PackedScene" path="res://items/pickups/rupee.tscn" id="6_r"]
 
 [ext_resource type="TileSet" path="res://assets/tilesets/basic_tileset.tres" id="tileset_r"]
+[ext_resource type="PackedScene" path="res://objects/chest/chest.tscn" id="chest_r"]
+[ext_resource type="PackedScene" path="res://items/pickups/big_key.tscn" id="bigkey_r"]
+[ext_resource type="PackedScene" path="res://objects/boss_door/boss_door.tscn" id="bossdoor_r"]
 [sub_resource type="RectangleShape2D" id="Shape_TopLeft"]
 size = Vector2(112, 16)
 
@@ -15,7 +17,13 @@ size = Vector2(112, 16)
 size = Vector2(112, 16)
 
 [sub_resource type="RectangleShape2D" id="Shape_Bottom"]
-size = Vector2(256, 16)
+size = Vector2(112, 16)
+
+[sub_resource type="RectangleShape2D" id="Shape_BottomRight"]
+size = Vector2(112, 16)
+
+[sub_resource type="RectangleShape2D" id="Shape_ExitToBossRoom"]
+size = Vector2(32, 8)
 
 [sub_resource type="RectangleShape2D" id="Shape_Left"]
 size = Vector2(16, 224)
@@ -83,11 +91,23 @@ mouse_filter = 2
 color = Color(0.17, 0.17, 0.22, 1)
 
 [node name="Bottom" type="CollisionShape2D" parent="Walls"]
-position = Vector2(128.0, 216.0)
+position = Vector2(56.0, 216.0)
 shape = SubResource("Shape_Bottom")
 
 [node name="BottomRect" type="ColorRect" parent="Walls"]
 offset_left = 0.0
+offset_top = 208.0
+offset_right = 112.0
+offset_bottom = 224.0
+mouse_filter = 2
+color = Color(0.17, 0.17, 0.22, 1)
+
+[node name="BottomRight" type="CollisionShape2D" parent="Walls"]
+position = Vector2(200.0, 216.0)
+shape = SubResource("Shape_BottomRight")
+
+[node name="BottomRightRect" type="ColorRect" parent="Walls"]
+offset_left = 144.0
 offset_top = 208.0
 offset_right = 256.0
 offset_bottom = 224.0
@@ -157,12 +177,28 @@ shape = SubResource("Shape_ExitToTestArea")
 
 [node name="SignPost" parent="." instance=ExtResource("4_r")]
 position = Vector2(64, 64)
-text = "Raum 2: Die Tür braucht einen Schlüssel aus dem Testbereich."
+text = "Raum 2: Die Tür braucht einen Schlüssel aus dem Testbereich. Dahinter: großer Schlüssel und Bosstür."
 
 [node name="LockedDoor" parent="." instance=ExtResource("5_r")]
 position = Vector2(128, 128)
 
-[node name="RewardRupee" parent="." instance=ExtResource("6_r")]
+[node name="BigKeyChest" parent="." instance=ExtResource("chest_r")]
+position = Vector2(80, 176)
+content = ExtResource("bigkey_r")
+
+[node name="BossDoor" parent="." instance=ExtResource("bossdoor_r")]
+position = Vector2(128, 200)
+
+[node name="ExitToBossRoom" parent="." instance=ExtResource("3_r")]
+position = Vector2(128, 220)
+target_room = "res://world/test_area/test_boss_room.tscn"
+target_entry = &"from_room_2"
+
+[node name="CollisionShape2D" parent="ExitToBossRoom"]
+shape = SubResource("Shape_ExitToBossRoom")
+
+[node name="from_boss_room" type="Marker2D" parent="Entries"]
 position = Vector2(128, 176)
-value = 20
+script = ExtResource("2_r")
+facing = Vector2(0, -1)
 
