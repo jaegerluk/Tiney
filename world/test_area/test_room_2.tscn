@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" path="res://npcs/talk_npc/talk_npc.tscn" id="npc_r"]
 [ext_resource type="Texture2D" path="res://assets/sprites/npcs/prisoner.png" id="prisoner_tex"]
 [ext_resource type="Texture2D" path="res://assets/sprites/npcs/prisoner_portrait.png" id="prisoner_portrait"]
+[ext_resource type="PackedScene" path="res://objects/pit/pit.tscn" id="pit_r"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ExitToBossRoom"]
 size = Vector2(32, 8)
@@ -49,6 +50,11 @@ tile_set = ExtResource("tileset_r")
 position = Vector2(128, 32)
 script = ExtResource("2_r")
 facing = Vector2(0, 1)
+
+[node name="PitToCellar" parent="." instance=ExtResource("pit_r")]
+position = Vector2(64, 96)
+target_room = "res://world/test_area/test_cellar.tscn"
+target_entry = &"from_pit"
 
 [node name="ExitToTestArea" parent="." instance=ExtResource("3_r")]
 position = Vector2(128, 4)

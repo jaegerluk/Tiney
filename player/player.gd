@@ -25,9 +25,13 @@ var health: int
 var facing: Vector2 = Vector2.DOWN
 ## Aktuelle Laufeingabe (null, wenn gesperrt oder beim Angriff). Für Türen, Schieben usw.
 var move_input: Vector2 = Vector2.ZERO
+## Letzte Position auf sicherem Boden (nicht über einem Loch).
+var last_safe_position: Vector2 = Vector2.ZERO
 
 var _attacking: bool = false
 var _controls_enabled: bool = true
+var _hazards: int = 0
+var _falling: bool = false
 var _invincible_left: float = 0.0
 var _knockback_left: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
@@ -81,6 +85,8 @@ func _physics_process(delta: float) -> void:
 		else:
 			_playback.travel("walk" if input != Vector2.ZERO else "idle")
 	move_and_slide()
+	if _hazards == 0 and not _falling:
+		last_safe_position = global_position
 
 
 ## Nimmt einen Gegenstand ins Inventar auf. Gibt false zurück, wenn kein Platz frei ist.
@@ -139,6 +145,48 @@ func hold_up(icon: Texture2D) -> void:
 	if icon != null:
 		_sprite.flip_h = false
 		_sprite.frame = 0
+
+
+## Füße (für Löcher und Ähnliches).
+func feet_position() -> Vector2:
+	return global_position + Vector2(0, 4)
+
+
+## Von Löchern aufgerufen: Bereich betreten/verlassen, in dem kein sicherer Boden ist.
+func hazard_entered() -> void:
+	_hazards += 1
+
+
+func hazard_exited() -> void:
+	_hazards = maxi(_hazards - 1, 0)
+
+
+func is_falling() -> bool:
+	return _falling
+
+
+## Fällt: Steuerung aus, schrumpft und verschwindet. Danach land_at() oder ein Raumwechsel.
+func fall() -> void:
+	_falling = true
+	_controls_enabled = false
+	velocity = Vector2.ZERO
+	var tween := create_tween()
+	tween.tween_property(_sprite, "scale", Vector2(0.1, 0.1), 0.4)
+	await tween.finished
+	_sprite.visible = false
+
+
+## An einer Position (wieder) normal erscheinen, z. B. nach einem Sturz oder Raumwechsel.
+## enable_controls = false, wenn der Aufrufer die Steuerung selbst wieder freigibt (Raumwechsel).
+func land_at(position_: Vector2, enable_controls: bool = true) -> void:
+	global_position = position_
+	last_safe_position = position_
+	_hazards = 0
+	_sprite.scale = Vector2.ONE
+	_sprite.visible = true
+	if _falling and enable_controls:
+		_controls_enabled = true
+	_falling = false
 
 
 ## Dreht den Spieler in eine der vier Grundrichtungen.

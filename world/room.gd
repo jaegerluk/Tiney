@@ -32,6 +32,8 @@ func _ready() -> void:
 func _connect_node(node: Node) -> void:
 	if node is RoomExit:
 		(node as RoomExit).triggered.connect(exit_requested.emit)
+	elif node is Pit:
+		(node as Pit).fell_through.connect(exit_requested.emit)
 	elif node is SaveStatue:
 		(node as SaveStatue).save_requested.connect(save_requested.emit)
 	for signal_name: StringName in [&"item_presented", &"dialog_requested", &"boss_appeared"]:

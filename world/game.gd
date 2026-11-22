@@ -84,7 +84,7 @@ func _swap_room(room_path: String, keep_drops: bool) -> void:
 
 
 func _place_player(position_: Vector2, facing: Vector2) -> void:
-	_player.global_position = position_
+	_player.land_at(position_, false)
 	_player.face(facing)
 	_camera.global_position = position_
 	_camera.reset_smoothing()

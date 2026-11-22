@@ -21,6 +21,7 @@
 [ext_resource type="PackedScene" path="res://items/pickups/rupee_red.tscn" id="rupeered_r"]
 [ext_resource type="PackedScene" path="res://enemies/zombie/zombie.tscn" id="zombie_r"]
 [ext_resource type="PackedScene" path="res://objects/push_block/push_block.tscn" id="block_r"]
+[ext_resource type="PackedScene" path="res://objects/pit/pit.tscn" id="pit_r"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ExitToArena"]
 size = Vector2(8, 32)
@@ -66,6 +67,10 @@ facing = Vector2(0, 1)
 position = Vector2(112, 416)
 script = ExtResource("2_r")
 facing = Vector2(0, -1)
+
+[node name="Pit" parent="." instance=ExtResource("pit_r")]
+position = Vector2(208, 384)
+size = Vector2(32, 32)
 
 [node name="ExitToRoom2" parent="." instance=ExtResource("3_r")]
 position = Vector2(112, 444)
