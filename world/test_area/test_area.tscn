@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" path="res://items/pickups/small_key.tscn" id="11_r"]
 [ext_resource type="PackedScene" path="res://objects/breakable/pot.tscn" id="12_r"]
 [ext_resource type="PackedScene" path="res://objects/breakable/grass.tscn" id="13_r"]
+[ext_resource type="PackedScene" path="res://enemies/slime/slime.tscn" id="14_r"]
 
 [sub_resource type="RectangleShape2D" id="Shape_Top"]
 size = Vector2(512, 16)
@@ -234,5 +235,16 @@ position = Vector2(192, 216)
 
 [node name="Grass6" parent="." instance=ExtResource("13_r")]
 position = Vector2(208, 216)
+
+[node name="Slime1" parent="." instance=ExtResource("14_r")]
+position = Vector2(360, 200)
+
+[node name="Slime2" parent="." instance=ExtResource("14_r")]
+position = Vector2(420, 360)
+
+[node name="SlimeTier6" parent="." instance=ExtResource("14_r")]
+position = Vector2(400, 260)
+min_tier = 6
+modulate = Color(1, 0.6, 0.6, 1)
 
 [connection signal="toggled" from="FloorSwitch" to="SwitchDoor" method="set_open"]
