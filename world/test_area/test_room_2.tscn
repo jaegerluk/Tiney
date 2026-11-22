@@ -4,6 +4,8 @@
 [ext_resource type="Script" path="res://world/room_entry.gd" id="2_r"]
 [ext_resource type="PackedScene" path="res://objects/room_exit/room_exit.tscn" id="3_r"]
 [ext_resource type="PackedScene" path="res://objects/sign_post/sign_post.tscn" id="4_r"]
+[ext_resource type="PackedScene" path="res://objects/locked_door/locked_door.tscn" id="5_r"]
+[ext_resource type="PackedScene" path="res://items/pickups/rupee.tscn" id="6_r"]
 
 [sub_resource type="RectangleShape2D" id="Shape_TopLeft"]
 size = Vector2(112, 16)
@@ -19,6 +21,12 @@ size = Vector2(16, 224)
 
 [sub_resource type="RectangleShape2D" id="Shape_Right"]
 size = Vector2(16, 224)
+
+[sub_resource type="RectangleShape2D" id="Shape_MiddleLeft"]
+size = Vector2(96, 32)
+
+[sub_resource type="RectangleShape2D" id="Shape_MiddleRight"]
+size = Vector2(96, 32)
 
 [sub_resource type="RectangleShape2D" id="Shape_ExitToTestArea"]
 size = Vector2(32, 8)
@@ -111,6 +119,30 @@ offset_bottom = 224.0
 mouse_filter = 2
 color = Color(0.17, 0.17, 0.22, 1)
 
+[node name="MiddleLeft" type="CollisionShape2D" parent="Walls"]
+position = Vector2(64.0, 128.0)
+shape = SubResource("Shape_MiddleLeft")
+
+[node name="MiddleLeftRect" type="ColorRect" parent="Walls"]
+offset_left = 16.0
+offset_top = 112.0
+offset_right = 112.0
+offset_bottom = 144.0
+mouse_filter = 2
+color = Color(0.17, 0.17, 0.22, 1)
+
+[node name="MiddleRight" type="CollisionShape2D" parent="Walls"]
+position = Vector2(192.0, 128.0)
+shape = SubResource("Shape_MiddleRight")
+
+[node name="MiddleRightRect" type="ColorRect" parent="Walls"]
+offset_left = 144.0
+offset_top = 112.0
+offset_right = 240.0
+offset_bottom = 144.0
+mouse_filter = 2
+color = Color(0.17, 0.17, 0.22, 1)
+
 [node name="from_test_area" type="Marker2D" parent="Entries"]
 position = Vector2(128, 32)
 script = ExtResource("2_r")
@@ -126,5 +158,12 @@ shape = SubResource("Shape_ExitToTestArea")
 
 [node name="SignPost" parent="." instance=ExtResource("4_r")]
 position = Vector2(64, 64)
-text = "Raum 2"
+text = "Raum 2: Die Tür braucht einen Schlüssel aus dem Testbereich."
+
+[node name="LockedDoor" parent="." instance=ExtResource("5_r")]
+position = Vector2(128, 128)
+
+[node name="RewardRupee" parent="." instance=ExtResource("6_r")]
+position = Vector2(128, 176)
+value = 20
 

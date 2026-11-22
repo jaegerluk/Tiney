@@ -16,6 +16,8 @@ signal died
 var health: int
 ## Immer eine der vier Grundrichtungen.
 var facing: Vector2 = Vector2.DOWN
+## Aktuelle Laufeingabe (null, wenn gesperrt oder beim Angriff). Für Türen, Schieben usw.
+var move_input: Vector2 = Vector2.ZERO
 
 var _attacking: bool = false
 var _controls_enabled: bool = true
@@ -36,6 +38,7 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	move_input = Vector2.ZERO
 	if not _controls_enabled:
 		velocity = Vector2.ZERO
 		_playback.travel("idle")
@@ -43,6 +46,7 @@ func _physics_process(_delta: float) -> void:
 		velocity = Vector2.ZERO
 	else:
 		var input := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+		move_input = input
 		velocity = input * move_speed
 		if input != Vector2.ZERO:
 			_set_facing(_facing_from(input))
