@@ -28,10 +28,32 @@ func run() -> void:
 	check(not player.is_falling(), "Wieder aufgetaucht")
 	check_eq(player.health, player.max_health - 10, "½ Herz Schaden")
 	check(player.global_position.x < pit.global_position.x - 16 and player.global_position.x >= safe_before.x, "Zurück an sicherem Boden vor dem Loch")
+	await frames(30)
+	var x_before := player.global_position.x
 	hold("move_left")
 	await frames(10)
 	hold("move_left", false)
-	check(player.global_position.x < player.last_safe_position.x + 1.0, "Steuerung funktioniert wieder")
+	check(player.global_position.x < x_before, "Steuerung funktioniert wieder")
+
+	# Taste gedrückt halten: kurze Sperre nach dem Sturz, Spieler bleibt sichtbar, nach dem Tod normal
+	player.heal(999)
+	await frames(70)
+	player.global_position = pit.global_position + Vector2(-30, 0)
+	await frames(3)
+	var falls := 0
+	var was := false
+	hold("move_right")
+	for i in 600:
+		await frames(1)
+		if player.is_falling() and not was:
+			falls += 1
+		was = player.is_falling()
+	hold("move_right", false)
+	await frames(60)
+	check(falls >= 2, "Mit gedrückter Taste fällt man wiederholt (%d Stürze)" % falls)
+	check(player.get_node("Sprite2D").visible and player.get_node("Sprite2D").scale == Vector2.ONE, "Nach dem Tod im Loch: Spieler sichtbar und normal groß")
+	check(not player.is_falling() and player._controls_enabled, "Nach dem Tod steuerbar")
+	check_eq(player.health, player.max_health, "Nach dem Tod volles Leben")
 
 	# Loch mit Ziel: ein Stockwerk tiefer
 	await game.change_room(ROOM2, &"from_test_area")

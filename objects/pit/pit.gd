@@ -19,6 +19,8 @@ signal fell_through(target_room: String, target_entry: StringName)
 @export var fall_damage: int = 10
 ## So weit müssen die Füße im Loch sein (Pixel vom Rand), damit man fällt.
 @export var edge_margin: float = 3.0
+## So weit (Pixel) wird man nach dem Sturz zusätzlich vom Loch weg abgesetzt.
+@export var respawn_push: float = 6.0
 
 var _player: Player = null
 
@@ -41,7 +43,7 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	if Engine.is_editor_hint() or _player == null or _player.is_falling():
+	if Engine.is_editor_hint() or _player == null or not _player.can_fall():
 		return
 	var feet := to_local(_player.feet_position())
 	var inner := Rect2(-size / 2.0, size).grow(-edge_margin)
@@ -51,10 +53,14 @@ func _physics_process(_delta: float) -> void:
 
 func _fall(player: Player) -> void:
 	await player.fall()
+	if not player.is_falling():
+		return  # Inzwischen anderweitig abgesetzt (z. B. Tod während des Sturzes).
 	if target_room != "":
 		fell_through.emit(target_room, target_entry)
 	else:
-		player.land_at(player.last_safe_position)
+		# Etwas weiter weg vom Loch absetzen, damit man nicht sofort wieder hineinläuft.
+		var away := (player.last_safe_position - global_position).normalized()
+		player.recover_from_fall(player.last_safe_position + away * respawn_push)
 		player.take_damage(fall_damage)
 
 

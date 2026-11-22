@@ -32,6 +32,7 @@ var _attacking: bool = false
 var _controls_enabled: bool = true
 var _hazards: int = 0
 var _falling: bool = false
+var _fall_tween: Tween = null
 var _invincible_left: float = 0.0
 var _knockback_left: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
@@ -167,18 +168,39 @@ func is_falling() -> bool:
 
 ## Fällt: Steuerung aus, schrumpft und verschwindet. Danach land_at() oder ein Raumwechsel.
 func fall() -> void:
+	if _falling:
+		return
 	_falling = true
 	_controls_enabled = false
 	velocity = Vector2.ZERO
-	var tween := create_tween()
-	tween.tween_property(_sprite, "scale", Vector2(0.1, 0.1), 0.4)
-	await tween.finished
-	_sprite.visible = false
+	_fall_tween = create_tween()
+	_fall_tween.tween_property(_sprite, "scale", Vector2(0.1, 0.1), 0.4)
+	await _fall_tween.finished
+	# Inzwischen woanders gelandet (Tod, Raumwechsel)? Dann nicht mehr verstecken.
+	if _falling:
+		_sprite.visible = false
+
+
+## Darf gerade in ein Loch fallen (nicht schon fallend, steuerbar, lebendig).
+func can_fall() -> bool:
+	return not _falling and _controls_enabled and health > 0
+
+
+## Nach einem Sturz ohne Zielraum: kurz Pause, dann wieder steuerbar und kurz unverwundbar.
+func recover_from_fall(position_: Vector2, lock_time: float = 0.4) -> void:
+	land_at(position_, false)
+	_invincible_left = invincible_time
+	await get_tree().create_timer(lock_time, false).timeout
+	if not _falling and health > 0:
+		_controls_enabled = true
 
 
 ## An einer Position (wieder) normal erscheinen, z. B. nach einem Sturz oder Raumwechsel.
 ## enable_controls = false, wenn der Aufrufer die Steuerung selbst wieder freigibt (Raumwechsel).
 func land_at(position_: Vector2, enable_controls: bool = true) -> void:
+	if _fall_tween:
+		_fall_tween.kill()
+		_fall_tween = null
 	global_position = position_
 	last_safe_position = position_
 	_hazards = 0
