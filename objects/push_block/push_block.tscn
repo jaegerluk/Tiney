@@ -1,0 +1,30 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://objects/push_block/push_block.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/objects/push_block.png" id="2_tex"]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="SensorShape"]
+size = Vector2(22, 22)
+
+[node name="PushBlock" type="AnimatableBody2D"]
+sync_to_physics = false
+collision_layer = 1
+collision_mask = 0
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BodyShape")
+
+[node name="Sensor" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sensor"]
+shape = SubResource("SensorShape")

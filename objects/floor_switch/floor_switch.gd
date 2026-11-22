@@ -1,6 +1,6 @@
 class_name FloorSwitch
 extends Area2D
-## Bodenschalter. Jedes Betreten durch den Spieler schaltet um.
+## Bodenschalter. Jedes Betreten durch den Spieler schaltet um; ein Schiebeblock darauf schaltet ihn an.
 ## Kennt keine Tür: Die Elternszene verbindet `toggled` mit dem Ziel, z. B. SwitchDoor.set_open.
 ## Der Zustand bleibt über Raumwechsel erhalten; beim Laden wird `toggled` erneut gesendet.
 
@@ -23,7 +23,7 @@ func _ready() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body is Player:
+	if body is Player or (body is PushBlock and not is_on):
 		is_on = not is_on
 		if owner != null:
 			GameState.set_value(GameState.flag_id(self), is_on)

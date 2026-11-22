@@ -516,6 +516,25 @@ ORB = [  # linke Hälfte, leuchtende Kugel
 ]
 
 
+def push_block() -> list[list[tuple]]:
+    """16x16: Steinblock mit Kanten (zum Schieben)."""
+    top, side, light, dark = (130, 125, 140, 255), (95, 90, 105, 255), (170, 165, 180, 255), (65, 60, 75, 255)
+    px = [[top] * 16 for _ in range(16)]
+    for y in range(16):
+        for x in range(16):
+            if x in (0, 15) or y in (0, 15):
+                px[y][x] = OUTLINE
+            elif y >= 12:
+                px[y][x] = side if y < 14 else dark
+            elif x == 1 or y == 1:
+                px[y][x] = light
+            elif x == 14 or y == 11:
+                px[y][x] = dark
+    for x, y in [(5, 5), (6, 5), (10, 7), (4, 8)]:
+        px[y][x] = side
+    return px
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -533,6 +552,7 @@ def main() -> None:
     write_png(ROOT / "assets" / "tilesets" / "dungeon_walls.png", dungeon_walls())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
+    write_png(out / "objects" / "push_block.png", push_block())
     write_png(out / "pickups" / "orb.png", from_map(ORB, {"b": (120, 90, 230, 255), "w": (220, 210, 255, 255), "p": (70, 40, 150, 255)}, mirror=True))
     write_png(out / "objects" / "shutter_door.png", shutter_door())
     write_png(out / "enemies" / "zombie.png", zombie_sheet())

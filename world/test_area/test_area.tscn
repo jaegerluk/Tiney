@@ -20,6 +20,7 @@
 [ext_resource type="PackedScene" path="res://objects/chest/chest.tscn" id="chest_r"]
 [ext_resource type="PackedScene" path="res://items/pickups/rupee_red.tscn" id="rupeered_r"]
 [ext_resource type="PackedScene" path="res://enemies/zombie/zombie.tscn" id="zombie_r"]
+[ext_resource type="PackedScene" path="res://objects/push_block/push_block.tscn" id="block_r"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ExitToArena"]
 size = Vector2(8, 32)
@@ -152,6 +153,9 @@ content = ExtResource("rupeered_r")
 
 [node name="Zombie1" parent="." instance=ExtResource("zombie_r")]
 position = Vector2(440, 120)
+
+[node name="PushBlock" parent="." instance=ExtResource("block_r")]
+position = Vector2(160, 176)
 
 [node name="Pot1" parent="." instance=ExtResource("12_r")]
 position = Vector2(176, 48)
