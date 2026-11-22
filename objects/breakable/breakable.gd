@@ -5,6 +5,9 @@ extends StaticBody2D
 
 signal broken
 
+## Fester Inhalt: Ist er gesetzt, kommt immer genau das heraus (z. B. Schlüssel).
+@export var fixed_drop: PackedScene
+## Zufallsinhalt, wenn kein fester gesetzt ist. Leer = nichts.
 @export var drop_table: DropTable
 ## Raumvariante: erscheint erst ab dieser Schwierigkeitsstufe.
 @export var min_tier: int = 0
@@ -29,7 +32,9 @@ func break_apart() -> void:
 	$CollisionShape2D.set_deferred("disabled", true)
 	$Hurtbox.set_deferred("monitoring", false)
 	broken.emit()
-	if drop_table:
+	if fixed_drop:
+		DropTable.spawn_scene(fixed_drop, get_parent(), position)
+	elif drop_table:
 		drop_table.spawn(get_parent(), position)
 	var tween := create_tween().set_parallel()
 	tween.tween_property(_sprite, "scale", Vector2(1.4, 1.4), 0.15)

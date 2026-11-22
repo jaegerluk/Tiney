@@ -63,6 +63,22 @@ func run() -> void:
 	hold("move_up", false)
 	check(player.global_position.y > pot1.global_position.y + 6, "Krug blockiert")
 
+	# Fester Inhalt: Pot3 enthält einen Schlüssel
+	var pot3: Breakable = room.get_node("Pot3")
+	player.global_position = pot3.global_position + Vector2(0, 18)
+	player.face(Vector2.UP)
+	await frames(35)
+	await tap("attack")
+	await frames(30)
+	var key_drop := room.get_node_or_null("KeyPickup")
+	check(key_drop != null, "Krug mit festem Inhalt gibt den Schlüssel")
+	if key_drop:
+		player.global_position = key_drop.global_position
+		await frames(3)
+		check_eq(GameState.keys(), 1, "Schlüssel aus dem Krug eingesammelt")
+	player.global_position = Vector2(64, 96)
+	await frames(2)
+
 	# Raumwechsel: zerstört bleibt zerstört
 	await game.change_room(ROOM2, &"from_test_area")
 	await game.change_room(AREA, &"from_room_2")

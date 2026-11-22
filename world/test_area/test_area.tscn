@@ -217,6 +217,7 @@ position = Vector2(192, 48)
 
 [node name="Pot3" parent="." instance=ExtResource("12_r")]
 position = Vector2(208, 48)
+fixed_drop = ExtResource("11_r")
 
 [node name="Grass1" parent="." instance=ExtResource("13_r")]
 position = Vector2(176, 200)
