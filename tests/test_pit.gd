@@ -11,6 +11,7 @@ func run() -> void:
 	await frames(2)
 	var player: Player = game.get_node("Player")
 	var pit: Pit = game.current_room.get_node("Pit")
+	check(not pit.has_glow(), "Schadensloch ohne Lichtschein")
 
 	# Von links ins Loch laufen
 	player.global_position = pit.global_position + Vector2(-30, 0)
@@ -58,6 +59,7 @@ func run() -> void:
 	# Loch mit Ziel: ein Stockwerk tiefer
 	await game.change_room(ROOM2, &"from_test_area")
 	var pit2: Pit = game.current_room.get_node("PitToCellar")
+	check(pit2.has_glow(), "Stockwerk-Loch hat Lichtschein")
 	var health_before := player.health
 	player.global_position = pit2.global_position + Vector2(0, -4)
 	for i in 120:

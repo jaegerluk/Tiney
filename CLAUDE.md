@@ -117,7 +117,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Räume** möglichst als Vielfache von 256×224 bauen. Mitlaufende Kamera statt Schieben: am Raum `Screen Scroll` ausschalten.
 - **Gegner** bleiben in Räumen mit Bildschirm-Scrollen in ihrem Start-Bildschirm (`Enemy.confine_rect`, gesetzt von Room).
 - **Treppen** (`Stairs`) sind `RoomExit`s mit Sprite und kleinem Auslösebereich in der Mitte.
-- **Löcher** (`Pit`, `@tool`, Größe im Inspector): mit `target_room` ein Stockwerk tiefer, sonst Schaden, etwas weiter weg von `Player.last_safe_position` abgesetzt, 0,4 s Sperre. Löcher wirken nur auf `Player.can_fall()`. `land_at()` bricht eine laufende Sturz-Animation ab (sonst bleibt der Spieler unsichtbar).
+- **Löcher** (`Pit`, `@tool`, Größe im Inspector, komplett schwarz; mit `target_room` zusätzlich ein pulsierender Lichtschein, `glow_color`/`glow_strength`): mit `target_room` ein Stockwerk tiefer, sonst Schaden, etwas weiter weg von `Player.last_safe_position` abgesetzt, 0,4 s Sperre. Löcher wirken nur auf `Player.can_fall()`. `land_at()` bricht eine laufende Sturz-Animation ab (sonst bleibt der Spieler unsichtbar).
 - **Schiebeblöcke** sind `AnimatableBody2D`, denn ein per Code verschobener `StaticBody2D` löst keine zuverlässigen Überlappungen aus.
 
 ## Schwierigkeit (Kernmechanik, siehe design.md)

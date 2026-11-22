@@ -112,7 +112,7 @@ Ideen zur Vorbereitung der Wendung (offen):
   - Fallenschaden wächst mit der Schwierigkeit.
   - Taktende Stacheln und lauernde Klingenfallen sind nur auf dem aktuellen Bildschirm aktiv; Stacheln beginnen ihren Takt beim Hereinkommen von vorn.
 - **Schiebeblöcke:** kurz dagegen laufen schiebt ein Tile. Sie bleiben, wo sie sind (der Tod setzt sie über die Statue zurück). Ein Block auf einem Bodenschalter drückt ihn.
-- **Löcher:** pro Loch einstellbar. Mit Ziel fällt man ein Stockwerk tiefer, ohne Ziel kostet es ½ Herz und man steht wieder am letzten sicheren Boden.
+- **Löcher:** komplett schwarz. Löcher in ein tieferes Stockwerk erkennt man an einem schwachen, warmen Lichtschein von unten. Pro Loch einstellbar. Mit Ziel fällt man ein Stockwerk tiefer, ohne Ziel kostet es ½ Herz und man steht wieder am letzten sicheren Boden.
 - **Kamera:** bildschirmweises Schieben wie in ALttP, pro Raum im Editor auf „mitlaufend“ umstellbar. Gegner bleiben dabei in ihrem Bildschirm. Treppen führen in andere Räume.
 
 ## Karte & Kompass (entschieden, noch nicht gebaut)
