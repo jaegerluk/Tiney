@@ -14,13 +14,9 @@ y_sort_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("2_player")]
 
-[node name="CameraTarget" type="RemoteTransform2D" parent="Player"]
-remote_path = NodePath("../../RoomCamera")
-update_rotation = false
-update_scale = false
-
-[node name="RoomCamera" type="Camera2D" parent="."]
+[node name="RoomCamera" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
 script = ExtResource("3_camera")
+target = NodePath("../Player")
 
 [node name="HUD" parent="." instance=ExtResource("4_hud")]
 

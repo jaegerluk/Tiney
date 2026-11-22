@@ -535,6 +535,24 @@ def push_block() -> list[list[tuple]]:
     return px
 
 
+def stairs() -> list[list[tuple]]:
+    """32x16: links Treppe nach unten (dunkler werdend), rechts nach oben (heller werdend)."""
+    px = [[(0, 0, 0, 0)] * 32 for _ in range(16)]
+    for f in range(2):
+        ox = f * 16
+        for y in range(16):
+            step = y // 4
+            shade = 110 - step * 25 if f == 0 else 70 + step * 25
+            for x in range(16):
+                if x in (0, 15) or y in (0, 15):
+                    px[y][ox + x] = OUTLINE
+                elif y % 4 == 3:
+                    px[y][ox + x] = (max(shade - 30, 10), max(shade - 30, 10), max(shade - 20, 15), 255)
+                else:
+                    px[y][ox + x] = (shade, shade, shade + 10, 255)
+    return px
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -552,6 +570,7 @@ def main() -> None:
     write_png(ROOT / "assets" / "tilesets" / "dungeon_walls.png", dungeon_walls())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
+    write_png(out / "objects" / "stairs.png", stairs())
     write_png(out / "objects" / "push_block.png", push_block())
     write_png(out / "pickups" / "orb.png", from_map(ORB, {"b": (120, 90, 230, 255), "w": (220, 210, 255, 255), "p": (70, 40, 150, 255)}, mirror=True))
     write_png(out / "objects" / "shutter_door.png", shutter_door())

@@ -7,6 +7,8 @@ extends Node2D
 @export var start_entry: StringName = &"start"
 ## Dauer von Ab- bzw. Aufblenden in Sekunden.
 @export var fade_time: float = 0.2
+## So weit rückt der Spieler beim Bildschirmwechsel in den neuen Bildschirm (Pixel).
+@export var scroll_nudge: float = 14.0
 
 var current_room: Room = null
 var _changing_room: bool = false
@@ -23,6 +25,8 @@ var _save: Dictionary = {}
 func _ready() -> void:
 	_hud.show_health(_player.health, _player.max_health)
 	_player.died.connect(_on_player_died)
+	_camera.scroll_started.connect(_on_scroll_started)
+	_camera.scroll_finished.connect(_on_scroll_finished)
 	_load_room(start_room, start_entry)
 	save_game(_player.global_position, _player.facing)
 
@@ -81,13 +85,13 @@ func _swap_room(room_path: String, keep_drops: bool) -> void:
 	current_room = room
 	GameState.current_dungeon = room.dungeon_id
 	_camera.set_bounds(room.camera_bounds())
+	_camera.screen_scroll = room.screen_scroll
 
 
 func _place_player(position_: Vector2, facing: Vector2) -> void:
 	_player.land_at(position_, false)
 	_player.face(facing)
-	_camera.global_position = position_
-	_camera.reset_smoothing()
+	_camera.snap_to_target()
 
 
 ## Truheninhalt zeigen: Held hält ihn hoch, Meldung im HUD, Spiel kurz pausiert.
@@ -106,6 +110,16 @@ func present_item(icon: Texture2D, message: String) -> void:
 func show_dialog(pages: Array, speaker: String = "", portrait: Texture2D = null) -> void:
 	get_tree().paused = true
 	await _hud.dialog_box.run(pages, speaker, portrait)
+	get_tree().paused = false
+
+
+## Bildschirmwechsel: alles friert ein, der Spieler rückt ein Stück in den neuen Bildschirm.
+func _on_scroll_started(direction: Vector2) -> void:
+	get_tree().paused = true
+	_player.global_position += direction * scroll_nudge
+
+
+func _on_scroll_finished() -> void:
 	get_tree().paused = false
 
 

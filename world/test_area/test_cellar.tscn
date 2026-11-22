@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://objects/room_exit/room_exit.tscn" id="r4"]
 [ext_resource type="PackedScene" path="res://objects/sign_post/sign_post.tscn" id="r5"]
 [ext_resource type="PackedScene" path="res://items/pickups/rupee.tscn" id="r6"]
+[ext_resource type="PackedScene" path="res://objects/stairs/stairs.tscn" id="stairs_r"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ExitToRoom2"]
 size = Vector2(32, 8)
@@ -38,6 +39,17 @@ position = Vector2(256, 224)
 
 [node name="from_pit" type="Marker2D" parent="Entries"]
 position = Vector2(128, 100)
+script = ExtResource("r3")
+facing = Vector2(0, 1)
+
+[node name="StairsUp" parent="." instance=ExtResource("stairs_r")]
+position = Vector2(200, 60)
+going_up = true
+target_room = "res://world/test_area/test_room_2.tscn"
+target_entry = &"from_cellar"
+
+[node name="from_stairs" type="Marker2D" parent="Entries"]
+position = Vector2(200, 84)
 script = ExtResource("r3")
 facing = Vector2(0, 1)
 

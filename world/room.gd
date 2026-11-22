@@ -13,6 +13,8 @@ signal dialog_requested(pages: Array, speaker: String, portrait: Texture2D)
 signal boss_appeared(boss: Enemy)
 
 @export var dungeon_id: StringName = &""
+## Kamera schiebt bildschirmweise (ALttP). Aus = Kamera folgt dem Spieler frei.
+@export var screen_scroll: bool = true
 @export var camera_top_left: Marker2D
 @export var camera_bottom_right: Marker2D
 
