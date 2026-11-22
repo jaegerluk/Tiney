@@ -114,6 +114,16 @@ Ideen zur Vorbereitung der Wendung (offen):
 - **Löcher:** pro Loch einstellbar. Mit Ziel fällt man ein Stockwerk tiefer, ohne Ziel kostet es ½ Herz und man steht wieder am letzten sicheren Boden.
 - **Kamera:** bildschirmweises Schieben wie in ALttP, pro Raum im Editor auf „mitlaufend“ umstellbar. Gegner bleiben dabei in ihrem Bildschirm. Treppen führen in andere Räume.
 
+## Karte & Kompass (entschieden, noch nicht gebaut)
+- **Karte pro Dungeon** als Fundstück (wie Schlüssel). Der Hub braucht keine.
+- **Ohne Karten-Item gibt es keine Karte**, weder Vollbild noch Mini-Karte. Mit dem Item erscheint sofort der ganze Dungeon.
+- **Kompass** als eigenes Fundstück pro Dungeon: markiert ungeöffnete Truhen und den Bossraum.
+- **Anzeige:**
+  - Vollbild-Karte über eine eigene Taste (z. B. M / Gamepad Select), Spiel pausiert.
+  - Räume als Kästchen im Raster, automatisch aus den Raumszenen erzeugt: Jeder Raum bekommt im Inspector Rasterposition und Stockwerk.
+  - Aktueller Raum blinkt, Stockwerke umschaltbar.
+  - Zusätzlich eine kleine **Mini-Karte im HUD** (Ecke).
+
 ## Spielgefühl (entschieden)
 - Kurzer Trefferstopp bei Treffern, leichtes Bildschirmwackeln, wenn man getroffen wird, und beim Boss.
 - Partikel: Scherben, Halme, Rauch beim Gegnertod, Funken am Kristall. Gegner blitzen weiß auf und verpuffen.
