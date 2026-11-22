@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://world/room_camera.gd" id="3_camera"]
 [ext_resource type="PackedScene" path="res://ui/hud.tscn" id="4_hud"]
+[ext_resource type="Script" path="res://debug/debug_menu.gd" id="5_debug"]
 
 [node name="Game" type="Node2D"]
 y_sort_enabled = true
@@ -31,5 +32,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
+
+[node name="DebugMenu" type="CanvasLayer" parent="."]
+script = ExtResource("5_debug")
 
 [connection signal="health_changed" from="Player" to="HUD" method="show_health"]

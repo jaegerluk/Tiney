@@ -138,6 +138,18 @@ func get_drops(room_path: String) -> Array:
 	return _room_drops.get(room_path, []).duplicate(true)
 
 
+## Debug: vergisst alles, was sich ein Raum gemerkt hat (Merker, Zustände, liegen gelassene Drops).
+func clear_room(room_path: String) -> void:
+	var prefix := room_path + ":"
+	for id in _flags.keys():
+		if id.begins_with(prefix):
+			_flags.erase(id)
+	for id in _values.keys():
+		if id.begins_with(prefix):
+			_values.erase(id)
+	_room_drops.erase(room_path)
+
+
 ## Tiefe Kopie des gesamten Stands (für Speicherstatuen).
 func snapshot() -> Dictionary:
 	return {

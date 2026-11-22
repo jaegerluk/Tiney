@@ -150,6 +150,38 @@ func _on_player_died() -> void:
 	_changing_room = false
 
 
+## Debug: lädt den aktuellen Raum neu, der Spieler bleibt, wo er ist.
+func reload_room(forget_state: bool = false) -> void:
+	if current_room == null:
+		return
+	var path := current_room.scene_file_path
+	var position_ := _player.global_position
+	var facing := _player.facing
+	if forget_state:
+		GameState.clear_room(path)
+	_swap_room(path, not forget_state)
+	_place_player(position_, facing)
+	_player.set_controls_enabled(true)
+
+
+## Debug: springt ohne Überblendung in einen Raum (Eingang leer = erster Eingang).
+func teleport(room_path: String, entry: StringName = &"") -> void:
+	_swap_room(room_path, true)
+	var target: RoomEntry = current_room.get_entry(entry) if entry != &"" else _first_entry(current_room)
+	if target:
+		_place_player(target.global_position, target.facing)
+	_player.set_controls_enabled(true)
+
+
+func _first_entry(room: Room) -> RoomEntry:
+	var entries := room.get_node_or_null("Entries")
+	if entries:
+		for child in entries.get_children():
+			if child is RoomEntry:
+				return child
+	return null
+
+
 ## Liegen gelassene Drops eines Raums als speicherbare Liste.
 func _collect_drops(room: Room) -> Array:
 	var drops: Array = []

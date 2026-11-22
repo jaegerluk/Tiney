@@ -21,6 +21,8 @@ const HP_PER_HEART := 20
 @export var knockback_time: float = 0.2
 
 var health: int
+## Debug: kein Schaden.
+var god_mode: bool = false
 ## Immer eine der vier Grundrichtungen.
 var facing: Vector2 = Vector2.DOWN
 ## Aktuelle Laufeingabe (null, wenn gesperrt oder beim Angriff). Für Türen, Schieben usw.
@@ -96,7 +98,7 @@ func collect(item: Item) -> bool:
 
 
 func take_damage(amount: int) -> void:
-	if health <= 0:
+	if health <= 0 or god_mode:
 		return
 	health = maxi(health - amount, 0)
 	health_changed.emit(health, max_health)
