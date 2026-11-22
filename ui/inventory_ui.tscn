@@ -86,3 +86,21 @@ layout_mode = 2
 
 [node name="Slot12" parent="Grid" instance=ExtResource("3_slot")]
 layout_mode = 2
+
+[node name="Cursor" type="ReferenceRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 18.0
+offset_bottom = 18.0
+mouse_filter = 2
+border_color = Color(1, 0.85, 0.3, 1)
+editor_only = false
+
+[node name="ItemName" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 63.0
+offset_right = 85.0
+offset_bottom = 75.0
+theme_override_font_sizes/font_size = 8
+horizontal_alignment = 1

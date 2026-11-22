@@ -7,9 +7,11 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/pickups/small_key.png" id="5_key"]
 [ext_resource type="Texture2D" path="res://assets/sprites/pickups/big_key.png" id="6_bigkey"]
 [ext_resource type="PackedScene" path="res://ui/dialog_box.tscn" id="7_dialog"]
+[ext_resource type="Resource" path="res://items/player_inventory.tres" id="8_inv"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_script")
+inventory = ExtResource("8_inv")
 
 [node name="HealthBar" parent="." instance=ExtResource("2_health")]
 
@@ -60,6 +62,32 @@ visible = false
 layout_mode = 2
 texture = ExtResource("6_bigkey")
 stretch_mode = 2
+
+[node name="EquippedBox" type="Panel" parent="."]
+offset_left = 230.0
+offset_top = 2.0
+offset_right = 250.0
+offset_bottom = 22.0
+mouse_filter = 2
+
+[node name="EquippedIcon" type="TextureRect" parent="EquippedBox"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 18.0
+offset_bottom = 18.0
+stretch_mode = 5
+
+[node name="EquippedAmount" type="Label" parent="EquippedBox"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 8.0
+offset_top = 10.0
+offset_right = 20.0
+offset_bottom = 21.0
+theme_override_font_sizes/font_size = 8
+horizontal_alignment = 2
 
 [node name="MessageBox" type="PanelContainer" parent="."]
 unique_name_in_owner = true

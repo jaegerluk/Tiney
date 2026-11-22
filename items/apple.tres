@@ -6,4 +6,5 @@
 [resource]
 script = ExtResource("1_item")
 name = "Apfel"
+heal_amount = 10
 texture = ExtResource("2_tex")

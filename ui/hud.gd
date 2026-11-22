@@ -5,6 +5,10 @@ extends CanvasLayer
 
 @onready var _health_bar: HealthBar = $HealthBar
 @onready var dialog_box: DialogBox = $DialogBox
+@onready var _item_icon: TextureRect = %EquippedIcon
+@onready var _item_amount: Label = %EquippedAmount
+## Inventar des Spielers, für die Anzeige des ausgewählten Items.
+@export var inventory: Inventory
 @onready var _rupee_label: Label = %RupeeLabel
 @onready var _key_counter: Control = %KeyCounter
 @onready var _key_label: Label = %KeyLabel
@@ -19,12 +23,22 @@ func _ready() -> void:
 	GameState.dungeon_changed.connect(_on_dungeon_changed)
 	GameState.big_keys_changed.connect(_on_big_keys_changed)
 	_message_box.visible = false
+	if inventory:
+		inventory.changed.connect(_on_inventory_changed)
+		_on_inventory_changed()
 	_on_rupees_changed(GameState.rupees)
 	_on_dungeon_changed(GameState.current_dungeon)
 
 
 func show_health(current: int, maximum: int) -> void:
 	_health_bar.show_health(current, maximum)
+
+
+func _on_inventory_changed() -> void:
+	var item := inventory.selected_item()
+	_item_icon.texture = item.texture if item else null
+	var amount: int = inventory.slots[inventory.selected].amount if item else 0
+	_item_amount.text = str(amount) if amount > 1 else ""
 
 
 func show_message(text: String) -> void:

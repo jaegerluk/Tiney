@@ -74,6 +74,8 @@ func _physics_process(delta: float) -> void:
 		velocity = input * move_speed
 		if input != Vector2.ZERO:
 			_set_facing(_facing_from(input))
+		if Input.is_action_just_pressed("use_item") and inventory:
+			inventory.use_selected(self)
 		if Input.is_action_just_pressed("attack"):
 			_start_attack()
 		else:
