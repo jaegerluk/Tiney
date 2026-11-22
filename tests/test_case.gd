@@ -8,7 +8,6 @@ var failures: Array[String] = []
 func run() -> void:
 	pass
 
-
 func check(condition: bool, message: String) -> void:
 	if condition:
 		print("  ok      ", message)

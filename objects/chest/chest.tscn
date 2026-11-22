@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://objects/chest/chest.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://assets/sprites/objects/chest.png" id="2_tex"]
+[ext_resource type="Script" path="res://objects/interact_zone/interact_zone.gd" id="zone_script"]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
 size = Vector2(14, 12)
@@ -22,11 +23,12 @@ hframes = 2
 position = Vector2(0, 2)
 shape = SubResource("BodyShape")
 
-[node name="Sensor" type="Area2D" parent="."]
+[node name="InteractZone" type="Area2D" parent="."]
 collision_layer = 32
 collision_mask = 2
 monitorable = false
+script = ExtResource("zone_script")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sensor"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractZone"]
 position = Vector2(0, 2)
 shape = SubResource("SensorShape")

@@ -4,8 +4,8 @@
 [ext_resource type="Script" path="res://world/room_entry.gd" id="2_r"]
 [ext_resource type="PackedScene" path="res://objects/room_exit/room_exit.tscn" id="3_r"]
 [ext_resource type="PackedScene" path="res://objects/sign_post/sign_post.tscn" id="4_r"]
-
 [ext_resource type="TileSet" path="res://assets/tilesets/basic_tileset.tres" id="tileset_r"]
+
 [sub_resource type="RectangleShape2D" id="Shape_ExitToRoom2"]
 size = Vector2(32, 8)
 
@@ -51,4 +51,3 @@ shape = SubResource("Shape_ExitToRoom2")
 [node name="SignPost" parent="." instance=ExtResource("4_r")]
 position = Vector2(128, 112)
 text = "Bossraum (Platzhalter): Hier wartet später der Boss."
-

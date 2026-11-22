@@ -14,12 +14,12 @@
 [ext_resource type="PackedScene" path="res://objects/breakable/pot.tscn" id="12_r"]
 [ext_resource type="PackedScene" path="res://objects/breakable/grass.tscn" id="13_r"]
 [ext_resource type="PackedScene" path="res://enemies/slime/slime.tscn" id="14_r"]
-
 [ext_resource type="PackedScene" path="res://objects/save_statue/save_statue.tscn" id="statue_r"]
 [ext_resource type="PackedScene" path="res://npcs/cow/cow.tscn" id="cow_r"]
 [ext_resource type="TileSet" path="res://assets/tilesets/basic_tileset.tres" id="tileset_r"]
 [ext_resource type="PackedScene" path="res://objects/chest/chest.tscn" id="chest_r"]
 [ext_resource type="PackedScene" path="res://items/pickups/rupee_red.tscn" id="rupeered_r"]
+
 [sub_resource type="RectangleShape2D" id="Shape_ExitToRoom2"]
 size = Vector2(32, 8)
 

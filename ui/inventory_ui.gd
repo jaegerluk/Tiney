@@ -16,6 +16,8 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("menu"):
+		if not visible and get_tree().paused:
+			return
 		visible = not visible
 		get_tree().paused = visible
 		get_viewport().set_input_as_handled()

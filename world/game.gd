@@ -75,6 +75,7 @@ func _swap_room(room_path: String, keep_drops: bool) -> void:
 	room.exit_requested.connect(change_room)
 	room.save_requested.connect(_on_save_requested)
 	room.item_presented.connect(present_item)
+	room.dialog_requested.connect(show_dialog)
 	current_room = room
 	GameState.current_dungeon = room.dungeon_id
 	_camera.set_bounds(room.camera_bounds())
@@ -96,6 +97,13 @@ func present_item(icon: Texture2D, message: String) -> void:
 	await get_tree().create_timer(1.6 if message != "" else 0.7, true, false, true).timeout
 	_hud.hide_message()
 	_player.hold_up(null)
+	get_tree().paused = false
+
+
+## Dialog in der Textbox; das Spiel pausiert, bis der Spieler die letzte Seite wegklickt.
+func show_dialog(pages: Array, speaker: String = "", portrait: Texture2D = null) -> void:
+	get_tree().paused = true
+	await _hud.dialog_box.run(pages, speaker, portrait)
 	get_tree().paused = false
 
 

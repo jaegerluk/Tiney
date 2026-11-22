@@ -1,0 +1,32 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://npcs/talk_npc/talk_npc.gd" id="1_script"]
+[ext_resource type="Script" path="res://objects/interact_zone/interact_zone.gd" id="zone_script"]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(12, 8)
+
+[sub_resource type="RectangleShape2D" id="ZoneShape"]
+size = Vector2(28, 28)
+
+[node name="TalkNpc" type="StaticBody2D"]
+collision_layer = 64
+collision_mask = 0
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+offset = Vector2(0, -8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("BodyShape")
+
+[node name="InteractZone" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 2
+monitorable = false
+script = ExtResource("zone_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractZone"]
+position = Vector2(0, 2)
+shape = SubResource("ZoneShape")

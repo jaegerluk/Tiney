@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/pickups/rupee_green.png" id="4_rupee"]
 [ext_resource type="Texture2D" path="res://assets/sprites/pickups/small_key.png" id="5_key"]
 [ext_resource type="Texture2D" path="res://assets/sprites/pickups/big_key.png" id="6_bigkey"]
+[ext_resource type="PackedScene" path="res://ui/dialog_box.tscn" id="7_dialog"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_script")
@@ -82,5 +83,7 @@ theme_override_font_sizes/font_size = 8
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
+
+[node name="DialogBox" parent="." instance=ExtResource("7_dialog")]
 
 [node name="InventoryUI" parent="." instance=ExtResource("3_inventory")]

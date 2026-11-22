@@ -5,11 +5,14 @@
 [ext_resource type="PackedScene" path="res://objects/room_exit/room_exit.tscn" id="3_r"]
 [ext_resource type="PackedScene" path="res://objects/sign_post/sign_post.tscn" id="4_r"]
 [ext_resource type="PackedScene" path="res://objects/locked_door/locked_door.tscn" id="5_r"]
-
 [ext_resource type="TileSet" path="res://assets/tilesets/basic_tileset.tres" id="tileset_r"]
 [ext_resource type="PackedScene" path="res://objects/chest/chest.tscn" id="chest_r"]
 [ext_resource type="PackedScene" path="res://items/pickups/big_key.tscn" id="bigkey_r"]
 [ext_resource type="PackedScene" path="res://objects/boss_door/boss_door.tscn" id="bossdoor_r"]
+[ext_resource type="PackedScene" path="res://npcs/talk_npc/talk_npc.tscn" id="npc_r"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/prisoner.png" id="prisoner_tex"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/prisoner_portrait.png" id="prisoner_portrait"]
+
 [sub_resource type="RectangleShape2D" id="Shape_ExitToBossRoom"]
 size = Vector2(32, 8)
 
@@ -82,3 +85,11 @@ position = Vector2(128, 176)
 script = ExtResource("2_r")
 facing = Vector2(0, -1)
 
+[node name="Prisoner" parent="." instance=ExtResource("npc_r")]
+position = Vector2(200, 72)
+display_name = "Gefangener"
+portrait = ExtResource("prisoner_portrait")
+pages = Array[String](["Psst ... du da. Bist du auch hier unten gelandet?", "Ich sitze schon ewig in diesem Kerker. Nachts höre ich Schritte. Ein Mönch, glaube ich.", "Er murmelt immer dasselbe: „Die Kugeln dürfen niemals zusammenkommen.“", "Verrückter Kerl. Wahrscheinlich will er sie nur für sich selbst ..."])
+
+[node name="Sprite2D" parent="Prisoner"]
+texture = ExtResource("prisoner_tex")

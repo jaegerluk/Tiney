@@ -4,6 +4,7 @@ extends CanvasLayer
 ## Leben kommt von Game (Spieler-Signal), Rubine und Schlüssel direkt aus GameState.
 
 @onready var _health_bar: HealthBar = $HealthBar
+@onready var dialog_box: DialogBox = $DialogBox
 @onready var _rupee_label: Label = %RupeeLabel
 @onready var _key_counter: Control = %KeyCounter
 @onready var _key_label: Label = %KeyLabel

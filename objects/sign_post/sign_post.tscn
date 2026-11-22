@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://objects/sign_post/sign_post.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://c8bvn5i6om77h" path="res://assets/sprites/objects/mystic_woods_objects.png" id="2_tex"]
+[ext_resource type="Script" path="res://objects/interact_zone/interact_zone.gd" id="zone_script"]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
 size = Vector2(8, 2)
@@ -24,26 +25,13 @@ region_rect = Rect2(0, 0, 16, 16)
 position = Vector2(0, 1)
 shape = SubResource("BodyShape")
 
-[node name="ReadArea" type="Area2D" parent="."]
+[node name="InteractZone" type="Area2D" parent="."]
 collision_layer = 32
 collision_mask = 2
 monitorable = false
+script = ExtResource("zone_script")
+facing_rule = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ReadArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractZone"]
 position = Vector2(0, 8)
 shape = SubResource("ReadShape")
-
-[node name="TextBubble" type="PanelContainer" parent="."]
-z_index = 10
-offset_left = -48.0
-offset_top = -40.0
-offset_right = 48.0
-offset_bottom = -14.0
-
-[node name="Label" type="Label" parent="TextBubble"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 8
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 3

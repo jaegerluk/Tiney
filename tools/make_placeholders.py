@@ -325,6 +325,60 @@ def dungeon_walls() -> list[list[tuple]]:
     return px
 
 
+NPC = [  # linke Hälfte, 16x24
+    "........",
+    ".....ooo",
+    "....ohhh",
+    "...ohhhh",
+    "...ohsss",
+    "...osses",
+    "...ossss",
+    "....obbb",
+    ".....obb",
+    "....occc",
+    "...occcc",
+    "..oscccc",
+    "..osccca",
+    "..osccaa",
+    "..occcaa",
+    "...occaa",
+    "...occcc",
+    "...occcc",
+    "...occcc",
+    "....occc",
+    "....odd.",
+    "....odd.",
+    "....ooo.",
+    "........",
+]
+NPC_PALETTES = {
+    "prisoner": {"h": (90, 70, 50, 255), "s": (230, 200, 170, 255), "e": (30, 30, 40, 255), "b": (160, 160, 160, 255),
+                 "c": (125, 115, 95, 255), "a": (150, 150, 165, 255), "d": (85, 75, 65, 255)},
+    "shopkeeper": {"h": (40, 35, 35, 255), "s": (235, 195, 160, 255), "e": (30, 30, 40, 255), "b": (235, 195, 160, 255),
+                   "c": (60, 130, 80, 255), "a": (235, 235, 225, 255), "d": (100, 70, 45, 255)},
+}
+
+
+def npc(palette: dict) -> list[list[tuple]]:
+    rows = [r + r[::-1] for r in NPC]
+    pal = {".": (0, 0, 0, 0), "o": OUTLINE, **palette}
+    return [[pal[c] for c in r] for r in rows]
+
+
+def portrait(sprite: list[list[tuple]]) -> list[list[tuple]]:
+    """32x32: Kopf (obere 16 Zeilen) doppelt vergrößert, auf Hintergrund."""
+    bg = (60, 55, 70, 255)
+    out = [[bg] * 32 for _ in range(32)]
+    for y in range(16):
+        for x in range(16):
+            c = sprite[y + 1][x]
+            if c[3]:
+                for dy in range(2):
+                    for dx in range(2):
+                        out[y * 2 + dy][x * 2 + dx] = c
+    return out
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -342,6 +396,10 @@ def main() -> None:
     write_png(ROOT / "assets" / "tilesets" / "dungeon_walls.png", dungeon_walls())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
+    for name, pal in NPC_PALETTES.items():
+        sprite = npc(pal)
+        write_png(out / "npcs" / f"{name}.png", sprite)
+        write_png(out / "npcs" / f"{name}_portrait.png", portrait(sprite))
     write_png(out / "pickups" / "heart_container.png", from_map(HEART_CONTAINER, {"r": (220, 40, 60, 255), "w": (255, 200, 200, 255), "y": (240, 200, 60, 255)}, mirror=True))
     write_png(out / "objects" / "boss_door.png", boss_door())
     statue_rows = STATUE + ["........"] * (32 - len(STATUE))
