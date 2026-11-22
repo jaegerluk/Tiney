@@ -282,6 +282,25 @@ def boss_door() -> list[list[tuple]]:
     return px
 
 
+HEART_CONTAINER = [  # großes Herz mit goldenem Rand, linke Hälfte
+    "........",
+    "..oooo..",
+    ".oyyyyo.",
+    "oyrrrryo",
+    "oyrwrrry",
+    "oyrwrrrr",
+    "oyrrrrrr",
+    "oyrrrrrr",
+    ".oyrrrrr",
+    "..oyrrrr",
+    "...oyrrr",
+    "....oyrr",
+    ".....oyr",
+    "......oy",
+    ".......o",
+]
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -298,6 +317,7 @@ def main() -> None:
     write_png(ROOT / "assets" / "tilesets" / "stone_floor.png", stone_floor())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
+    write_png(out / "pickups" / "heart_container.png", from_map(HEART_CONTAINER, {"r": (220, 40, 60, 255), "w": (255, 200, 200, 255), "y": (240, 200, 60, 255)}, mirror=True))
     write_png(out / "objects" / "boss_door.png", boss_door())
     statue_rows = STATUE + ["........"] * (32 - len(STATUE))
     write_png(out / "objects" / "save_statue.png",

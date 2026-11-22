@@ -25,15 +25,23 @@ func run() -> void:
 	check_eq(hud.get_node("%RupeeLabel").text, "026", "HUD zeigt 026")
 	check(not game.current_room.has_node("Rupee1"), "Rubin verschwindet")
 
-	# Herz: bei vollem Leben liegen lassen, sonst heilen
-	await _step_on("Heart")
-	check(game.current_room.has_node("Heart"), "Herz bleibt bei vollem Leben liegen")
-	player.take_damage(3)
+	# Herz: heilt 1 Herz, wird aber auch bei vollem Leben aufgenommen
+	player.take_damage(30)
 	player.global_position = Vector2(64, 96)
 	await frames(3)
 	await _step_on("Heart")
-	check_eq(player.health, 5, "Herz heilt 2 halbe Herzen (3 -> 5)")
+	check_eq(player.health, 50, "Herz heilt 20 LP (30 -> 50)")
 	check(not game.current_room.has_node("Heart"), "Herz aufgenommen")
+	var extra: Node2D = load("res://items/pickups/heart.tscn").instantiate()
+	extra.position = Vector2(200, 300)
+	game.current_room.add_child(extra)
+	player.heal(99)
+	player.global_position = extra.global_position
+	await frames(3)
+	check(not is_instance_valid(extra), "Herz auch bei vollem Leben aufgenommen")
+	check_eq(player.health, player.max_health, "Leben nicht über Maximum")
+	player.global_position = Vector2(64, 96)
+	await frames(2)
 
 	# Schlüssel
 	await _step_on("SmallKey")

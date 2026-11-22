@@ -5,10 +5,13 @@ extends CharacterBody2D
 signal health_changed(current: int, maximum: int)
 signal died
 
+## Lebenspunkte pro Herz. ½ Herz = 10 LP. Feine Einheit, damit skalierter Schaden sauber passt.
+const HP_PER_HEART := 20
+
 ## Pixel pro Sekunde.
 @export var move_speed: float = 90.0
-## In halben Herzen: 6 = 3 Herzen.
-@export var max_health: int = 6
+## In Lebenspunkten (LP): 60 = 3 Herzen.
+@export var max_health: int = 60
 @export var inventory: Inventory
 ## Abstand der Schwert-Hitbox vom Mittelpunkt in Blickrichtung.
 @export var sword_reach: float = 12.0
@@ -102,6 +105,13 @@ func revive() -> void:
 	_invincible_left = 0.0
 	_knockback_left = 0.0
 	_sprite.visible = true
+	health_changed.emit(health, max_health)
+
+
+## Herzcontainer: mehr Maximum, Leben ganz aufgefüllt.
+func add_max_health(amount: int) -> void:
+	max_health += amount
+	health = max_health
 	health_changed.emit(health, max_health)
 
 

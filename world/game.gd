@@ -46,6 +46,7 @@ func save_game(respawn_position: Vector2, facing: Vector2) -> void:
 	_save = {
 		"state": GameState.snapshot(),
 		"inventory": _player.inventory.snapshot() if _player.inventory else [],
+		"max_health": _player.max_health,
 		"room": current_room.scene_file_path,
 		"position": respawn_position,
 		"facing": facing,
@@ -112,6 +113,7 @@ func _on_player_died() -> void:
 	GameState.restore(_save.state)
 	if _player.inventory:
 		_player.inventory.restore(_save.inventory)
+	_player.max_health = _save.max_health
 	_player.revive()
 	_swap_room(_save.room, false)
 	_place_player(_save.position, _save.facing)

@@ -10,9 +10,9 @@ func run() -> void:
 
 	# Gegnerische Hitbox direkt rechts neben dem Spieler
 	var enemy_hit := _make_area(Hitbox.new(), 16, 0, Vector2(108, 100))
-	enemy_hit.damage = 2
+	enemy_hit.damage = 20
 	await frames(3)
-	check_eq(player.health, 4, "Treffer kostet 2 halbe Herzen")
+	check_eq(player.health, 40, "Treffer kostet 1 Herz (20 LP)")
 	check(player.is_invincible(), "Danach unverwundbar")
 	await frames(10)
 	check(player.global_position.x < 98, "Rückstoß nach links (weg von der Hitbox)")
@@ -20,17 +20,17 @@ func run() -> void:
 	# Hitbox auf den Spieler setzen: während der Unverwundbarkeit kein Schaden
 	enemy_hit.global_position = player.global_position
 	await frames(20)
-	check_eq(player.health, 4, "Kein Schaden während Unverwundbarkeit")
+	check_eq(player.health, 40, "Kein Schaden während Unverwundbarkeit")
 	# Nach Ablauf zählt die Überlappung erneut
 	enemy_hit.global_position = player.global_position
 	await frames(60)
-	check_eq(player.health, 2, "Nach Unverwundbarkeit erneut getroffen")
+	check_eq(player.health, 20, "Nach Unverwundbarkeit erneut getroffen")
 	enemy_hit.queue_free()
 
 	# Tod
 	var deaths := [0]
 	player.died.connect(func() -> void: deaths[0] += 1)
-	player.take_damage(5)
+	player.take_damage(50)
 	check_eq(deaths[0], 1, "died bei 0 Leben")
 	player.revive()
 	check_eq(player.health, player.max_health, "revive füllt Leben auf")

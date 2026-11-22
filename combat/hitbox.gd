@@ -2,7 +2,7 @@ class_name Hitbox
 extends Area2D
 ## Teilt Schaden aus. Liegt auf der Ebene player_attack oder enemy_attack; Hurtboxen erkennen sie.
 
-## In halben Herzen (Spieler) bzw. Lebenspunkten (Gegner).
+## Beim Spieler in LP (1 Herz = 20), bei Gegnern in Treffern (Schwert = 1).
 @export var damage: int = 1
 ## Startgeschwindigkeit des Rückstoßes in Pixeln pro Sekunde.
 @export var knockback: float = 150.0

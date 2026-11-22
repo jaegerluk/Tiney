@@ -3,8 +3,8 @@ extends Resource
 ## Basiswerte eines Gegnertyps bei Standard-Schwierigkeit (4,0). Skaliert wird in Enemy über Difficulty.
 
 @export var max_health: int = 2
-## In halben Herzen.
-@export var damage: int = 1
+## Schaden am Spieler in LP (1 Herz = 20, ½ Herz = 10).
+@export var damage: int = 10
 ## Pixel pro Sekunde.
 @export var move_speed: float = 40.0
 ## 0 = voller Rückstoß, 1 = kein Rückstoß.
