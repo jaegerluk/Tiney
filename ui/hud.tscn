@@ -3,10 +3,53 @@
 [ext_resource type="Script" path="res://ui/hud.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://ui/health_bar.tscn" id="2_health"]
 [ext_resource type="PackedScene" path="res://ui/inventory_ui.tscn" id="3_inventory"]
+[ext_resource type="Texture2D" path="res://assets/sprites/pickups/rupee_green.png" id="4_rupee"]
+[ext_resource type="Texture2D" path="res://assets/sprites/pickups/small_key.png" id="5_key"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_script")
 
 [node name="HealthBar" parent="." instance=ExtResource("2_health")]
+
+[node name="RupeeCounter" type="HBoxContainer" parent="."]
+offset_left = 88.0
+offset_top = 3.0
+offset_right = 136.0
+offset_bottom = 19.0
+mouse_filter = 2
+theme_override_constants/separation = 1
+
+[node name="Icon" type="TextureRect" parent="RupeeCounter"]
+layout_mode = 2
+texture = ExtResource("4_rupee")
+stretch_mode = 2
+
+[node name="RupeeLabel" type="Label" parent="RupeeCounter"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "000"
+vertical_alignment = 1
+
+[node name="KeyCounter" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+offset_left = 136.0
+offset_top = 3.0
+offset_right = 168.0
+offset_bottom = 19.0
+mouse_filter = 2
+theme_override_constants/separation = 1
+
+[node name="Icon" type="TextureRect" parent="KeyCounter"]
+layout_mode = 2
+texture = ExtResource("5_key")
+stretch_mode = 2
+
+[node name="KeyLabel" type="Label" parent="KeyCounter"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "0"
+vertical_alignment = 1
 
 [node name="InventoryUI" parent="." instance=ExtResource("3_inventory")]
