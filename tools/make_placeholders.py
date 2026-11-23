@@ -761,6 +761,53 @@ def bat_sheet() -> list[list[tuple]]:
     return px
 
 
+ARROW = [  # 16x16, zeigt nach rechts
+    "................",
+    "................",
+    "................",
+    "................",
+    "................",
+    "..f.........w...",
+    "...f........ww..",
+    "..ffssssssssswww",
+    "...f........ww..",
+    "..f.........w...",
+]
+
+SKELETON_FRAMES = [
+    [  # stehend
+        "................", ".....oooooo.....", "....owwwwwwo....", "....owkwwkwo....", "....owwwwwwo....",
+        ".....owkkwo.....", "......owwo......", "....oowwwwoo....", "...owowwwwowo...", "..ow.owwwwo.wo..",
+        "..o..owwwwo..o..", ".....ow..wo.....", ".....ow..wo.....", ".....ow..wo.....", "....oo....oo....",
+    ],
+    [  # Schritt
+        "................", ".....oooooo.....", "....owwwwwwo....", "....owkwwkwo....", "....owwwwwwo....",
+        ".....owkkwo.....", "......owwo......", "....oowwwwoo....", "...owowwwwowo...", "..ow.owwwwo.wo..",
+        "..o..owwwwo..o..", ".....ow..wo.....", "....ow....wo....", "...ow......wo...", "...o........o...",
+    ],
+    [  # zielt (Bogen vorne)
+        "................", ".....oooooo.....", "....owwwwwwo....", "....owkwwkwo....", "....owwwwwwo....",
+        ".....owkkwo.....", "......owwo...b..", "....oowwwwoob.b.", "...owowwwwowwb.b", "..ow.owwwwo..b.b",
+        "..o..owwwwo...b.", ".....ow..wo.....", ".....ow..wo.....", ".....ow..wo.....", "....oo....oo....",
+    ],
+]
+
+
+def arrow_sprite() -> list[list[tuple]]:
+    return from_map(ARROW, {"f": (220, 220, 230, 255), "s": (150, 110, 70, 255), "w": (200, 200, 210, 255)})
+
+
+def skeleton_sheet() -> list[list[tuple]]:
+    """48x16: stehend, Schritt, zielend."""
+    pal = {".": (0, 0, 0, 0), "o": OUTLINE, "w": (225, 220, 205, 255), "k": (40, 30, 30, 255), "b": (140, 95, 50, 255)}
+    px = [[(0, 0, 0, 0)] * 48 for _ in range(16)]
+    for f, rows in enumerate(SKELETON_FRAMES):
+        for y, line in enumerate(rows):
+            for x, c in enumerate(line):
+                px[y + 1][f * 16 + x] = pal[c]
+    return px
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -778,6 +825,8 @@ def main() -> None:
     write_png(ROOT / "assets" / "tilesets" / "dungeon_walls.png", dungeon_walls())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
+    write_png(out / "enemies" / "arrow.png", arrow_sprite())
+    write_png(out / "enemies" / "skeleton_archer.png", skeleton_sheet())
     write_png(out / "enemies" / "bat.png", bat_sheet())
     write_png(out / "objects" / "spikes.png", spikes_sheet())
     write_png(out / "objects" / "blade_trap.png", blade_sheet())

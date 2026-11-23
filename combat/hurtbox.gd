@@ -17,9 +17,14 @@ func _ready() -> void:
 func recheck() -> void:
 	for area in get_overlapping_areas():
 		if area is Hitbox:
-			hurt.emit(area)
+			_register(area)
 
 
 func _on_area_entered(area: Area2D) -> void:
 	if area is Hitbox:
-		hurt.emit(area)
+		_register(area)
+
+
+func _register(hitbox: Hitbox) -> void:
+	hurt.emit(hitbox)
+	hitbox.landed.emit(self)

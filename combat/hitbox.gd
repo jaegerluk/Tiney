@@ -6,6 +6,11 @@ extends Area2D
 @export var damage: int = 1
 ## Startgeschwindigkeit des Rückstoßes in Pixeln pro Sekunde.
 @export var knockback: float = 150.0
+## Zerstört gegnerische Geschosse bei Berührung (bessere Schwerter, Orden). Startschwert: aus.
+@export var deflects_projectiles: bool = false
+
+## Diese Hitbox hat eine Hurtbox getroffen (z. B. damit ein Pfeil verschwindet).
+signal landed(hurtbox: Hurtbox)
 
 
 func _init() -> void:

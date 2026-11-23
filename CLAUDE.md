@@ -33,7 +33,7 @@ Hilfen: `check`, `check_eq`, `frames(n)`, `hold(action)`, `tap(action)`. Der Run
 | Ordner | Inhalt |
 |---|---|
 | `autoload/` | Singletons: `Difficulty`, `GameState` (später Audio, Speichern) |
-| `combat/` | `Hitbox`, `Hurtbox` |
+| `combat/` | `Hitbox`, `Hurtbox`, `projectile/` (Geschosse, Pfeil) |
 | `player/` | Spielerszene, Zustände, Hitbox/Hurtbox |
 | `enemies/` | ein Unterordner pro Gegnertyp, Basiswerte als `.tres` |
 | `npcs/` | Harmlose Figuren: `cow`, `talk_npc` (Dialog-NPC) |
@@ -96,6 +96,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Schalter:** `FloorSwitch` (Modus TOGGLE = grün, `floor_switch.tscn`; HOLD = orange, `hold_switch.tscn`: an, solange Spieler oder Block daraufstehen). `CrystalSwitch` reagiert auf Treffer, Modus TOGGLE (blau/rot), ONCE (grün → grau) oder TIMED (gelb, `duration`). Alle senden `toggled(is_on)`, verbunden in der Raumszene, z. B. mit `SwitchDoor.set_open`. Eine `SwitchDoor` darf mehrere Schalter haben, sie ist offen, solange mindestens einer an ist. **Keine Softlocks:** Wo eine Tür hinter dem Spieler zufallen kann (Zeitschalter), gehört ein Schalter auch auf die Innenseite. TOGGLE/ONCE bleiben gespeichert, HOLD/TIMED nicht.
 - **Fallen:** `Spikes` (ALWAYS/TIMED, `phase_offset` für Wellen), `BladeTrap` (SENTRY stahlblau / PATROL bronze), `CrumbleFloor` (zerfällt zu einem `Pit`, zählt nicht als sicherer Boden, beim Wiederbetreten ganz, optional `regrow_time`). Fallenschaden ist ein Basiswert in LP und skaliert mit `Difficulty`. Taktende Stacheln und lauernde Klingenfallen sind nur auf dem Bildschirm aktiv (`RoomCamera.is_on_screen`). Achtung: Kindknoten addieren ihren `z_index` zum Elternknoten (das Loch in der Bröckelplatte braucht deshalb `z_index = 1`).
 - **Gittertüren:** `RoomLock` mit `ShutterDoor`-Kindern. Gegner aus dem Inspector oder alle im Raum. Signale `locked`/`unlocked`, z. B. `locked` → `ZombieKing.activate`.
+- **Geschosse:** `Projectile` (`combat/projectile/`), Team ENEMY/PLAYER setzt die Ebene der Hitbox. Treffer → verschwindet (`Hitbox.landed`), Wand → steckt `stick_time` fest. Schwert-Hitboxen mit `deflects_projectiles` zerstören gegnerische Geschosse (Startschwert: aus). Skelett-Schütze `Archer` (`enemies/archer/`): Abstand halten, in Linie zielen und schießen, nur auf dem Bildschirm.
 - **Boss:** Gegner mit `display_name` und Signal `boss_appeared` (HUD-Leiste). Belohnungen als Pickup-Szenen (`rewards`). Kugeln in `GameState.orbs`.
 - **Spielgefühl:** `Effects.burst()` für Partikel, `Effects.hit_stop()` / `Effects.shake()` rufen Game über die Gruppe `game_feel` (Trefferstopp über `Engine.time_scale`). Breakables haben `debris_color`.
 - **Debug-Menü** (`debug/debug_menu.gd`, F1, zur Laufzeit angemeldet): Schwierigkeit, unverwundbar (`Player.god_mode`), Sachen geben, Teleport (`Game.teleport`), Raum zurücksetzen (`GameState.clear_room` + `Game.reload_room`), Gegner besiegen.

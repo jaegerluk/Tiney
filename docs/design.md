@@ -98,6 +98,8 @@ Ideen zur Vorbereitung der Wendung (offen):
 - **Gefangener** im Kerker deutet den Mönch an: “The orbs must never be brought together.”
 - **Shop:** Ware liegt mit Preis auf der Theke, davorstellen zeigt Name, Preis und Beschreibung, Interaktion kauft. Der Ladenbesitzer spricht. Test-Angebot: Hinweis (1, nett, nicht hilfreich), Herz (5), Apfel (3), Heiltrank (30), Schlüssel (50, einmal).
 - **Fledermaus:** flattert in zufällige Richtungen, wechselt oft den Kurs, setzt sich ab und zu kurz hin. Fliegt über Löcher und Stacheln. 1 Hieb, ½ Herz.
+- **Skelett-Schütze:** hält 4–6 Tiles Abstand, stellt sich in deine Zeile/Spalte, zielt kurz und schießt geradeaus. 2 Hiebe, Pfeil ½ Herz, alle 2 s. Pfeile bleiben kurz in Wänden stecken.
+- **Pfeile abwehren** kann das Startschwert nicht, erst bessere Schwerter oder Orden.
 - **Zombie** (Gegner in Dungeon 1): bemerkt dich auf ~6 Tiles, schlurft langsam und stur hinterher, 4 Hiebe, 1 Herz Schaden.
 - **Zombie-König** (Platzhalter-Boss): Bossraum schließt sich, Boss-Leiste, Sturmangriff mit Ankündigung, ruft bei halbem Leben 2 Zombies (nie direkt am Spieler), 12 Hiebe. Belohnung: Herzcontainer + magische Kugel.
 

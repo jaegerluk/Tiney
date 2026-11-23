@@ -22,6 +22,7 @@
 [ext_resource type="PackedScene" path="res://enemies/zombie/zombie.tscn" id="zombie_r"]
 [ext_resource type="PackedScene" path="res://objects/push_block/push_block.tscn" id="block_r"]
 [ext_resource type="PackedScene" path="res://objects/pit/pit.tscn" id="pit_r"]
+[ext_resource type="PackedScene" path="res://enemies/archer/archer.tscn" id="archer_r"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ExitToSwitches"]
 size = Vector2(8, 32)
@@ -171,6 +172,9 @@ position = Vector2(150, 330)
 [node name="Chest" parent="." instance=ExtResource("chest_r")]
 position = Vector2(40, 40)
 content = ExtResource("rupeered_r")
+
+[node name="Archer1" parent="." instance=ExtResource("archer_r")]
+position = Vector2(330, 400)
 
 [node name="Zombie1" parent="." instance=ExtResource("zombie_r")]
 position = Vector2(440, 120)
