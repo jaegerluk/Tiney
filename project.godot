@@ -101,6 +101,7 @@ menu={
 2d_physics/layer_5="enemy_attack"
 2d_physics/layer_6="triggers"
 2d_physics/layer_7="npcs"
+2d_physics/layer_8="traps"
 
 [rendering]
 

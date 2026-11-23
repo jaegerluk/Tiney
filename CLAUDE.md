@@ -69,7 +69,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
   | 5 | `enemy_attack` | Gegner-Hitboxen |
   | 6 | `triggers` | Pickups, Schalter, Schilder, Statuen, Ausgänge (Maske: `player`) |
   | 7 | `npcs` | NPC-Körper (Kuh). Spieler und Gegner maskieren `world` + `npcs` |
-  | 8 | `traps` | Körper von Klingenfallen (stoßen an Wände und einander, blockieren den Spieler nicht). Name in `project.godot` noch nachtragen (Editor war offen) |
+  | 8 | `traps` | Körper von Klingenfallen (stoßen an Wände und einander, blockieren den Spieler nicht) |
 - **Keine globalen Zustands-Flags** für einzelne Übergänge. Raumwechsel laufen datengetrieben über Ausgänge mit Ziel-Raum und Ziel-Marker.
 - `@export` für alles, was im Editor eingestellt werden soll. Keine Zahlen fest im Code, die Design-Werte sind.
 
@@ -170,7 +170,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Neuaufbau statt Weiterbau** des Prototyps. Übernommen werden Inventar, Schalter/Tür, Spieler-Animationen, Kamera-Grenzen, Schild und Lebensanzeige. Neu geschrieben werden Raumwechsel, Kampf und Gegner.
 - **Beim Upgrade auf 4.7 nicht alle Szenen per Skript neu gespeichert**, weil dabei UIDs verloren gingen. Szenen werden im Editor beim nächsten Speichern im neuen Format geschrieben.
 - **Alle Grafiken sind Platzhalter.** Eigene Pixel-Art kommt, wenn die Mechaniken stehen.
-- **Leben in halben Herzen** (`max_health = 6` = 3 Herzen). Die `HealthBar` ist ein Platzhalter für eine Herzanzeige.
+- **Leben in Lebenspunkten:** 1 Herz = 20 LP, Start 60 LP (3 Herzen). Die `HealthBar` ist ein durchgehender Strahl mit Trennstrichen pro Herz.
 - **Schilder liest man mit `interact`**, wenn man davor steht und nach oben schaut (wie in ALttP). Im Prototyp erschien der Text automatisch.
 - **Das Inventar-Menü pausiert das Spiel** (`InventoryUI` läuft mit `process_mode = Always`).
 - **Persistente Hauptszene** statt `change_scene_to_file`: Spieler und HUD überleben den Raumwechsel; später lässt sich Scrollen zwischen Räumen ergänzen.
