@@ -21,6 +21,7 @@ godot --headless --fixed-fps 60 --path . tests/run_tests.tscn -- test_rooms # ei
 Die Ausgabe darf kein `ERROR` und kein `SCRIPT ERROR` enthalten. Meldungen über „leaked“ RIDs beim Beenden sind harmlos.
 Der Test-Runner endet mit `ALLE TESTS OK` (Exit-Code 0) oder listet die fehlgeschlagenen Tests (Exit-Code 1).
 **Commit nur, wenn der Runner mit Exit-Code 0 endet.** Den Exit-Code direkt prüfen, nicht über eine gefilterte Ausgabe (ein `grep` in der Befehlskette verdeckt Fehlschläge).
+Ein Testskript, das sich nicht laden lässt (Parse-Fehler), zählt als fehlgeschlagen.
 Er zählt über einen `Logger` (`tests/error_counter.gd`) auch Engine- und Skriptfehler während eines Tests als Fehlschlag, denn GDScript läuft nach einem Laufzeitfehler einfach weiter.
 `--script` ist für Prüfungen ungeeignet: Dort sind Autoloads nicht geladen, und `ResourceSaver` entfernt UIDs.
 
@@ -118,6 +119,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Gegner** bleiben in Räumen mit Bildschirm-Scrollen in ihrem Start-Bildschirm (`Enemy.confine_rect`, gesetzt von Room).
 - **Treppen** (`Stairs`) sind `RoomExit`s mit Sprite und kleinem Auslösebereich in der Mitte.
 - **Löcher** (`Pit`, `@tool`, Größe im Inspector, komplett schwarz; mit `target_room` zusätzlich ein pulsierender Lichtschein, `glow_color`/`glow_strength`): mit `target_room` ein Stockwerk tiefer, sonst Schaden, etwas weiter weg von `Player.last_safe_position` abgesetzt, 0,4 s Sperre. Löcher wirken nur auf `Player.can_fall()`. `land_at()` bricht eine laufende Sturz-Animation ab (sonst bleibt der Spieler unsichtbar).
+- **Schiebe- und Ziehblöcke:** `pullable` (Standard an; aus = nur schiebbar, dunkler). Ziehen: Interaktion halten (`Player.is_grab_held()`, `start_grab`/`end_grab`), dann wegziehen; Block und Held rücken ein Tile, wenn hinter dem Helden Platz ist.
 - **Schiebeblöcke** sind `AnimatableBody2D`, denn ein per Code verschobener `StaticBody2D` löst keine zuverlässigen Überlappungen aus.
 
 ## Schwierigkeit (Kernmechanik, siehe design.md)

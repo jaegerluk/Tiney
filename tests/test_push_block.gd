@@ -64,6 +64,66 @@ func run() -> void:
 	await frames(2)
 
 
+	# Ziehen: von rechts greifen (nach links schauen), dann nach rechts wegziehen
+	var pull: PushBlock = load("res://objects/push_block/push_block.tscn").instantiate()
+	pull.position = Vector2(100, 150)
+	add_child(pull)
+	p2.global_position = Vector2(116, 150)
+	p2.face(Vector2.LEFT)
+	await frames(3)
+	hold("interact")
+	await frames(3)
+	check(pull.is_grabbed() and p2.is_grabbing(), "Interaktion halten: Held packt den Block")
+	hold("move_right")
+	await frames(10)
+	check_eq(p2.global_position.x, 116.0, "Festhalten: Held läuft nicht weg")
+	await frames(40)
+	hold("move_right", false)
+	await frames(5)
+	check_eq(pull.position, Vector2(116, 150), "Block ein Tile gezogen")
+	check_eq(p2.global_position, Vector2(132, 150), "Held mitgerückt")
+	hold("interact", false)
+	await frames(3)
+	check(not pull.is_grabbed() and not p2.is_grabbing(), "Loslassen beendet den Griff")
+
+	# Wand hinter dem Helden: Ziehen geht nicht
+	var behind := StaticBody2D.new()
+	var bshape := CollisionShape2D.new()
+	var brect := RectangleShape2D.new()
+	brect.size = Vector2(16, 32)
+	bshape.shape = brect
+	behind.add_child(bshape)
+	behind.position = Vector2(148, 150)
+	add_child(behind)
+	await frames(2)
+	hold("interact")
+	await frames(3)
+	hold("move_right")
+	await frames(50)
+	hold("move_right", false)
+	hold("interact", false)
+	await frames(5)
+	check_eq(pull.position, Vector2(116, 150), "Kein Platz hinter dem Helden: Block bleibt")
+	behind.queue_free()
+
+	# Nur schiebbarer Block: kein Griff, dunkler
+	var push_only: PushBlock = load("res://objects/push_block/push_block.tscn").instantiate()
+	push_only.pullable = false
+	push_only.position = Vector2(200, 60)
+	add_child(push_only)
+	p2.global_position = Vector2(216, 60)
+	p2.face(Vector2.LEFT)
+	await frames(3)
+	hold("interact")
+	await frames(3)
+	check(not push_only.is_grabbed(), "Nur schiebbar: kein Griff")
+	hold("interact", false)
+	check(push_only.get_node("Sprite2D").modulate != Color.WHITE, "Nur schiebbar: dunkler")
+	for n in [pull, push_only, p2, solo]:
+		n.queue_free()
+	await frames(2)
+
+
 func _push(direction: Vector2, count: int) -> void:
 	var action := "move_up" if direction == Vector2.UP else "move_down"
 	hold(action)

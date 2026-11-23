@@ -19,7 +19,12 @@ func _ready() -> void:
 			continue
 		print("== ", file.get_basename())
 		_reset_state()
-		var test: TestCase = load("res://tests/" + file).new()
+		var script := load("res://tests/" + file) as GDScript
+		if script == null or not script.can_instantiate():
+			printerr("  FEHLER  Testskript lässt sich nicht laden (Parse-Fehler?)")
+			failed.append(file.get_basename())
+			continue
+		var test: TestCase = script.new()
 		add_child(test)
 		var errors_before := _errors.count
 		await test.run()

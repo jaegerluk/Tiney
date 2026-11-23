@@ -175,6 +175,10 @@ content = ExtResource("rupeered_r")
 [node name="Zombie1" parent="." instance=ExtResource("zombie_r")]
 position = Vector2(440, 120)
 
+[node name="PushOnlyBlock" parent="." instance=ExtResource("block_r")]
+position = Vector2(120, 140)
+pullable = false
+
 [node name="PushBlock" parent="." instance=ExtResource("block_r")]
 position = Vector2(160, 176)
 

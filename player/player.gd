@@ -35,6 +35,8 @@ var _controls_enabled: bool = true
 var _hazards: int = 0
 var _falling: bool = false
 var _fall_tween: Tween = null
+## Objekt, das der Held gerade festhält (z. B. ein Block zum Ziehen). null = nichts.
+var _grabbed: Node = null
 var _invincible_left: float = 0.0
 var _knockback_left: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
@@ -75,6 +77,11 @@ func _physics_process(delta: float) -> void:
 		_playback.travel("idle")
 	elif _attacking:
 		velocity = Vector2.ZERO
+	elif _grabbed != null:
+		# Festhalten: nicht laufen, Blickrichtung bleibt; die Eingabe liest das gehaltene Objekt.
+		move_input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+		velocity = Vector2.ZERO
+		_playback.travel("idle")
 	else:
 		var input := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 		move_input = input
@@ -148,6 +155,25 @@ func hold_up(icon: Texture2D) -> void:
 	if icon != null:
 		_sprite.flip_h = false
 		_sprite.frame = 0
+
+
+## true, solange die Interaktionstaste gehalten wird und der Held handeln kann (zum Greifen).
+func is_grab_held() -> bool:
+	return _controls_enabled and not _attacking and not _falling and Input.is_action_pressed("interact")
+
+
+func is_grabbing() -> bool:
+	return _grabbed != null
+
+
+## Von einem Objekt aufgerufen, das der Held packt bzw. loslässt.
+func start_grab(target: Node) -> void:
+	_grabbed = target
+
+
+func end_grab(target: Node) -> void:
+	if _grabbed == target:
+		_grabbed = null
 
 
 ## Füße (für Löcher und Ähnliches).
