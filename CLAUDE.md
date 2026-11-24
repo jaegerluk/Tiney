@@ -96,6 +96,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Böden** als `TileMapLayer` „Floor“ mit `assets/tilesets/basic_tileset.tres` (z_index −10).
 - **Schalter:** `FloorSwitch` (Modus TOGGLE = grün, `floor_switch.tscn`; HOLD = orange, `hold_switch.tscn`: an, solange Spieler oder Block daraufstehen). `CrystalSwitch` reagiert auf Treffer, Modus TOGGLE (blau/rot), ONCE (grün → grau) oder TIMED (gelb, `duration`). Alle senden `toggled(is_on)`, verbunden in der Raumszene, z. B. mit `SwitchDoor.set_open`. Eine `SwitchDoor` darf mehrere Schalter haben, sie ist offen, solange mindestens einer an ist. **Keine Softlocks:** Wo eine Tür hinter dem Spieler zufallen kann (Zeitschalter), gehört ein Schalter auch auf die Innenseite. TOGGLE/ONCE bleiben gespeichert, HOLD/TIMED nicht.
 - **Fallen:** `Spikes` (ALWAYS/TIMED, `phase_offset` für Wellen), `BladeTrap` (SENTRY stahlblau / PATROL bronze), `CrumbleFloor` (zerfällt zu einem `Pit`, zählt nicht als sicherer Boden, beim Wiederbetreten ganz, optional `regrow_time`). Fallenschaden ist ein Basiswert in LP und skaliert mit `Difficulty`. Taktende Stacheln und lauernde Klingenfallen sind nur auf dem Bildschirm aktiv (`RoomCamera.is_on_screen`). Achtung: Kindknoten addieren ihren `z_index` zum Elternknoten (das Loch in der Bröckelplatte braucht deshalb `z_index = 1`).
+- **Dunkle Räume & Fackeln:** `Room.dark` legt eine `CanvasModulate` (`dark_color`) in den Raum; Game schaltet den Lichtkreis des Spielers (`PointLight2D`) nur dort ein. `Torch` (`objects/torch/`): `set_lit()`, für Schalter-Signale `ignite()` (zündet nur an), `burn_time` (0 = dauerhaft, dann gespeichert). `TorchGroup` sendet `toggled(true)`, wenn alle Kind-Fackeln brennen.
 - **Gittertüren:** `RoomLock` mit `ShutterDoor`-Kindern. Gegner aus dem Inspector oder alle im Raum. Signale `locked`/`unlocked`, z. B. `locked` → `ZombieKing.activate`.
 - **Geschosse:** `Projectile` (`combat/projectile/`), Team ENEMY/PLAYER setzt die Ebene der Hitbox. Treffer → verschwindet (`Hitbox.landed`), Wand → steckt `stick_time` fest. Schwert-Hitboxen mit `deflects_projectiles` zerstören gegnerische Geschosse (Startschwert: aus). Skelett-Schütze `Archer` (`enemies/archer/`): Abstand halten, in Linie zielen und schießen, nur auf dem Bildschirm.
 - **Boss:** Gegner mit `display_name` und Signal `boss_appeared` (HUD-Leiste). Belohnungen als Pickup-Szenen (`rewards`). Kugeln in `GameState.orbs`.
@@ -159,7 +160,8 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
   - `test_arena`: Gittertür (RoomLock), Zombie, 2 Schleime.
   - `test_boss_room`: Zombie-König hinter Gittertür.
   - `test_cellar`: Keller mit Treppe zurück, zwei Fledermäuse, Westöffnung → `test_traps`.
-  - `test_traps` (2 Bildschirme): Klingenfallen, Stachelwelle, Bröckelbrücke über Löchern.
+  - `test_traps` (2 Bildschirme): Klingenfallen, Stachelwelle, Bröckelbrücke über Löchern, Westöffnung → `test_dark`.
+  - `test_dark`: dunkler Raum, drei Feuerschalen (Bodenschalter, Kristall, vorplatziert) öffnen eine Tür, eine Schale mit Brenndauer.
   - `test_switches` (Westöffnung des Startraums, 2 Bildschirme breit): Halteschalter mit Block, Kristallschalter in allen drei Modi.
 - Vorhanden:
   - Spieler: Bewegung, Schwert, Leben (LP), Rückstoß, Unverwundbarkeit, Stürze.

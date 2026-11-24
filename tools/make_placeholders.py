@@ -826,6 +826,33 @@ STONE = [  # linke Hälfte, schwerer grauer Stein
 ]
 
 
+def torch_sheet() -> list[list[tuple]]:
+    """48x16: Feuerschale aus, brennend (zwei Flammen-Frames)."""
+    stone, stone_light, stone_dark = (110, 105, 120, 255), (150, 145, 160, 255), (70, 66, 80, 255)
+    coal = (40, 30, 30, 255)
+    flames = [
+        [(7, 3), (8, 2), (7, 4), (8, 4), (6, 5), (7, 5), (8, 5), (9, 5), (6, 6), (7, 6), (8, 6), (9, 6)],
+        [(8, 3), (7, 2), (7, 4), (8, 4), (6, 5), (7, 5), (8, 5), (9, 5), (6, 6), (7, 6), (8, 6), (9, 6)],
+    ]
+    px = [[(0, 0, 0, 0)] * 48 for _ in range(16)]
+    for f in range(3):
+        ox = f * 16
+        for y in range(7, 15):
+            for x in range(3, 13):
+                if y == 7 or x in (3, 12) or y == 14:
+                    px[y][ox + x] = OUTLINE
+                elif y == 8:
+                    px[y][ox + x] = coal if 4 < x < 11 else stone_light
+                else:
+                    px[y][ox + x] = stone_dark if y >= 12 else (stone_light if x < 6 else stone)
+        if f > 0:
+            for x, y in flames[f - 1]:
+                outer = y >= 5 and x in (6, 9)
+                px[y][ox + x] = (230, 90, 30, 255) if outer else (255, 210, 80, 255)
+            px[6][ox + 7] = (255, 245, 200, 255)
+    return px
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -843,6 +870,7 @@ def main() -> None:
     write_png(ROOT / "assets" / "tilesets" / "dungeon_walls.png", dungeon_walls())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
+    write_png(out / "objects" / "torch.png", torch_sheet())
     write_png(out / "objects" / "stone.png", from_map(STONE, {"g": (130, 130, 140, 255), "l": (175, 175, 185, 255), "d": (90, 90, 100, 255)}, mirror=True))
     write_png(out / "enemies" / "arrow.png", arrow_sprite())
     write_png(out / "enemies" / "skeleton_archer.png", skeleton_sheet())

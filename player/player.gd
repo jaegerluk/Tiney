@@ -216,6 +216,11 @@ func _clear_carried() -> void:
 	($CarriedSprite as Sprite2D).visible = false
 
 
+## Lichtkreis um den Helden (nur in dunklen Räumen an).
+func set_light_enabled(enabled: bool) -> void:
+	($PointLight2D as PointLight2D).enabled = enabled
+
+
 ## true, solange die Interaktionstaste gehalten wird und der Held handeln kann (zum Greifen).
 func is_grab_held() -> bool:
 	return _controls_enabled and not _attacking and not _falling and not is_carrying() and Input.is_action_pressed("interact")

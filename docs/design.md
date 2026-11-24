@@ -118,6 +118,10 @@ Ideen zur Vorbereitung der Wendung (offen):
 - **Löcher:** komplett schwarz. Löcher in ein tieferes Stockwerk erkennt man an einem schwachen, warmen Lichtschein von unten. Pro Loch einstellbar. Mit Ziel fällt man ein Stockwerk tiefer, ohne Ziel kostet es ½ Herz und man steht wieder am letzten sicheren Boden.
 - **Kamera:** bildschirmweises Schieben wie in ALttP, pro Raum im Editor auf „mitlaufend“ umstellbar. Gegner bleiben dabei in ihrem Bildschirm. Treppen führen in andere Räume.
 
+## Dunkle Räume (entschieden)
+- Dunkle Räume sind fast schwarz; um den Helden ein kleiner Lichtkreis (~2 Tiles). Brennende Feuerschalen erhellen ihre Umgebung.
+- Feuerschalen werden vorerst über Schalter angezündet; später durch ein Feuer-Item (z. B. Laterne). Pro Schale einstellbar, ob sie dauerhaft brennt oder nach einiger Zeit ausgeht. Brennen alle Schalen einer Gruppe, kann sich z. B. eine Tür öffnen.
+
 ## Karte & Kompass (entschieden, noch nicht gebaut)
 - **Karte pro Dungeon** als Fundstück (wie Schlüssel). Der Hub braucht keine.
 - **Ohne Karten-Item gibt es keine Karte**, weder Vollbild noch Mini-Karte. Mit dem Item erscheint sofort der ganze Dungeon.

@@ -17,6 +17,9 @@ signal info_hidden
 @export var dungeon_id: StringName = &""
 ## Kamera schiebt bildschirmweise (ALttP). Aus = Kamera folgt dem Spieler frei.
 @export var screen_scroll: bool = true
+## Dunkler Raum: fast schwarz, Licht nur vom Helden und von brennenden Fackeln.
+@export var dark: bool = false
+@export var dark_color: Color = Color(0.04, 0.04, 0.07)
 @export var camera_top_left: Marker2D
 @export var camera_bottom_right: Marker2D
 
@@ -24,6 +27,11 @@ var _tier_applied: bool = false
 
 
 func _ready() -> void:
+	if dark:
+		var modulate_node := CanvasModulate.new()
+		modulate_node.name = "Darkness"
+		modulate_node.color = dark_color
+		add_child(modulate_node)
 	if not _tier_applied:
 		apply_tier(Difficulty.tier())
 	for node in _all_children(self):

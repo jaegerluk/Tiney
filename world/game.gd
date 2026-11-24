@@ -92,6 +92,7 @@ func _swap_room(room_path: String, keep_drops: bool) -> void:
 	GameState.current_dungeon = room.dungeon_id
 	_camera.set_bounds(room.camera_bounds())
 	_camera.screen_scroll = room.screen_scroll
+	_player.set_light_enabled(room.dark)
 
 
 func _place_player(position_: Vector2, facing: Vector2) -> void:
