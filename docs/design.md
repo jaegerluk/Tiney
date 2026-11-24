@@ -55,7 +55,7 @@ Ideen zur Vorbereitung der Wendung (offen):
 - Verschiedene Schwerter und Rüstungen, die man findet oder kauft
 - Shop
 - Herzcontainer-artige Upgrades für mehr Lebensenergie
-- Sammelobjekte (ähnlich den goldenen Skulltulas)
+- Sammelobjekte (ähnlich den goldenen Skulltulas), Konzept vor dem Raumplan von Dungeon 1 klären
 - Bosse pro Dungeon und einige Zwischenbosse (Inspiration: *The Binding of Isaac*)
 - Secrets und Geheimwege
 
@@ -138,6 +138,28 @@ Ideen zur Vorbereitung der Wendung (offen):
 - Zuordnung zu den Dungeons ist noch offen (fest nur: Bogen in Dungeon 2).
 - **Ressourcen:** Bomben und Pfeile sind Munition (Drops, Shop). Enthüllungsglas (und ggf. Feuerstab) verbrauchen Magie aus einer **Magieleiste** im HUD (Magie-Krüge als Drop).
 - Falls D2 und D3 frei wählbar sind, darf der Hauptweg eines Dungeons nur Items aus D1 und aus ihm selbst brauchen. Fremde Items öffnen dann nur Secrets und Geheimwege (Backtracking).
+
+## Dungeon 1 – Ideen (Sammlung, noch nicht geplant)
+**Vorgehen beim Planen:** Ideen sammeln → Ablauf als Stationen → Schlüssel- und Abhängigkeitsplan → Raumkarte (Raster, Stockwerke) → Inhalt pro Raum → fehlende Bausteine bauen → Graybox (nur Wände/Türen/Schlüssel, einmal durchspielbar) → füllen.
+
+- **Start:** Der Held wacht als Gefangener in einer Kerkerzelle auf. Die Zellentür öffnet sich durch dunkle Magie der versiegelten Dämonengottheit: Sie weiß, dass der Held sie befreien wird, und hat nach 100 Jahren gerade genug Kraft dafür gesammelt (Story-Idee, passt zur Wendung im Finale).
+- **Tutorial:** zuerst ein paar sehr einfache, lineare Räume. Trotzdem sollen sie cool sein (Ideen noch offen, z. B. Gefangene in Nachbarzellen kommentieren, ein Zombie bricht durch eine Wand).
+- **Shop:** mindestens einer. Ein Gefangener verkauft durch die Gitterstäbe seiner Zelle.
+- **Hauptraum:** großer zentraler Raum mit einem auffälligen Designelement (wie der riesige Schädel in Dodongos Höhle). Von dort führen mehrere Wege weg. Element noch offen (Ideen: riesiges Skelett, durch dessen Brustkorb der Weg führt; Schacht mit Käfigen an Ketten; Statue mit Feuerschalen als Augen).
+- **Aufbau:** erst sehr linear, dann etwas verzweigter, insgesamt aber einfach (erster Dungeon).
+- **Schlüssel:** ja, kleine Schlüssel und großer Schlüssel.
+- **Karte und Kompass:** ja, die Karte recht bald nach den Tutorial-Räumen.
+- **Gegner:** gruselig: Zombies, Totenköpfe, Skelette, Spinnen usw.
+- **Bosse:** 1–2 Zwischenbosse und ein Hauptboss. Der Zombie-König wird vielleicht ein Zwischenboss.
+- **Secret:** ein Raum voller Krüge, in dem an einer Stelle statt einer Wand ein Krug steht; dahinter liegt ein geheimer Raum.
+- **Deko:** Kerkerzellen, Eisenketten, ein paar Andreaskreuze, in manchen Zellen noch Gefangene.
+- **Sammelobjekte:** Verstecke einplanen, sobald das Konzept steht (siehe Systeme).
+- **Items:** noch offen.
+
+## Story & Figuren – Ideen für später
+- Dungeon 2: ein bekiffter Hippie.
+- Irgendwo im Spiel eine schwule Liebesgeschichte.
+- Warum der Held im Kerker gefangen ist, wird später mit der Story geklärt.
 
 ## Karte & Kompass (entschieden, noch nicht gebaut)
 - **Karte pro Dungeon** als Fundstück (wie Schlüssel). Der Hub braucht keine.
