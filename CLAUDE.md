@@ -99,6 +99,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Dunkle Räume & Fackeln:** `Room.dark` legt eine `CanvasModulate` (`dark_color`) in den Raum; Game schaltet den Lichtkreis des Spielers (`PointLight2D`) nur dort ein. `Torch` (`objects/torch/`): `set_lit()`, für Schalter-Signale `ignite()` (zündet nur an), `burn_time` (0 = dauerhaft, dann gespeichert). `TorchGroup` sendet `toggled(true)`, wenn alle Kind-Fackeln brennen.
 - **Gittertüren:** `RoomLock` mit `ShutterDoor`-Kindern. Gegner aus dem Inspector oder alle im Raum. Signale `locked`/`unlocked`, z. B. `locked` → `ZombieKing.activate`.
 - **Geschosse:** `Projectile` (`combat/projectile/`), Team ENEMY/PLAYER setzt die Ebene der Hitbox. Treffer → verschwindet (`Hitbox.landed`), Wand → steckt `stick_time` fest. Schwert-Hitboxen mit `deflects_projectiles` zerstören gegnerische Geschosse (Startschwert: aus). Skelett-Schütze `Archer` (`enemies/archer/`): Abstand halten, in Linie zielen und schießen, nur auf dem Bildschirm.
+- **Sammelobjekte** (Arbeitstitel „Skulltulas“, Platzhalter goldene Seele): `GoldenSoulPickup` (`items/pickups/golden_soul.tscn`), hochgehalten, Zähler `GameState.souls` (im Snapshot), angezeigt im Inventar-Menü (`%SoulCount`). Platzieren frei oder als `fixed_drop` (Krug `SoulPot` im Startraum).
 - **Boss:** Gegner mit `display_name` und Signal `boss_appeared` (HUD-Leiste). Belohnungen als Pickup-Szenen (`rewards`). Kugeln in `GameState.orbs`.
 - **Spielgefühl:** `Effects.burst()` für Partikel, `Effects.hit_stop()` / `Effects.shake()` rufen Game über die Gruppe `game_feel` (Trefferstopp über `Engine.time_scale`). Breakables haben `debris_color`.
 - **Debug-Menü** (`debug/debug_menu.gd`, F1, zur Laufzeit angemeldet): Schwierigkeit, unverwundbar (`Player.god_mode`), Sachen geben, Teleport (`Game.teleport`), Raum zurücksetzen (`GameState.clear_room` + `Game.reload_room`), Gegner besiegen.
@@ -170,7 +171,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
   - Figuren: Dialoge mit NPCs und Schildern, Schleim, Zombie, Zombie-König (Boss-Gerüst), Kuh.
   - UI und Items: Item-Auswahl und -Benutzung, HUD (Lebensleiste, Rubine, Schlüssel, Item, Boss-Leiste).
   - Technik: Wand- und Boden-Tiles, Schwierigkeit mit Raumvarianten, Headless-Tests.
-- Noch nicht vorhanden: Game Over, Speichern auf Festplatte mit Titelmenü, Heben und Werfen, Sound, Dungeon-Item (z. B. Bogen), echter Dungeon 1.
+- Noch nicht vorhanden: Speichern auf Festplatte mit Titelmenü, Sound, Dungeon-Item (z. B. Bogen), echter Dungeon 1.
 
 ## Entscheidungen
 - **Neuaufbau statt Weiterbau** des Prototyps. Übernommen werden Inventar, Schalter/Tür, Spieler-Animationen, Kamera-Grenzen, Schild und Lebensanzeige. Neu geschrieben werden Raumwechsel, Kampf und Gegner.

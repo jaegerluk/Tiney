@@ -11,10 +11,13 @@ var _cursor_index: int = 0
 @onready var _slot_views: Array[Node] = %Grid.get_children()
 @onready var _cursor: Control = %Cursor
 @onready var _item_name: Label = %ItemName
+@onready var _soul_count: Label = %SoulCount
 
 
 func _ready() -> void:
 	visible = false
+	GameState.souls_changed.connect(_update_souls)
+	_update_souls(GameState.souls)
 	if inventory:
 		inventory.changed.connect(_refresh)
 		_refresh()
@@ -59,3 +62,7 @@ func _refresh() -> void:
 		(_slot_views[i] as InventorySlotUI).show_slot(inventory.slots[i])
 	var item := inventory.selected_item()
 	_item_name.text = item.name if item else ""
+
+
+func _update_souls(count: int) -> void:
+	_soul_count.text = "Golden Souls: %d" % count

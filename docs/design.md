@@ -139,12 +139,13 @@ Ideen zur Vorbereitung der Wendung (offen):
 - **Ressourcen:** Bomben und Pfeile sind Munition (Drops, Shop). Enthüllungsglas (und ggf. Feuerstab) verbrauchen Magie aus einer **Magieleiste** im HUD (Magie-Krüge als Drop).
 - Falls D2 und D3 frei wählbar sind, darf der Hauptweg eines Dungeons nur Items aus D1 und aus ihm selbst brauchen. Fremde Items öffnen dann nur Secrets und Geheimwege (Backtracking).
 
-## Sammelobjekte (Konzept, noch nicht gebaut)
+## Sammelobjekte (Konzept; Platzhalter-Version gebaut)
 - **Arbeitstitel: „Skulltulas“.** Was es wirklich wird, ist noch offen. Platzhalter: **goldene Seelen**. Gewünscht: Design ähnlich goldener Totenköpfe (aber nicht zu nah am Vorbild) und später ein Story-Bezug.
   - Ideen: goldene Totenmasken der Mönche, die den Dämon versiegelten (je eine mit Lore); Gebetsperlen des Ordens; Seelen-Reliquiare; Knochen-Fetische.
 - **Anzahl:** ca. 30 im ganzen Spiel (endgültig, wenn alles designt ist).
 - **Belohnung:** Stufen-Belohnungen bei einer Figur (z. B. bei 5/10/20/…: Rubine, Herzteil, Magie-Upgrade, größerer Köcher/Bombentasche, am Ende etwas Besonderes).
-- **Hinweis:** ein schwaches Geräusch, wenn eins in der Nähe ist. Später gibt ein **Orden** deutlichere Signale.
+- **Anzeige:** Zähler im Inventar-Menü; beim Aufheben hält der Held die Seele hoch, Meldung mit neuer Zahl.
+- **Hinweis:** ein schwaches Geräusch (kommt mit dem Audio-System), wenn eins in der Nähe ist. Später gibt ein **Orden** deutlichere Signale.
 
 ## Dungeon 1 – Ideen (Sammlung, noch nicht geplant)
 **Vorgehen beim Planen:** Ideen sammeln → Ablauf als Stationen → Schlüssel- und Abhängigkeitsplan → Raumkarte (Raster, Stockwerke) → Inhalt pro Raum → fehlende Bausteine bauen → Graybox (nur Wände/Türen/Schlüssel, einmal durchspielbar) → füllen.

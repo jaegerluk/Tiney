@@ -24,6 +24,7 @@
 [ext_resource type="PackedScene" path="res://objects/pit/pit.tscn" id="pit_r"]
 [ext_resource type="PackedScene" path="res://enemies/archer/archer.tscn" id="archer_r"]
 [ext_resource type="PackedScene" path="res://objects/breakable/stone.tscn" id="stone_r"]
+[ext_resource type="PackedScene" path="res://items/pickups/golden_soul.tscn" id="soul_r"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ExitToSwitches"]
 size = Vector2(8, 32)
@@ -202,6 +203,10 @@ position = Vector2(192, 48)
 [node name="Pot3" parent="." instance=ExtResource("12_r")]
 position = Vector2(208, 48)
 fixed_drop = ExtResource("11_r")
+
+[node name="SoulPot" parent="." instance=ExtResource("12_r")]
+position = Vector2(160, 48)
+fixed_drop = ExtResource("soul_r")
 
 [node name="Grass1" parent="." instance=ExtResource("13_r")]
 position = Vector2(176, 200)

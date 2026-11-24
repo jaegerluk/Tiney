@@ -853,6 +853,25 @@ def torch_sheet() -> list[list[tuple]]:
     return px
 
 
+SOUL = [  # linke Hälfte, goldene Seele (Platzhalter): Flamme mit Gesicht
+    "........",
+    ".......o",
+    "......oy",
+    ".....oyw",
+    ".....oyw",
+    "....oyyw",
+    "...oyyyy",
+    "...oyoyy",
+    "..oyyoyy",
+    "..oyyyyy",
+    "..oyyyoo",
+    "..odyyyy",
+    "...odyyy",
+    "....oddd",
+    ".....ooo",
+]
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -884,6 +903,7 @@ def main() -> None:
     write_png(out / "objects" / "stairs.png", stairs())
     write_png(out / "objects" / "push_block.png", push_block())
     write_png(out / "pickups" / "orb.png", from_map(ORB, {"b": (120, 90, 230, 255), "w": (220, 210, 255, 255), "p": (70, 40, 150, 255)}, mirror=True))
+    write_png(out / "pickups" / "golden_soul.png", from_map(SOUL, {"y": (245, 200, 60, 255), "w": (255, 245, 190, 255), "d": (180, 120, 30, 255)}, mirror=True))
     write_png(out / "objects" / "shutter_door.png", shutter_door())
     write_png(out / "enemies" / "zombie.png", zombie_sheet())
     write_png(out / "enemies" / "zombie_king.png", zombie_king_sheet())

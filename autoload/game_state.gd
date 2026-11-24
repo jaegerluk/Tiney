@@ -6,6 +6,7 @@ signal keys_changed(dungeon: StringName, amount: int)
 signal big_keys_changed(dungeon: StringName, amount: int)
 signal dungeon_changed(dungeon: StringName)
 signal orbs_changed(count: int)
+signal souls_changed(count: int)
 
 const MAX_RUPEES := 999
 
@@ -23,6 +24,8 @@ var _keys: Dictionary[StringName, int] = {}
 var _big_keys: Dictionary[StringName, int] = {}
 ## Magische Kugeln (IDs, z. B. der Dungeon). Drei öffnen die große Tür.
 var orbs: Array[StringName] = []
+## Gesammelte goldene Seelen (Sammelobjekte, Arbeitstitel „Skulltulas“).
+var souls: int = 0
 var _flags: Dictionary[String, bool] = {}
 var _values: Dictionary[String, Variant] = {}
 ## Liegen gelassene Drops je Raumpfad: [{"scene": Pfad, "position": Vector2}, ...]
@@ -34,6 +37,7 @@ func reset() -> void:
 	_keys.clear()
 	_big_keys.clear()
 	orbs.clear()
+	souls = 0
 	_flags.clear()
 	_values.clear()
 	_room_drops.clear()
@@ -101,6 +105,11 @@ func add_orb(id: StringName) -> void:
 	orbs_changed.emit(orbs.size())
 
 
+func add_soul() -> void:
+	souls += 1
+	souls_changed.emit(souls)
+
+
 func set_flag(id: String) -> void:
 	_flags[id] = true
 
@@ -157,6 +166,7 @@ func snapshot() -> Dictionary:
 		"keys": _keys.duplicate(),
 		"big_keys": _big_keys.duplicate(),
 		"orbs": orbs.duplicate(),
+		"souls": souls,
 		"flags": _flags.duplicate(),
 		"values": _values.duplicate(true),
 		"room_drops": _room_drops.duplicate(true),
@@ -170,6 +180,8 @@ func restore(data: Dictionary) -> void:
 	_big_keys.assign(data.get("big_keys", {}))
 	orbs.assign(data.get("orbs", []))
 	orbs_changed.emit(orbs.size())
+	souls = data.get("souls", 0)
+	souls_changed.emit(souls)
 	_flags.assign(data.flags)
 	_values.assign(data["values"].duplicate(true))
 	_room_drops.assign(data.room_drops.duplicate(true))
