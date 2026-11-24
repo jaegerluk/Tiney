@@ -37,6 +37,21 @@ func hold(action: StringName, pressed: bool = true) -> void:
 		Input.action_release(action)
 
 
+## Nach einem Tod: wartet auf den Game-Over-Bildschirm, drückt Continue und wartet, bis es weitergeht.
+func continue_after_death(game: Node) -> void:
+	var screen := game.get_node("GameOver") as GameOverScreen
+	for i in 300:
+		await frames(1)
+		if screen.is_waiting():
+			break
+	await tap("interact")
+	for i in 120:
+		await frames(1)
+		if not get_tree().paused:
+			break
+	await frames(30)
+
+
 ## Aktion einmal antippen: drücken, einen Physik-Frame warten, loslassen.
 func tap(action: StringName) -> void:
 	hold(action, true)

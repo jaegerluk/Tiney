@@ -47,7 +47,7 @@ func run() -> void:
 
 	# Tod
 	player.take_damage(99)
-	await frames(45)
+	await continue_after_death(game)
 	room = game.current_room
 	check_eq(GameState.rupees, 1, "Rubine auf Stand der Statue")
 	check_eq(GameState.keys(), 0, "Schlüssel auf Stand der Statue")

@@ -50,7 +50,7 @@ func run() -> void:
 			falls += 1
 		was = player.is_falling()
 	hold("move_right", false)
-	await frames(60)
+	await continue_after_death(game)
 	check(falls >= 2, "Mit gedrückter Taste fällt man wiederholt (%d Stürze)" % falls)
 	check(player.get_node("Sprite2D").visible and player.get_node("Sprite2D").scale == Vector2.ONE, "Nach dem Tod im Loch: Spieler sichtbar und normal groß")
 	check(not player.is_falling() and player._controls_enabled, "Nach dem Tod steuerbar")

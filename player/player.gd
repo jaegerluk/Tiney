@@ -141,7 +141,24 @@ func revive() -> void:
 	_invincible_left = 0.0
 	_knockback_left = 0.0
 	_sprite.visible = true
+	_sprite.rotation = 0.0
+	_sprite.scale = Vector2.ONE
+	_sprite.modulate = Color.WHITE
 	health_changed.emit(health, max_health)
+
+
+## Todesanimation (läuft auch bei pausiertem Spiel): dreht sich und sinkt zusammen.
+func play_death() -> void:
+	_sprite.visible = true
+	_invincible_left = 0.0
+	var tween := create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	for i in 4:
+		tween.tween_callback(func() -> void: _set_facing([Vector2.DOWN, Vector2.LEFT, Vector2.UP, Vector2.RIGHT][i]))
+		tween.tween_interval(0.12)
+	tween.tween_callback(func() -> void: _set_facing(Vector2.DOWN))
+	tween.tween_property(_sprite, "scale", Vector2(1.3, 0.4), 0.25)
+	tween.parallel().tween_property(_sprite, "modulate", Color(0.6, 0.6, 0.6), 0.25)
+	await tween.finished
 
 
 ## Herzcontainer: mehr Maximum, Leben ganz aufgefüllt.

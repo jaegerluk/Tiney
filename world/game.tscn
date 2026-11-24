@@ -5,6 +5,7 @@
 [ext_resource type="Script" path="res://world/room_camera.gd" id="3_camera"]
 [ext_resource type="PackedScene" path="res://ui/hud.tscn" id="4_hud"]
 [ext_resource type="Script" path="res://debug/debug_menu.gd" id="5_debug"]
+[ext_resource type="PackedScene" path="res://ui/game_over.tscn" id="6_game_over"]
 
 [node name="Game" type="Node2D"]
 y_sort_enabled = true
@@ -32,6 +33,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
+
+[node name="GameOver" parent="." instance=ExtResource("6_game_over")]
 
 [node name="DebugMenu" type="CanvasLayer" parent="."]
 script = ExtResource("5_debug")

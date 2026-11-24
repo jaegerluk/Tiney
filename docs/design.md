@@ -138,6 +138,7 @@ Ideen zur Vorbereitung der Wendung (offen):
 
 ## Speichern & Tod (entschieden)
 - **Speicherstatuen** stehen in einer Wasserpfütze. Wer die Pfütze betritt, speichert automatisch (kurze Meldung „Gespeichert“). Die Statue heilt nicht. Das Konzept wird später verfeinert (z. B. einzelne Pfützen in Türen).
+- **Game Over:** Spiel friert ein, der Held dreht sich und sinkt zusammen, das Bild wird schwarz, „GAME OVER“ und „Continue“. Weiter mit Interaktion, Angriff oder Start.
 - **Tod:** Alles wird auf den Stand der letzten Statue zurückgesetzt (Gegner, Krüge, Türen, Schalter, Rubine, Schlüssel, Inventar). Man erscheint mit vollem Leben an der Statue. Vor der ersten Statue gilt der Spielstart.
 - Speichern auf Festplatte kommt später zusammen mit einem Titelmenü (Neues Spiel / Fortsetzen).
 

@@ -26,7 +26,7 @@ Er zählt über einen `Logger` (`tests/error_counter.gd`) auch Engine- und Skrip
 `--script` ist für Prüfungen ungeeignet: Dort sind Autoloads nicht geladen, und `ResourceSaver` entfernt UIDs.
 
 **Tests schreiben:** `tests/test_<thema>.gd` mit `extends TestCase`, `run()` überschreiben (darf `await` nutzen).
-Hilfen: `check`, `check_eq`, `frames(n)`, `hold(action)`, `tap(action)`. Der Runner setzt vor jedem Test
+Hilfen: `check`, `check_eq`, `frames(n)`, `hold(action)`, `tap(action)`, `continue_after_death(game)` (drückt nach einem Tod Continue). Der Runner setzt vor jedem Test
 `GameState`, `Difficulty`, Eingaben und Pause zurück. Neue Features bekommen einen Test.
 
 ## Ordnerstruktur (nach Features)
@@ -180,6 +180,6 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Schilder liest man mit `interact`**, wenn man davor steht und nach oben schaut (wie in ALttP). Im Prototyp erschien der Text automatisch.
 - **Das Inventar-Menü pausiert das Spiel** (`InventoryUI` läuft mit `process_mode = Always`).
 - **Persistente Hauptszene** statt `change_scene_to_file`: Spieler und HUD überleben den Raumwechsel; später lässt sich Scrollen zwischen Räumen ergänzen.
-- **Tod:** Alles auf den Stand der letzten Speicherstatue (Welt, Rubine, Schlüssel, Inventar), volles Leben an der Statue. Die Statue selbst heilt nicht.
+- **Tod:** Todesanimation (`Player.play_death`), dann `GameOverScreen` (`ui/game_over.tscn`, wartet auf Continue: Interaktion/Angriff/Start), dann alles auf den Stand der letzten Speicherstatue (Welt, Rubine, Schlüssel, Inventar), volles Leben an der Statue. Die Statue selbst heilt nicht.
 - **Spieler und Gegner kollidieren nicht miteinander**, nur ihre Hitboxen/Hurtboxen wirken (wie ALttP). NPCs wie die Kuh blockieren dagegen.
 - **Platzhalter-Sprites** für Rubine, Schlüssel, Herz, Krug, Gras, Schlüsseltür, Statue und Steinboden erzeugt `tools/make_placeholders.py`.

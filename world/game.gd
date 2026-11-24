@@ -20,6 +20,7 @@ var _save: Dictionary = {}
 @onready var _camera: RoomCamera = $RoomCamera
 @onready var _fade: ColorRect = $Fade/ColorRect
 @onready var _hud: HUD = $HUD
+@onready var _game_over: GameOverScreen = $GameOver
 
 
 func _ready() -> void:
@@ -154,13 +155,17 @@ func _on_save_requested(statue: SaveStatue) -> void:
 	save_game(statue.respawn_position(), Vector2.UP)
 
 
-## Tod: alles auf den letzten Spielstand, volles Leben, an die Statue.
+## Tod: Todesanimation, Game-Over-Bildschirm (wartet auf Continue), dann alles auf den letzten
+## Spielstand, volles Leben, an die Statue.
 func _on_player_died() -> void:
 	while _changing_room:
 		await get_tree().process_frame
 	_changing_room = true
 	_player.set_controls_enabled(false)
-	await _fade_to(1.0)
+	_player.discard_carried()
+	get_tree().paused = true
+	await _player.play_death()
+	await _game_over.run()
 	GameState.restore(_save.state)
 	if _player.inventory:
 		_player.inventory.restore(_save.inventory)
@@ -168,7 +173,8 @@ func _on_player_died() -> void:
 	_player.revive()
 	_swap_room(_save.room, false)
 	_place_player(_save.position, _save.facing)
-	await _fade_to(0.0)
+	get_tree().paused = false
+	await _game_over.close()
 	_player.set_controls_enabled(true)
 	_changing_room = false
 
