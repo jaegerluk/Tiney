@@ -59,8 +59,9 @@ Ideen zur Vorbereitung der Wendung (offen):
 - Bosse pro Dungeon und einige Zwischenbosse (Inspiration: *The Binding of Isaac*)
 - Secrets und Geheimwege
 
+- Magieleiste (für Feuerstab und Enthüllungsglas)
+
 **Vielleicht**
-- Magieanzeige
 - Orden
 - Achievements
 
@@ -120,7 +121,21 @@ Ideen zur Vorbereitung der Wendung (offen):
 
 ## Dunkle Räume (entschieden)
 - Dunkle Räume sind fast schwarz; um den Helden ein kleiner Lichtkreis (~2 Tiles). Brennende Feuerschalen erhellen ihre Umgebung.
-- Feuerschalen werden vorerst über Schalter angezündet; später durch ein Feuer-Item (z. B. Laterne). Pro Schale einstellbar, ob sie dauerhaft brennt oder nach einiger Zeit ausgeht. Brennen alle Schalen einer Gruppe, kann sich z. B. eine Tür öffnen.
+- Feuerschalen werden vorerst über Schalter angezündet; später durch die Laterne (D1) oder den Feuerstab (D3). Pro Schale einstellbar, ob sie dauerhaft brennt oder nach einiger Zeit ausgeht. Brennen alle Schalen einer Gruppe, kann sich z. B. eine Tür öffnen.
+
+## Dungeon-Items (Konzept, noch nicht gebaut)
+- **Prinzip:** 1–2 Items pro Dungeon. Die Rätsel eines Dungeons bauen auf seinen Items auf, der Boss nutzt sie mit.
+- **Zuordnung (vorläufig):**
+
+  | Dungeon | Items | Wofür |
+  |---|---|---|
+  | D1 Kerker | **Laterne**, **Bomben** | Laterne: größerer Lichtkreis, zündet Feuerschalen. Bomben: rissige Wände sprengen (Geheimwege), Gegner, Schalter hinter Gittern |
+  | D2 Wiese & Wald | **Bogen**, **Enterhaken** | Bogen: Augen-/Fernschalter, Gegner auf Distanz. Enterhaken: zu Pfosten/Truhen über Abgründe, holt kleine Dinge heran |
+  | D3 (offen) | **Feuerstab**, **neu erfundenes Item** | Feuerstab: Feuerschalen aus der Ferne, Ranken/Spinnweben verbrennen. Das eigene Item wird später erfunden |
+  | optional | **Enthüllungsglas** | hinter einem Secret/Geheimweg; zeigt versteckte Truhen, falsche Wände, unsichtbare Wege. Nur für Bonus-Inhalte nötig |
+- **Abgründe** löst der Enterhaken, kein eigenes Sprung-Item.
+- **Ressourcen:** Bomben und Pfeile sind Munition (Drops, Shop). Feuerstab und Enthüllungsglas verbrauchen Magie aus einer **Magieleiste** im HUD (Magie-Krüge als Drop).
+- Da D2 und D3 frei wählbar sein könnten, darf der Hauptweg eines Dungeons nur Items aus D1 und aus ihm selbst brauchen. Fremde Items öffnen nur Secrets und Geheimwege (Backtracking).
 
 ## Karte & Kompass (entschieden, noch nicht gebaut)
 - **Karte pro Dungeon** als Fundstück (wie Schlüssel). Der Hub braucht keine.
@@ -148,7 +163,7 @@ Ideen zur Vorbereitung der Wendung (offen):
 - Thema von Dungeon 3
 - Enden je nach Schwierigkeit: Welche Stufen bekommen welches Ende?
 - Reihenfolge von Dungeon 2 und 3 frei wählbar?
-- Kommen Magie, Orden und Achievements dazu?
+- Kommen Orden und Achievements dazu?
 
 ## Umfang & Reihenfolge (gegen das Ausufern)
 1. **Meilenstein 1 – Vertical Slice:** Testbereich, Held mit Bewegung und Schwert, ein Gegnertyp, Schwierigkeitssystem (Skalierung + Raumvarianten), Raumwechsel, Türen, Schalter, Schlüssel
