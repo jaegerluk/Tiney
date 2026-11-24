@@ -26,6 +26,7 @@ func _ready() -> void:
 	add_to_group(Effects.GAME_FEEL_GROUP)
 	_hud.show_health(_player.health, _player.max_health)
 	_player.died.connect(_on_player_died)
+	_player.object_thrown.connect(_on_object_thrown)
 	_camera.scroll_started.connect(_on_scroll_started)
 	_camera.scroll_finished.connect(_on_scroll_finished)
 	_load_room(start_room, start_entry)
@@ -69,6 +70,7 @@ func _load_room(room_path: String, entry: StringName) -> void:
 func _swap_room(room_path: String, keep_drops: bool) -> void:
 	_hud.hide_boss()
 	_hud.hide_info()
+	_player.discard_carried()
 	if current_room:
 		if keep_drops:
 			GameState.store_drops(current_room.scene_file_path, _collect_drops(current_room))
@@ -116,6 +118,25 @@ func show_dialog(pages: Array, speaker: String = "", portrait: Texture2D = null)
 	get_tree().paused = true
 	await _hud.dialog_box.run(pages, speaker, portrait)
 	get_tree().paused = false
+
+
+const THROWN_SCENE := preload("res://combat/projectile/thrown_object.tscn")
+
+
+## Geworfener (oder fallen gelassener) Gegenstand: als Geschoss im aktuellen Raum.
+func _on_object_thrown(data: Dictionary, from: Vector2, direction: Vector2) -> void:
+	if current_room == null:
+		return
+	var thrown: ThrownObject = THROWN_SCENE.instantiate()
+	thrown.direction = direction if direction != Vector2.ZERO else Vector2.DOWN
+	thrown.debris_color = data.get("debris_color", Color.WHITE)
+	thrown.fixed_drop = data.get("fixed_drop")
+	thrown.drop_table = data.get("drop_table")
+	if direction == Vector2.ZERO:
+		thrown.max_distance = 0.0
+	thrown.position = current_room.to_local(from)
+	current_room.add_child(thrown)
+	(thrown.get_node("Sprite2D") as Sprite2D).texture = data.get("texture")
 
 
 ## Bildschirmwechsel: alles friert ein, der Spieler rückt ein Stück in den neuen Bildschirm.

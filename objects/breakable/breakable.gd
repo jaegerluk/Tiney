@@ -1,6 +1,8 @@
 class_name Breakable
 extends StaticBody2D
-## Etwas, das ein Schwerthieb zerstört (Krug, Grasbüschel). Kann etwas fallen lassen.
+## Etwas Zerbrechliches (Krug, Grasbüschel, Stein). Kann etwas fallen lassen.
+## liftable: mit Interaktion hochheben und werfen (braucht ein InteractZone-Kind).
+## sword_breakable: geht mit dem Schwert kaputt (Stein: nein, nur werfen).
 ## Einmal zerstört, bleibt es weg (auch nach Raumwechsel).
 
 signal broken
@@ -13,6 +15,8 @@ signal broken
 @export var min_tier: int = 0
 ## Farbe der Partikel beim Zerbrechen (Scherben, Halme).
 @export var debris_color: Color = Color(0.67, 0.4, 0.24)
+@export var liftable: bool = false
+@export var sword_breakable: bool = true
 
 var _broken: bool = false
 
@@ -24,6 +28,9 @@ func _ready() -> void:
 		queue_free()
 		return
 	($Hurtbox as Hurtbox).hurt.connect(_on_hurt)
+	var zone := get_node_or_null("InteractZone") as InteractZone
+	if zone:
+		zone.interacted.connect(lift)
 
 
 func break_apart() -> void:
@@ -45,5 +52,21 @@ func break_apart() -> void:
 	tween.chain().tween_callback(queue_free)
 
 
+## Hochheben: Der Gegenstand verschwindet hier (gilt als weg) und der Held trägt ihn.
+func lift(player: Player) -> void:
+	if not liftable or _broken or player.is_carrying():
+		return
+	_broken = true
+	GameState.mark_gone(self)
+	player.carry({
+		"texture": _sprite.texture,
+		"debris_color": debris_color,
+		"fixed_drop": fixed_drop,
+		"drop_table": drop_table,
+	})
+	queue_free()
+
+
 func _on_hurt(_hitbox: Hitbox) -> void:
-	break_apart()
+	if sword_breakable:
+		break_apart()

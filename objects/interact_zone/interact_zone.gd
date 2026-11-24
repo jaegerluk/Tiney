@@ -41,7 +41,7 @@ func has_player() -> bool:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if _player == null or not event.is_action_pressed("interact") or not _facing_ok():
+	if _player == null or not event.is_action_pressed("interact") or _player.is_carrying() or not _facing_ok():
 		return
 	get_viewport().set_input_as_handled()
 	interacted.emit(_player)

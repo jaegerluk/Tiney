@@ -808,6 +808,24 @@ def skeleton_sheet() -> list[list[tuple]]:
     return px
 
 
+STONE = [  # linke Hälfte, schwerer grauer Stein
+    "........",
+    "........",
+    "........",
+    ".....ooo",
+    "...oollg",
+    "..olllgg",
+    ".olggggg",
+    ".olggggg",
+    "oggggggg",
+    "ogggdggg",
+    "oggggggd",
+    ".oggdddd",
+    "..oddddd",
+    "...ooooo",
+]
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -825,6 +843,7 @@ def main() -> None:
     write_png(ROOT / "assets" / "tilesets" / "dungeon_walls.png", dungeon_walls())
     write_png(out / "pickups" / "big_key.png", from_map(BIG_KEY, {"y": (240, 200, 60, 255), "r": (220, 40, 60, 255)}))
     write_png(out / "objects" / "chest.png", chest())
+    write_png(out / "objects" / "stone.png", from_map(STONE, {"g": (130, 130, 140, 255), "l": (175, 175, 185, 255), "d": (90, 90, 100, 255)}, mirror=True))
     write_png(out / "enemies" / "arrow.png", arrow_sprite())
     write_png(out / "enemies" / "skeleton_archer.png", skeleton_sheet())
     write_png(out / "enemies" / "bat.png", bat_sheet())

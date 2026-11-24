@@ -23,6 +23,7 @@
 [ext_resource type="PackedScene" path="res://objects/push_block/push_block.tscn" id="block_r"]
 [ext_resource type="PackedScene" path="res://objects/pit/pit.tscn" id="pit_r"]
 [ext_resource type="PackedScene" path="res://enemies/archer/archer.tscn" id="archer_r"]
+[ext_resource type="PackedScene" path="res://objects/breakable/stone.tscn" id="stone_r"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ExitToSwitches"]
 size = Vector2(8, 32)
@@ -185,6 +186,12 @@ pullable = false
 
 [node name="PushBlock" parent="." instance=ExtResource("block_r")]
 position = Vector2(160, 176)
+
+[node name="Stone1" parent="." instance=ExtResource("stone_r")]
+position = Vector2(208, 96)
+
+[node name="Stone2" parent="." instance=ExtResource("stone_r")]
+position = Vector2(224, 96)
 
 [node name="Pot1" parent="." instance=ExtResource("12_r")]
 position = Vector2(176, 48)

@@ -81,7 +81,8 @@ Ideen zur Vorbereitung der Wendung (offen):
 - **Großer Schlüssel:** einer pro Dungeon, öffnet die Bosstür und wird dabei verbraucht. Keine großen Truhen.
 - **Truhen** haben einen festen Inhalt, öffnen sich von jeder Seite per Interaktion und bleiben offen. Beim Öffnen hält der Held den Inhalt kurz hoch (Spiel pausiert), bei wichtigen Dingen mit Textmeldung („Du hast den großen Schlüssel!“), bei Rubinen ohne Text.
 - **Rubine** als Währung: grün 1, blau 5, rot 20. Höchstens 999.
-- **Krüge und Gras** gehen vorerst mit dem Schwert kaputt. Jeder kann einen **festen Inhalt** haben (z. B. Schlüssel), sonst lassen sie zufällig Rubine oder Herzen fallen. Heben und Werfen wie in ALttP kommt später.
+- **Heben & Werfen:** Krüge und Steine hebt man mit Interaktion hoch. Beim Tragen läuft man normal, Schwert und Items sind gesperrt; Angriff oder Interaktion wirft (~4 Tiles). Der Wurf zerbricht beim Aufprall, macht 1 Treffer, löst Kristalle aus, der Inhalt fällt dort heraus. Wird man getroffen, fällt der Gegenstand herunter. Steine gehen nicht per Schwert kaputt.
+- **Krüge und Gras** gehen weiterhin auch mit dem Schwert kaputt. Jeder kann einen **festen Inhalt** haben (z. B. Schlüssel), sonst lassen sie zufällig Rubine oder Herzen fallen. Heben und Werfen wie in ALttP kommt später.
 - **Nichts erscheint neu:** Eingesammeltes, Zerstörtes und Getötetes bleibt weg, auch nach Raumwechsel. Liegen gelassene Drops bleiben liegen, Schalter behalten ihren Zustand.
 - **Türen und Durchgänge** laden einen anderen Raum (mit Abblenden).
 - **Erster Gegner: Schleim.** Hüpft herum und verfolgt den Spieler aus der Nähe.

@@ -4,6 +4,8 @@ extends CharacterBody2D
 
 signal health_changed(current: int, maximum: int)
 signal died
+## Wurf: Game erzeugt das Geschoss im aktuellen Raum. direction = ZERO heißt fallen lassen.
+signal object_thrown(data: Dictionary, from: Vector2, direction: Vector2)
 
 ## Lebenspunkte pro Herz. ½ Herz = 10 LP. Feine Einheit, damit skalierter Schaden sauber passt.
 const HP_PER_HEART := 20
@@ -37,6 +39,10 @@ var _falling: bool = false
 var _fall_tween: Tween = null
 ## Objekt, das der Held gerade festhält (z. B. ein Block zum Ziehen). null = nichts.
 var _grabbed: Node = null
+## Getragener Gegenstand (Krug, Stein) als Daten; leer = nichts.
+var _carried: Dictionary = {}
+## Werfen erst nach einem neuen Tastendruck (die Hebe-Taste muss erst losgelassen werden).
+var _throw_armed: bool = false
 var _invincible_left: float = 0.0
 var _knockback_left: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
@@ -88,9 +94,21 @@ func _physics_process(delta: float) -> void:
 		velocity = input * move_speed
 		if input != Vector2.ZERO:
 			_set_facing(_facing_from(input))
-		if Input.is_action_just_pressed("use_item") and inventory:
+		var was_carrying := is_carrying()
+		if was_carrying:
+			# Tragen: kein Schwert, keine Items; Angriff oder Interaktion wirft.
+			# Erst prüfen, dann entsperren: Der Druck zum Aufheben gilt im nächsten Frame noch als „gerade gedrückt“.
+			var throw_pressed := Input.is_action_just_pressed("attack") or Input.is_action_just_pressed("interact")
+			if throw_pressed and _throw_armed:
+				throw_carried()
+			elif not Input.is_action_pressed("attack") and not Input.is_action_pressed("interact"):
+				_throw_armed = true
+			_playback.travel("walk" if input != Vector2.ZERO else "idle")
+		elif Input.is_action_just_pressed("use_item") and inventory:
 			inventory.use_selected(self)
-		if Input.is_action_just_pressed("attack"):
+		if was_carrying:
+			pass  # derselbe Druck, der wirft, soll nicht auch noch zuschlagen
+		elif Input.is_action_just_pressed("attack"):
 			_start_attack()
 		else:
 			_playback.travel("walk" if input != Vector2.ZERO else "idle")
@@ -157,9 +175,50 @@ func hold_up(icon: Texture2D) -> void:
 		_sprite.frame = 0
 
 
+func is_carrying() -> bool:
+	return not _carried.is_empty()
+
+
+## Hebt einen Gegenstand über den Kopf (Daten: texture, debris_color, fixed_drop, drop_table).
+func carry(data: Dictionary) -> void:
+	_carried = data
+	_throw_armed = false
+	var sprite: Sprite2D = $CarriedSprite
+	sprite.texture = data.get("texture")
+	sprite.visible = true
+
+
+## Wirft den getragenen Gegenstand in Blickrichtung.
+func throw_carried() -> void:
+	if not is_carrying():
+		return
+	var data := _carried
+	_clear_carried()
+	object_thrown.emit(data, global_position + facing * 6.0, facing)
+
+
+## Lässt ihn fallen (zerbricht vor den Füßen), z. B. wenn der Held getroffen wird.
+func drop_carried() -> void:
+	if not is_carrying():
+		return
+	var data := _carried
+	_clear_carried()
+	object_thrown.emit(data, global_position + Vector2(0, 4), Vector2.ZERO)
+
+
+## Verwirft ihn ohne Effekt (Raumwechsel, Tod).
+func discard_carried() -> void:
+	_clear_carried()
+
+
+func _clear_carried() -> void:
+	_carried = {}
+	($CarriedSprite as Sprite2D).visible = false
+
+
 ## true, solange die Interaktionstaste gehalten wird und der Held handeln kann (zum Greifen).
 func is_grab_held() -> bool:
-	return _controls_enabled and not _attacking and not _falling and Input.is_action_pressed("interact")
+	return _controls_enabled and not _attacking and not _falling and not is_carrying() and Input.is_action_pressed("interact")
 
 
 func is_grabbing() -> bool:
@@ -272,6 +331,7 @@ func _start_attack() -> void:
 func _on_hurt(hitbox: Hitbox) -> void:
 	if is_invincible() or health <= 0:
 		return
+	drop_carried()
 	_knockback_velocity = hitbox.knockback_direction(global_position) * hitbox.knockback
 	_knockback_left = knockback_time
 	_invincible_left = invincible_time

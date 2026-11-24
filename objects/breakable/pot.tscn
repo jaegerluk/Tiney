@@ -4,9 +4,13 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/objects/pot.png" id="2_tex"]
 [ext_resource type="Resource" path="res://items/drops/pot_drops.tres" id="3_drops"]
 [ext_resource type="Script" path="res://combat/hurtbox.gd" id="4_hurtbox"]
+[ext_resource type="Script" path="res://objects/interact_zone/interact_zone.gd" id="5_zone"]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
 size = Vector2(12,10)
+
+[sub_resource type="RectangleShape2D" id="ZoneShape"]
+size = Vector2(26, 26)
 
 [sub_resource type="RectangleShape2D" id="HurtShape"]
 size = Vector2(14, 14)
@@ -16,6 +20,7 @@ collision_layer = 1
 collision_mask = 0
 script = ExtResource("1_script")
 drop_table = ExtResource("3_drops")
+liftable = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_tex")
@@ -32,3 +37,13 @@ script = ExtResource("4_hurtbox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 shape = SubResource("HurtShape")
+
+[node name="InteractZone" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 2
+monitorable = false
+script = ExtResource("5_zone")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractZone"]
+position = Vector2(0, 3)
+shape = SubResource("ZoneShape")
