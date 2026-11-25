@@ -164,6 +164,19 @@ Ideen zur Vorbereitung der Wendung (offen):
 - **Sammelobjekte:** einige „Skulltulas“ verstecken (siehe Sammelobjekte).
 - **Items:** noch offen.
 
+## Welt & Lore
+**Entschieden**
+- Die Spielwelt ist ein riesiger, nach außen geschlossener **Komplex**, gebaut nur, um die Dämonengottheit zu versiegeln. Deshalb ist die Welt so klein.
+- Die **Bewohner** (z. B. der Shopbesitzer im Hub) sind Nachfahren der Menschen, die damals mit eingeschlossen wurden. Den Sinn ihrer Welt kennen sie nicht mehr.
+- Nur der **Mönch** weiß noch, wozu alles da ist. Er liegt in einem ewigen Schlaf hinter der großen Tür und bewacht dort die Versiegelungsstelle selbst.
+
+**Ideen (offen)**
+- Jeder Teil des Komplexes hatte einen Zweck: Kerker (D1) für die, die der Stimme der Gottheit verfallen; Wiese & Wald (D2) als Gärten und Obsthaine zur Versorgung; Hub als alter Klosterhof.
+- Der Held sitzt im Kerker, weil er die Stimme gehört hat? Zombies als tote Gefangene, die die Gottheit wieder aufstehen lässt?
+- Die Kugeln sind absichtlich auf drei Teile verteilt und bewacht, damit niemand allein das Siegel bricht.
+- D3-Ideen mit Zweck im Komplex: Archiv/Skriptorium, Zisternen/Wasserwerk, Schmiede/Gießerei, Glockenturm/Observatorium.
+- Weiß der Held, dass er die Stimme gehört hat? Haben die Bewohner Angst vor ihm als entflohenem Gefangenen?
+
 ## Story & Figuren – Ideen für später
 - Dungeon 2: ein bekiffter Hippie.
 - Irgendwo im Spiel eine schwule Liebesgeschichte.
