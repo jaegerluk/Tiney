@@ -117,6 +117,13 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Items** (`Item`): `heal_amount`, `consumable`. Auswahl im Menü (`Inventory.selected`), Benutzen mit `use_item`. Heil-Items werden bei vollem Leben nicht verbraucht.
 - **Shop:** Ein `Shop`-Knoten mit `ShopItem`-Kindern (Preis, Inhalt als Pickup-Szene oder `hint_pages`, Vorrat). Kaufen und Meldungen laufen über den Shop. Steht der Spieler vor einer Ware, zeigt das HUD `item_name`, Preis und `description` in der Info-Box (ohne Pause).
 
+## Karte & Kompass
+- **Ein Dungeon = ein Ordner** mit Raumszenen (`world/<dungeon>/`). `DungeonMap` (`world/map/dungeon_map.gd`) liest die Karte selbst aus den Szenen (Instanzen ohne SceneTree, Cache pro Ordner): Raumgröße aus den Kamera-Markern, Durchgänge aus `RoomExit`s am Rand, Treppen, Truhen, Schlüssel-/Bosstüren, Speicherstatuen, Boss (Gegner mit Signal `boss_appeared`).
+- **Von Hand pro Raum** nur `Room.map_position` (Bildschirm-Raster, linke obere Ecke) und `Room.map_floor` (0 = 1F, −1 = B1).
+- `tests/test_dungeon_maps.gd` prüft alle Dungeons: keine Überlappung, Ziele und Eingänge existieren, Wand-Ausgänge führen in den Nachbarraum auf der Karte.
+- Besitz: `GameState.has_map()/has_compass()` (Merker, gehören zum Spielstand), besuchte Räume `GameState.visit_room()` (setzt Game). Pickup `DungeonItemPickup` (`dungeon_map.tscn`, `compass.tscn`).
+- Anzeige: `MapScreen` (Aktion `map`: M / Gamepad Select, pausiert, hoch/runter = Stockwerk) und `MiniMap` (HUD unten rechts, 5×3 Bildschirme, ausgeblendet bei Meldungen/Info/Boss-Leiste), beide zeichnen mit `MapView`.
+
 ## Kamera, Treppen, Löcher, Blöcke
 - **`RoomCamera`:** bildschirmweises Schieben (Bildschirm = Viewport 256×224), solange `Room.screen_scroll` an ist. Game pausiert dabei und rückt den Spieler `scroll_nudge` Pixel weiter. Sprünge über `teleport_distance` (Teleport, Sturz) lösen keinen Scroll aus, die Kamera springt mit.
 - **Räume** möglichst als Vielfache von 256×224 bauen. Mitlaufende Kamera statt Schieben: am Raum `Screen Scroll` ausschalten.
@@ -145,6 +152,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
   | `interact` | K, E | rechts (Xbox B) |
   | `use_item` | L, Q | links (Xbox X) |
   | `menu` | Esc, Tab | Start |
+  | `map` | M | Select (Back) |
 
   Die Aktionen `up/down/left/right/inventory` gehören zum alten Prototyp und fallen mit ihm weg.
 - Git: `core.fileMode=false` (Rechtewechsel 644→755 ist Rauschen). `.godot/` wird ignoriert, `.uid`-Dateien werden eingecheckt.
@@ -154,7 +162,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - Der alte Prototyp ist entfernt. Er bleibt unter dem Tag `prototyp-alt` erreichbar (`git show prototyp-alt:<pfad>`).
 - Hauptszene: `world/game.tscn`. Startraum ist `world/test_area/test_area.tscn` (2×2 Bildschirme, Dungeon `test`).
 - Testräume in `world/test_area/`:
-  - `test_area` (Start): Statue, Truhe, Schalter + Schiebeblock → Tür, Schild, Rubine, Herz, Schlüssel, Krüge (Pot3 mit Schlüssel), Gras, Kuh, Loch, Schleime, Zombie.
+  - `test_area` (Start): Statue, Truhen (Rubin, Karte, Kompass), Schalter + Schiebeblock → Tür, Schild, Rubine, Herz, Schlüssel, Krüge (Pot3 mit Schlüssel), Gras, Kuh, Loch, Schleime, Zombie.
     Ausgänge: Nordwand → `test_shop`, Ostwand unten rechts → `test_arena`, Südwand → `test_room_2`.
   - `test_room_2`: Gefangener (Dialog), Loch → `test_cellar`, Treppe → `test_cellar`, Schlüsseltür, Truhe mit großem Schlüssel, Bosstür → `test_boss_room`.
   - `test_shop`: Ladenbesitzer, Ware auf der Theke.
@@ -171,6 +179,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
   - Figuren: Dialoge mit NPCs und Schildern, Schleim, Zombie, Zombie-König (Boss-Gerüst), Kuh.
   - UI und Items: Item-Auswahl und -Benutzung, HUD (Lebensleiste, Rubine, Schlüssel, Item, Boss-Leiste).
   - Technik: Wand- und Boden-Tiles, Schwierigkeit mit Raumvarianten, Headless-Tests.
+- Vorhanden zusätzlich: Karte und Kompass (Testbereich), Sammelobjekt-Platzhalter.
 - Noch nicht vorhanden: Speichern auf Festplatte mit Titelmenü, Sound, Dungeon-Item (z. B. Bogen), echter Dungeon 1.
 
 ## Entscheidungen

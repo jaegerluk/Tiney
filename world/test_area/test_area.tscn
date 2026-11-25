@@ -25,6 +25,8 @@
 [ext_resource type="PackedScene" path="res://enemies/archer/archer.tscn" id="archer_r"]
 [ext_resource type="PackedScene" path="res://objects/breakable/stone.tscn" id="stone_r"]
 [ext_resource type="PackedScene" path="res://items/pickups/golden_soul.tscn" id="soul_r"]
+[ext_resource type="PackedScene" path="res://items/pickups/dungeon_map.tscn" id="map_r"]
+[ext_resource type="PackedScene" path="res://items/pickups/compass.tscn" id="compass_r"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ExitToSwitches"]
 size = Vector2(8, 32)
@@ -174,6 +176,14 @@ position = Vector2(150, 330)
 [node name="Chest" parent="." instance=ExtResource("chest_r")]
 position = Vector2(40, 40)
 content = ExtResource("rupeered_r")
+
+[node name="MapChest" parent="." instance=ExtResource("chest_r")]
+position = Vector2(40, 64)
+content = ExtResource("map_r")
+
+[node name="CompassChest" parent="." instance=ExtResource("chest_r")]
+position = Vector2(64, 64)
+content = ExtResource("compass_r")
 
 [node name="Archer1" parent="." instance=ExtResource("archer_r")]
 position = Vector2(330, 400)

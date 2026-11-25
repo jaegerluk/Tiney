@@ -20,6 +20,8 @@ extends CanvasLayer
 @onready var _info_label: Label = %InfoLabel
 @onready var _boss_name: Label = %BossName
 @onready var _boss_bar: ProgressBar = %BossBar
+@onready var map_screen: MapScreen = %MapScreen
+@onready var _mini_map: MiniMap = %MiniMap
 
 var _boss: Enemy = null
 
@@ -37,6 +39,25 @@ func _ready() -> void:
 		_on_inventory_changed()
 	_on_rupees_changed(GameState.rupees)
 	_on_dungeon_changed(GameState.current_dungeon)
+
+
+## Aktueller Raum für Karte und Mini-Karte (von Game beim Raumwechsel).
+func set_map_room(room_path: String) -> void:
+	map_screen.room_path = room_path
+	_mini_map.room_path = room_path
+
+
+## Position des Helden im aktuellen Raum (Pixel ab der linken oberen Raumecke).
+func set_map_player(local_pos: Vector2) -> void:
+	map_screen.player_pos = local_pos
+	_mini_map.player_pos = local_pos
+
+
+func _process(_delta: float) -> void:
+	var show := _mini_map.has_map() and not (_message_box.visible or _info_box.visible or _boss_panel.visible)
+	_mini_map.visible = show
+	if show:
+		_mini_map.refresh()
 
 
 func show_health(current: int, maximum: int) -> void:

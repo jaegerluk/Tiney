@@ -182,15 +182,16 @@ Ideen zur Vorbereitung der Wendung (offen):
 - Irgendwo im Spiel eine schwule Liebesgeschichte.
 - Warum der Held im Kerker gefangen ist, wird später mit der Story geklärt.
 
-## Karte & Kompass (entschieden, noch nicht gebaut)
+## Karte & Kompass (entschieden, im Testbereich gebaut)
 - **Karte pro Dungeon** als Fundstück (wie Schlüssel). Der Hub braucht keine.
 - **Ohne Karten-Item gibt es keine Karte**, weder Vollbild noch Mini-Karte. Mit dem Item erscheint sofort der ganze Dungeon.
-- **Kompass** als eigenes Fundstück pro Dungeon: markiert ungeöffnete Truhen und den Bossraum.
+- **Kompass** als eigenes Fundstück pro Dungeon: markiert ungeöffnete Truhen, verschlossene Schlüssel- und Bosstüren, Speicherstatuen und den Boss (kleine Symbole an der echten Position; Erledigtes verschwindet).
 - **Anzeige:**
   - Vollbild-Karte über eine eigene Taste (z. B. M / Gamepad Select), Spiel pausiert.
   - Räume als Kästchen im Raster, automatisch aus den Raumszenen erzeugt: Jeder Raum bekommt im Inspector Rasterposition und Stockwerk.
-  - Aktueller Raum blinkt, Stockwerke umschaltbar.
-  - Zusätzlich eine kleine **Mini-Karte im HUD** (Ecke).
+  - Besuchte Räume hell, unbesuchte dunkel, Durchgänge als helle Lücken, Treppen als Symbol. Aktueller Raum blinkt, der Held ist ein grüner Punkt, Stockwerke (1F, B1 …) mit hoch/runter umschaltbar.
+  - Zusätzlich eine kleine **Mini-Karte im HUD** unten rechts: aktueller Bildschirm und Umgebung (5×3), mit Kompass auch die Symbole.
+- Die Karte aktualisiert sich beim Bauen selbst; pro Raum werden nur Rasterposition und Stockwerk eingetragen.
 
 ## Spielgefühl (entschieden)
 - Kurzer Trefferstopp bei Treffern, leichtes Bildschirmwackeln, wenn man getroffen wird, und beim Boss.

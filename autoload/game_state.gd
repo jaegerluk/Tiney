@@ -7,6 +7,8 @@ signal big_keys_changed(dungeon: StringName, amount: int)
 signal dungeon_changed(dungeon: StringName)
 signal orbs_changed(count: int)
 signal souls_changed(count: int)
+## Karte oder Kompass eines Dungeons gefunden (oder durch restore geändert).
+signal dungeon_items_changed
 
 const MAX_RUPEES := 999
 
@@ -110,6 +112,34 @@ func add_soul() -> void:
 	souls_changed.emit(souls)
 
 
+## Karte des Dungeons (Standard: aktueller Dungeon). Liegt in den Merkern, gehört also zum Spielstand.
+func has_map(dungeon: StringName = &"") -> bool:
+	return has_flag("map:%s" % _dungeon_or_current(dungeon))
+
+
+func has_compass(dungeon: StringName = &"") -> bool:
+	return has_flag("compass:%s" % _dungeon_or_current(dungeon))
+
+
+func give_map(dungeon: StringName = &"") -> void:
+	set_flag("map:%s" % _dungeon_or_current(dungeon))
+	dungeon_items_changed.emit()
+
+
+func give_compass(dungeon: StringName = &"") -> void:
+	set_flag("compass:%s" % _dungeon_or_current(dungeon))
+	dungeon_items_changed.emit()
+
+
+## Besuchte Räume (für die Karte: besucht hell, unbesucht dunkel).
+func visit_room(room_path: String) -> void:
+	set_flag("visited:%s" % room_path)
+
+
+func is_visited(room_path: String) -> bool:
+	return has_flag("visited:%s" % room_path)
+
+
 func set_flag(id: String) -> void:
 	_flags[id] = true
 
@@ -188,6 +218,7 @@ func restore(data: Dictionary) -> void:
 	rupees_changed.emit(rupees)
 	keys_changed.emit(current_dungeon, keys())
 	big_keys_changed.emit(current_dungeon, big_keys())
+	dungeon_items_changed.emit()
 
 
 ## Eindeutige ID für einen Knoten in einer Raumszene: "<Szenenpfad>:<Pfad im Raum>".

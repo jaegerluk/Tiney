@@ -34,6 +34,11 @@ func _ready() -> void:
 	save_game(_player.global_position, _player.facing)
 
 
+func _process(_delta: float) -> void:
+	if current_room:
+		_hud.set_map_player(_player.global_position - current_room.camera_bounds().position)
+
+
 ## Wechselt mit Überblendung in einen anderen Raum.
 func change_room(room_path: String, entry: StringName) -> void:
 	if _changing_room:
@@ -91,6 +96,8 @@ func _swap_room(room_path: String, keep_drops: bool) -> void:
 	room.info_hidden.connect(_hud.hide_info)
 	current_room = room
 	GameState.current_dungeon = room.dungeon_id
+	GameState.visit_room(room_path)
+	_hud.set_map_room(room_path)
 	_camera.set_bounds(room.camera_bounds())
 	_camera.screen_scroll = room.screen_scroll
 	_player.set_light_enabled(room.dark)

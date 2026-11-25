@@ -872,6 +872,44 @@ SOUL = [  # linke Hälfte, goldene Seele (Platzhalter): Flamme mit Gesicht
 ]
 
 
+MAP_ITEM = [  # Pergament mit Kartenlinien (ganz, 16 breit)
+    "................",
+    "..oooooooooooo..",
+    ".oppppppppppppo.",
+    ".opkkkpppkkkppo.",
+    ".opkppkpkppkppo.",
+    ".opkkkkkkpkkppo.",
+    ".oppppkpppkpppo.",
+    ".opppkkkpkkkkpo.",
+    ".opppkpkkkppkpo.",
+    ".opppkkkpppprpo.",
+    ".oppppppppprrpo.",
+    ".opppppppppprpo.",
+    ".oddppppppppddo.",
+    "..oddddddddddo..",
+    "...oooooooooo...",
+    "................",
+]
+
+COMPASS = [  # linke Hälfte, runder Kompass
+    "........",
+    ".....ooo",
+    "...ooggg",
+    "..oggwww",
+    "..ogwwww",
+    ".ogwwwww",
+    ".ogwwwww",
+    ".ogwwwwk",
+    ".ogwwwww",
+    ".ogwwwww",
+    "..ogwwww",
+    "..oggwww",
+    "...ooggg",
+    ".....ooo",
+    "........",
+]
+
+
 def main() -> None:
     out = ROOT / "assets" / "sprites"
     for name, colors in RUPEE_COLORS.items():
@@ -904,6 +942,13 @@ def main() -> None:
     write_png(out / "objects" / "push_block.png", push_block())
     write_png(out / "pickups" / "orb.png", from_map(ORB, {"b": (120, 90, 230, 255), "w": (220, 210, 255, 255), "p": (70, 40, 150, 255)}, mirror=True))
     write_png(out / "pickups" / "golden_soul.png", from_map(SOUL, {"y": (245, 200, 60, 255), "w": (255, 245, 190, 255), "d": (180, 120, 30, 255)}, mirror=True))
+    write_png(out / "pickups" / "dungeon_map.png", from_map(MAP_ITEM, {"p": (235, 215, 170, 255), "k": (130, 95, 60, 255), "r": (210, 40, 40, 255), "d": (190, 165, 120, 255)}))
+    compass = from_map(COMPASS, {"g": (240, 200, 60, 255), "w": (245, 245, 235, 255), "k": (40, 40, 50, 255)}, mirror=True)
+    for y, x in ((3, 8), (4, 8), (5, 8), (6, 8)):
+        compass[y][x] = (220, 40, 40, 255)  # Nadel nach Norden
+    for y, x in ((8, 7), (9, 7), (10, 7)):
+        compass[y][x] = (90, 90, 110, 255)
+    write_png(out / "pickups" / "compass.png", compass)
     write_png(out / "objects" / "shutter_door.png", shutter_door())
     write_png(out / "enemies" / "zombie.png", zombie_sheet())
     write_png(out / "enemies" / "zombie_king.png", zombie_king_sheet())

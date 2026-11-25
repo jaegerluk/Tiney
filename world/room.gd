@@ -23,6 +23,12 @@ signal info_hidden
 @export var camera_top_left: Marker2D
 @export var camera_bottom_right: Marker2D
 
+@export_group("Karte")
+## Lage auf der Dungeon-Karte, in Bildschirmen (256×224). Linke obere Ecke des Raums.
+@export var map_position: Vector2i = Vector2i.ZERO
+## Stockwerk: 0 = Erdgeschoss (1F), 1 = 2F, -1 = Keller (B1) …
+@export var map_floor: int = 0
+
 var _tier_applied: bool = false
 
 

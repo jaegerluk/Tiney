@@ -21,6 +21,8 @@ size = Vector2(8, 32)
 y_sort_enabled = true
 script = ExtResource("r1")
 dungeon_id = &"test"
+map_position = Vector2i(-2, 2)
+map_floor = -1
 camera_top_left = NodePath("CameraBounds/TopLeft")
 camera_bottom_right = NodePath("CameraBounds/BottomRight")
 

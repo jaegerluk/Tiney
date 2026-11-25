@@ -79,6 +79,9 @@ func give(what: String) -> void:
 			_player().collect(load("res://items/potion.tres"))
 		"heal":
 			_player().heal(9999)
+		"map":
+			GameState.give_map()
+			GameState.give_compass()
 
 
 func teleport_to(room_path: String) -> void:
@@ -150,7 +153,8 @@ func _build() -> void:
 	give_grid.columns = 3
 	box.add_child(give_grid)
 	for entry in [["+100 Rubine", "rupees"], ["+1 Schlüssel", "key"], ["+1 Gr. Schlüssel", "big_key"],
-			["+1 Herz", "heart"], ["+1 Heiltrank", "potion"], ["Leben voll", "heal"]]:
+			["+1 Herz", "heart"], ["+1 Heiltrank", "potion"], ["Leben voll", "heal"],
+			["Karte+Kompass", "map"]]:
 		var what: String = entry[1]
 		_button(give_grid, entry[0], func() -> void: give(what))
 

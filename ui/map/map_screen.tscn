@@ -1,0 +1,38 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/map/map_screen.gd" id="1_script"]
+[ext_resource type="Script" path="res://ui/map/map_view.gd" id="2_view"]
+
+[node name="MapScreen" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.03, 0.03, 0.06, 1)
+
+[node name="FloorList" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 4.0
+offset_top = 8.0
+offset_right = 32.0
+offset_bottom = 120.0
+theme_override_font_sizes/font_size = 8
+
+[node name="MapView" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 2
+script = ExtResource("2_view")

@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/pickups/big_key.png" id="6_bigkey"]
 [ext_resource type="PackedScene" path="res://ui/dialog_box.tscn" id="7_dialog"]
 [ext_resource type="Resource" path="res://items/player_inventory.tres" id="8_inv"]
+[ext_resource type="PackedScene" path="res://ui/map/mini_map.tscn" id="9_minimap"]
+[ext_resource type="PackedScene" path="res://ui/map/map_screen.tscn" id="10_mapscreen"]
 
 [sub_resource type="StyleBoxFlat" id="BossBackground"]
 bg_color = Color(0.1, 0.08, 0.1, 1)
@@ -168,3 +170,9 @@ autowrap_mode = 3
 [node name="DialogBox" parent="." instance=ExtResource("7_dialog")]
 
 [node name="InventoryUI" parent="." instance=ExtResource("3_inventory")]
+
+[node name="MiniMap" parent="." instance=ExtResource("9_minimap")]
+unique_name_in_owner = true
+
+[node name="MapScreen" parent="." instance=ExtResource("10_mapscreen")]
+unique_name_in_owner = true
