@@ -21,7 +21,7 @@ func run() -> void:
 	check(not player._controls_enabled, "Steuerung während des Wechsels gesperrt")
 	await frames(40)
 	check_eq(game.current_room.name, &"TestRoom2", "Raum 2 geladen")
-	check_eq(player.global_position, Vector2(128, 32), "Spieler am Eingang 'from_test_area'")
+	check_eq(player.global_position, Vector2(112, 32), "Spieler am Eingang 'from_test_area'")
 	check_eq(player.facing, Vector2.DOWN, "Blickrichtung vom Eingang")
 	check_eq([camera.limit_left, camera.limit_top, camera.limit_right, camera.limit_bottom], [0, 0, 256, 224], "Kamera-Grenzen Raum 2")
 	check(player._controls_enabled, "Steuerung danach wieder frei")

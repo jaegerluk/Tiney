@@ -57,6 +57,7 @@ func _draw() -> void:
 		draw_rect(rect, COLOR_BORDER)
 		draw_rect(rect.grow(-1), fill)
 	for data in rooms:
+		_draw_inner_walls(data)
 		_draw_doors(data)
 	for data in rooms:
 		for marker in data.markers:
@@ -77,6 +78,18 @@ func _room_rect(data: Dictionary) -> Rect2:
 
 func _to_view(data: Dictionary, local_pos: Vector2) -> Vector2:
 	return _room_rect(data).position + local_pos / DungeonMap.SCREEN * cell_size
+
+
+## Innenwände großer Räume als dunkle Linie; Lücken bleiben offen (Durchgänge).
+func _draw_inner_walls(data: Dictionary) -> void:
+	var thickness := 1.0 if compact else 2.0
+	for segment in data.walls:
+		var a := _to_view(data, segment[0]).round()
+		var b := _to_view(data, segment[1]).round()
+		if is_equal_approx(a.x, b.x):
+			draw_rect(Rect2(a.x - thickness / 2.0, a.y, thickness, b.y - a.y), COLOR_BORDER)
+		else:
+			draw_rect(Rect2(a.x, a.y - thickness / 2.0, b.x - a.x, thickness), COLOR_BORDER)
 
 
 ## Durchgänge an Wänden: eine helle Lücke im Rand.

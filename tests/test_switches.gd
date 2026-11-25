@@ -15,7 +15,7 @@ func run() -> void:
 	player = game.get_node("Player")
 
 	# Durch die Westöffnung
-	player.global_position = Vector2(30, 112)
+	player.global_position = Vector2(30, 176)
 	await frames(2)
 	hold("move_left")
 	for i in 60:

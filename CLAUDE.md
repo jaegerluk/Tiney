@@ -46,7 +46,7 @@ Hilfen: `check`, `check_eq`, `frames(n)`, `hold(action)`, `tap(action)`, `contin
 | `tests/` | Headless-Tests und Runner |
 | `debug/` | Debug-Menü (F1, nur in Debug-Läufen) |
 | `effects/` | `Effects`: Partikel, Trefferstopp, Bildschirmwackeln |
-| `tools/` | Hilfsskripte außerhalb von Godot: `make_placeholders.py` (Sprites), `room_builder.py` (Raumszenen mit Tiles), `tidy_tscn.py` (Reihenfolge in .tscn reparieren) |
+| `tools/` | Hilfsskripte außerhalb von Godot: `make_placeholders.py` (Sprites), `room_builder.py` (Raumszenen mit Tiles), `tidy_tscn.py` (Reihenfolge in .tscn reparieren), `tile_edit.py` (einzelne Tiles in Raumszenen setzen/entfernen) |
 
 Szene und Skript liegen zusammen und tragen denselben Namen (`player/player.tscn`, `player/player.gd`).
 Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_switch.tscn`).
@@ -119,8 +119,9 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 
 ## Karte & Kompass
 - **Ein Dungeon = ein Ordner** mit Raumszenen (`world/<dungeon>/`). `DungeonMap` (`world/map/dungeon_map.gd`) liest die Karte selbst aus den Szenen (Instanzen ohne SceneTree, Cache pro Ordner): Raumgröße aus den Kamera-Markern, Durchgänge aus `RoomExit`s am Rand, Treppen, Truhen, Schlüssel-/Bosstüren, Speicherstatuen, Boss (Gegner mit Signal `boss_appeared`).
+- **Innenwände:** Bei Räumen aus mehreren Bildschirmen prüft die Karte jede innere Bildschirmgrenze auf Wand-Tiles (Ebene `Walls`). Ist mindestens die Hälfte Wand, zeichnet sie eine Innenwand, Lücken bleiben Durchgänge.
 - **Von Hand pro Raum** nur `Room.map_position` (Bildschirm-Raster, linke obere Ecke) und `Room.map_floor` (0 = 1F, −1 = B1).
-- `tests/test_dungeon_maps.gd` prüft alle Dungeons: keine Überlappung, Ziele und Eingänge existieren, Wand-Ausgänge führen in den Nachbarraum auf der Karte.
+- `tests/test_dungeon_maps.gd` prüft alle Dungeons: keine Überlappung, Ziele und Eingänge existieren, Wand-Ausgänge führen in den Nachbarraum auf der Karte, gegenüberliegende Durchgänge liegen an derselben Stelle, **Treppen liegen auf beiden Stockwerken an derselben Stelle**.
 - Besitz: `GameState.has_map()/has_compass()` (Merker, gehören zum Spielstand), besuchte Räume `GameState.visit_room()` (setzt Game). Pickup `DungeonItemPickup` (`dungeon_map.tscn`, `compass.tscn`).
 - Anzeige: `MapScreen` (Aktion `map`: M / Gamepad Select, pausiert, hoch/runter = Stockwerk) und `MiniMap` (HUD unten rechts, 5×3 Bildschirme, ausgeblendet bei Meldungen/Info/Boss-Leiste), beide zeichnen mit `MapView`.
 

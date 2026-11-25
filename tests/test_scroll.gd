@@ -67,7 +67,7 @@ func run() -> void:
 	hold("move_up", false)
 	await frames(20)
 	check_eq(game.current_room.name, &"TestCellar", "Treppe runter in den Keller")
-	check_eq(player.global_position, Vector2(200, 84), "Am Treppeneingang im Keller")
+	check_eq(player.global_position, Vector2(224, 64), "Am Treppeneingang im Keller")
 	hold("move_up")
 	for i in 60:
 		await frames(1)

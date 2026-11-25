@@ -191,6 +191,7 @@ Ideen zur Vorbereitung der Wendung (offen):
   - Räume als Kästchen im Raster, automatisch aus den Raumszenen erzeugt: Jeder Raum bekommt im Inspector Rasterposition und Stockwerk.
   - Besuchte Räume hell, unbesuchte dunkel, Durchgänge als helle Lücken, Treppen als Symbol. Aktueller Raum blinkt, der Held ist ein grüner Punkt, Stockwerke (1F, B1 …) mit hoch/runter umschaltbar.
   - Zusätzlich eine kleine **Mini-Karte im HUD** unten rechts: aktueller Bildschirm und Umgebung (5×3), mit Kompass auch die Symbole.
+- Große Räume zeigen ihre Innenwände (Lücken = Durchgänge). Durchgänge liegen auf beiden Seiten an derselben Stelle, Treppen auf beiden Stockwerken an derselben Stelle.
 - Die Karte aktualisiert sich beim Bauen selbst; pro Raum werden nur Rasterposition und Stockwerk eingetragen.
 
 ## Spielgefühl (entschieden)

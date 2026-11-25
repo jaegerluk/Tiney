@@ -8,6 +8,7 @@ extends RefCounted
 const SCREEN := Vector2(256, 224)
 ## So nah (Pixel) muss ein Ausgang am Raumrand liegen, um als Durchgang an dieser Wand zu gelten.
 const EDGE_MARGIN := 16.0
+const TILE := 16.0
 
 enum Marker { CHEST, KEY_DOOR, BOSS_DOOR, SAVE, BOSS, STAIRS }
 
@@ -16,7 +17,8 @@ static var _cache: Dictionary[String, DungeonMap] = {}
 var folder: String = ""
 var dungeon_id: StringName = &""
 ## Je Raum: {path, dungeon, cell: Vector2i, floor: int, size: Vector2i, entries: Array[StringName],
-## exits: Array[{pos, side: Vector2i, target, entry}], markers: Array[{kind, pos, id}]}
+## exits: Array[{pos, side: Vector2i, target, entry, stairs: bool}], markers: Array[{kind, pos, id}],
+## walls: Array[[Vector2, Vector2]] (Innenwände an Bildschirmgrenzen, Lücken = Durchgänge)}
 ## pos ist relativ zur linken oberen Ecke des Raums (Kameragrenze).
 var rooms: Array[Dictionary] = []
 
@@ -125,6 +127,7 @@ func _read_room(path: String) -> Dictionary:
 		"entries": [],
 		"exits": [],
 		"markers": [],
+		"walls": [],
 	}
 	var pixel_size := Vector2(size) * SCREEN
 	for node in root.find_children("*", "", true, false):
@@ -137,9 +140,9 @@ func _read_room(path: String) -> Dictionary:
 			if node is Stairs:
 				side = Vector2i.ZERO
 				data.markers.append({"kind": Marker.STAIRS, "pos": pos, "id": ""})
-			data.exits.append({"pos": pos, "side": side, "target": exit.target_room, "entry": exit.target_entry})
+			data.exits.append({"pos": pos, "side": side, "target": exit.target_room, "entry": exit.target_entry, "stairs": node is Stairs})
 		elif node is Pit and (node as Pit).target_room != "":
-			data.exits.append({"pos": pos, "side": Vector2i.ZERO, "target": (node as Pit).target_room, "entry": (node as Pit).target_entry})
+			data.exits.append({"pos": pos, "side": Vector2i.ZERO, "target": (node as Pit).target_room, "entry": (node as Pit).target_entry, "stairs": false})
 		elif node is Chest:
 			data.markers.append({"kind": Marker.CHEST, "pos": pos, "id": GameState.flag_id(node)})
 		elif node is LockedDoor:
@@ -149,8 +152,51 @@ func _read_room(path: String) -> Dictionary:
 			data.markers.append({"kind": Marker.SAVE, "pos": pos, "id": ""})
 		elif node is Enemy and node.has_signal(&"boss_appeared"):
 			data.markers.append({"kind": Marker.BOSS, "pos": pos, "id": GameState.flag_id(node)})
+	data.walls = _inner_walls(root.get_node_or_null("Walls") as TileMapLayer, size, top_left)
 	root.free()
 	return data
+
+
+## Innenwände eines Raums aus mehreren Bildschirmen: An jeder inneren Bildschirmgrenze wird geprüft,
+## ob dort Wand-Tiles liegen. Ist mindestens die Hälfte der Grenze Wand, gilt sie als Innenwand;
+## ihre Lücken sind Durchgänge. Ergebnis: Wandstücke [a, b] in Pixeln relativ zum Raum.
+static func _inner_walls(walls: TileMapLayer, size: Vector2i, top_left: Vector2) -> Array:
+	var result := []
+	if walls == null:
+		return result
+	var offset := walls.position - top_left
+	for k in range(1, size.x):
+		result.append_array(_boundary_walls(walls, offset, Vector2(k * SCREEN.x, 0), Vector2(0, TILE), int(size.y * SCREEN.y / TILE)))
+	for k in range(1, size.y):
+		result.append_array(_boundary_walls(walls, offset, Vector2(0, k * SCREEN.y), Vector2(TILE, 0), int(size.x * SCREEN.x / TILE)))
+	return result
+
+
+static func _boundary_walls(walls: TileMapLayer, offset: Vector2, start: Vector2, step: Vector2, count: int) -> Array:
+	var across := Vector2(step.y, step.x).normalized() * TILE / 2.0
+	var is_wall: Array[bool] = []
+	var wall_count := 0
+	for i in count:
+		var middle := start + step * (i + 0.5)
+		var wall := false
+		for side in [middle - across, middle + across]:
+			var cell := Vector2i(((side - offset) / TILE).floor())
+			if walls.get_cell_source_id(cell) != -1:
+				wall = true
+		is_wall.append(wall)
+		wall_count += int(wall)
+	var segments := []
+	if wall_count * 2 < count:
+		return segments
+	var run_start := -1
+	for i in count + 1:
+		var wall := i < count and is_wall[i]
+		if wall and run_start < 0:
+			run_start = i
+		elif not wall and run_start >= 0:
+			segments.append([start + step * run_start, start + step * i])
+			run_start = -1
+	return segments
 
 
 ## Wand, an der ein Ausgang liegt (oder ZERO, wenn er mitten im Raum ist).

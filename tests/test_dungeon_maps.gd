@@ -4,6 +4,8 @@ extends TestCase
 ## - keine Überlappung auf einem Stockwerk
 ## - jeder Ausgang führt zu einem existierenden Raum und Eingang
 ## - Ausgänge an einer Wand führen (auf demselben Stockwerk) in den Raum direkt daneben
+## - Gegenüberliegende Durchgänge liegen an derselben Stelle der gemeinsamen Wand
+## - Treppen liegen auf beiden Stockwerken an derselben Stelle
 
 
 func run() -> void:
@@ -23,6 +25,7 @@ func run() -> void:
 	var test_map := DungeonMap.for_room("res://world/test_area/test_area.tscn")
 	var area := test_map.room("res://world/test_area/test_area.tscn")
 	check_eq(area.size, Vector2i(2, 2), "Startraum ist 2×2 Bildschirme")
+	check_eq(area.walls.size(), 2, "Startraum: Innenwand mit einer Lücke (zwei Wandstücke)")
 	check_eq(test_map.floors(), [-1, 0] as Array[int], "Stockwerke B1 und 1F")
 	var kinds := {}
 	for data in test_map.rooms:
@@ -59,11 +62,34 @@ func _check_map(map: DungeonMap) -> void:
 				continue  # führt aus dem Dungeon hinaus
 			if not target.entries.has(exit.entry):
 				check(false, label + " → Eingang '%s' fehlt in %s" % [exit.entry, exit.target.get_file()])
+			if exit.stairs:
+				_check_stairs(map, data, exit, target, label)
 			if exit.side == Vector2i.ZERO or target.floor != data.floor:
 				continue
 			var cell: Vector2i = map.cell_at(data.path, exit.pos) + exit.side
 			if not Rect2i(target.cell, target.size).has_point(cell):
 				check(false, label + " → %s liegt auf der Karte nicht daneben (erwartet Zelle %s)" % [exit.target.get_file(), cell])
+			for back in target.exits:
+				if back.target == data.path and back.side == -exit.side:
+					var here := _global(data, exit.pos)
+					var there := _global(target, back.pos)
+					var along := absf(here.y - there.y) if exit.side.x != 0 else absf(here.x - there.x)
+					if along > 8.0:
+						check(false, label + " → Gegenstück in %s liegt %d px versetzt" % [exit.target.get_file(), along])
+
+
+## Treppen: Die Gegentreppe im Zielraum liegt auf der Karte an derselben Stelle.
+func _check_stairs(map: DungeonMap, data: Dictionary, exit: Dictionary, target: Dictionary, label: String) -> void:
+	for back in target.exits:
+		if back.stairs and back.target == data.path:
+			var offset := _global(data, exit.pos) - _global(target, back.pos)
+			if offset.length() > 8.0:
+				check(false, label + " → Treppe in %s liegt an anderer Stelle (Versatz %s)" % [exit.target.get_file(), offset])
+			return
+
+
+func _global(data: Dictionary, pos: Vector2) -> Vector2:
+	return Vector2(data.cell) * DungeonMap.SCREEN + pos
 
 
 func _collect_folders(folder: String, out: Array[String]) -> void:

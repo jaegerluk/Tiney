@@ -68,13 +68,13 @@ script = ExtResource("r3")
 facing = Vector2(1, 0)
 
 [node name="StairsUp" parent="." instance=ExtResource("stairs_r")]
-position = Vector2(200, 60)
+position = Vector2(224, 40)
 going_up = true
 target_room = "res://world/test_area/test_room_2.tscn"
 target_entry = &"from_cellar"
 
 [node name="from_stairs" type="Marker2D" parent="Entries"]
-position = Vector2(200, 84)
+position = Vector2(224, 64)
 script = ExtResource("r3")
 facing = Vector2(0, 1)
 
