@@ -151,7 +151,7 @@ Ideen zur Vorbereitung der Wendung (offen):
 **Vorgehen beim Planen:** Ideen sammeln → Ablauf als Stationen → Schlüssel- und Abhängigkeitsplan → Raumkarte (Raster, Stockwerke) → Inhalt pro Raum → fehlende Bausteine bauen → Graybox (nur Wände/Türen/Schlüssel, einmal durchspielbar) → füllen.
 
 - **Start:** Der Held wacht als Gefangener in einer Kerkerzelle auf. Die Zellentür öffnet sich durch dunkle Magie der versiegelten Dämonengottheit: Sie weiß, dass der Held sie befreien wird, und hat nach 100 Jahren gerade genug Kraft dafür gesammelt (Story-Idee, passt zur Wendung im Finale).
-- **Tutorial:** zuerst ein paar sehr einfache, lineare Räume. Trotzdem sollen sie cool sein (Ideen noch offen, z. B. Gefangene in Nachbarzellen kommentieren, ein Zombie bricht durch eine Wand).
+- **Tutorial:** zuerst ein paar sehr einfache, lineare Räume. Sie bilden ein **eigenes Stockwerk, das unterste des Dungeons**. Trotzdem sollen sie cool sein (Ideen noch offen, z. B. Gefangene in Nachbarzellen kommentieren, ein Zombie bricht durch eine Wand).
 - **Shop:** mindestens einer. Ein Gefangener verkauft durch die Gitterstäbe seiner Zelle.
 - **Hauptraum:** großer zentraler Raum mit einem auffälligen Designelement (wie der riesige Schädel in Dodongos Höhle). Von dort führen mehrere Wege weg. Element noch offen (Ideen: riesiges Skelett, durch dessen Brustkorb der Weg führt; Schacht mit Käfigen an Ketten; Statue mit Feuerschalen als Augen).
 - **Aufbau:** erst sehr linear, dann etwas verzweigter, insgesamt aber einfach (erster Dungeon).
