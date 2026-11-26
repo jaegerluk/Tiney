@@ -1,7 +1,8 @@
 class_name MapScreen
 extends Control
 ## Vollbild-Karte. Die Aktion "map" öffnet und schließt sie (Spiel pausiert), "menu" schließt auch.
-## Nur mit der Karte des aktuellen Dungeons. Hoch/runter wechselt das Stockwerk.
+## Mit der Karte des aktuellen Dungeons; mit nur dem Kompass ohne Räume (nur Symbole und Held).
+## Hoch/runter wechselt das Stockwerk.
 
 ## Mögliche Zellgrößen (ein Bildschirm), die größte passende wird genommen.
 const CELL_SIZES: Array[Vector2] = [Vector2(32, 28), Vector2(24, 21), Vector2(16, 14), Vector2(8, 7)]
@@ -26,7 +27,7 @@ func _ready() -> void:
 
 
 func can_open() -> bool:
-	return room_path != "" and GameState.current_dungeon != &"" and GameState.has_map()
+	return room_path != "" and GameState.current_dungeon != &"" and (GameState.has_map() or GameState.has_compass())
 
 
 func is_open() -> bool:
@@ -39,6 +40,7 @@ func open() -> void:
 	_view.current_room = room_path
 	_view.player_pos = player_pos
 	_view.show_compass = GameState.has_compass()
+	_view.show_rooms = GameState.has_map()
 	_view.highlight = true
 	_floors = map.floors()
 	var current := map.room(room_path)

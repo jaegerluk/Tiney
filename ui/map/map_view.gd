@@ -21,8 +21,8 @@ const MARKER_COLORS := {
 ## Pixel-Symbole (# = Farbe, o = dunkler Rand) für die große Karte.
 const GLYPHS := {
 	DungeonMap.Marker.CHEST: ["oooo", "o##o", "oooo"],
-	DungeonMap.Marker.KEY_DOOR: ["##...", "#####", "##.#."],
-	DungeonMap.Marker.BOSS_DOOR: ["##...", "#####", "##.#."],
+	DungeonMap.Marker.KEY_DOOR: [".###.", ".#.#.", "#####", "##o##", "#####"],
+	DungeonMap.Marker.BOSS_DOOR: [".###.", ".#.#.", "#####", "##o##", "#####"],
 	DungeonMap.Marker.SAVE: [".#.", "###", "###"],
 	DungeonMap.Marker.BOSS: [".###.", "#o#o#", "#####", ".#.#."],
 	DungeonMap.Marker.STAIRS: ["###", "...", "###"],
@@ -35,6 +35,8 @@ var cell_size: Vector2 = Vector2(24, 21)
 ## Kartenzelle, die links oben in diesem Control liegt.
 var origin: Vector2 = Vector2.ZERO
 var show_compass: bool = false
+## Räume zeichnen (nur mit Karte). Aus = nur Kompass-Symbole und der Held („Symbole im Dunkeln“).
+var show_rooms: bool = true
 ## Kleine Darstellung: Symbole als einzelne Punkte.
 var compact: bool = false
 var current_room: String = ""
@@ -49,6 +51,8 @@ func _draw() -> void:
 		return
 	var rooms := map.rooms_on(floor_index)
 	for data in rooms:
+		if not show_rooms:
+			break
 		var rect := _room_rect(data)
 		var visited := GameState.is_visited(data.path)
 		var fill := COLOR_VISITED if visited else COLOR_UNVISITED
@@ -57,11 +61,13 @@ func _draw() -> void:
 		draw_rect(rect, COLOR_BORDER)
 		draw_rect(rect.grow(-1), fill)
 	for data in rooms:
-		_draw_inner_walls(data)
-		_draw_doors(data)
+		if show_rooms:
+			_draw_inner_walls(data)
+			_draw_doors(data)
 	for data in rooms:
 		for marker in data.markers:
-			if marker.kind == DungeonMap.Marker.STAIRS or (show_compass and DungeonMap.marker_active(marker)):
+			var stairs: bool = marker.kind == DungeonMap.Marker.STAIRS
+			if (stairs and show_rooms) or (not stairs and show_compass and DungeonMap.marker_active(marker)):
 				_draw_marker(marker.kind, _to_view(data, marker.pos))
 	var current := map.room(current_room)
 	if not current.is_empty() and current.floor == floor_index:

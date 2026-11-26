@@ -21,6 +21,21 @@ func run() -> void:
 	check(not mini.visible, "Ohne Karte keine Mini-Karte")
 	check(GameState.is_visited(AREA), "Startraum gilt als besucht")
 
+	# Nur Kompass: Kartenbildschirm ohne Räume, nur Symbole
+	GameState.give_compass()
+	await frames(2)
+	check(mini.visible, "Mit Kompass: Mini-Karte (nur Symbole)")
+	check(not (mini.get_node("%MiniMapView") as MapView).show_rooms, "Mini-Karte ohne Räume")
+	await tap("map")
+	await frames(2)
+	check(screen.is_open(), "Mit Kompass lässt sich die Karte öffnen")
+	check(not (screen.get_node("%MapView") as MapView).show_rooms, "…aber ohne Räume")
+	await tap("map")
+	await frames(2)
+	GameState.restore(GameState.snapshot().merged({"flags": {}}, true))
+	GameState.visit_room(AREA)
+	check(not GameState.has_compass(), "Kompass für den Rest des Tests wieder weg")
+
 	# Karte aus der Truhe
 	var map_chest: Chest = game.current_room.get_node("MapChest")
 	player.global_position = map_chest.global_position + Vector2(0, 14)
@@ -40,6 +55,7 @@ func run() -> void:
 	check(screen.is_open() and get_tree().paused, "Karte offen, Spiel pausiert")
 	var view: MapView = screen.get_node("%MapView")
 	check_eq(view.floor_index, 0, "Stockwerk des aktuellen Raums")
+	check(view.show_rooms, "Mit Karte: Räume sichtbar")
 	check(not view.show_compass, "Ohne Kompass keine Markierungen")
 	await tap("move_down")
 	check_eq(view.floor_index, -1, "Runter: Keller")

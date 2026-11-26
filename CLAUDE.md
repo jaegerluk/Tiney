@@ -123,6 +123,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
 - **Von Hand pro Raum** nur `Room.map_position` (Bildschirm-Raster, linke obere Ecke) und `Room.map_floor` (0 = 1F, −1 = B1).
 - `tests/test_dungeon_maps.gd` prüft alle Dungeons: keine Überlappung, Ziele und Eingänge existieren, Wand-Ausgänge führen in den Nachbarraum auf der Karte, gegenüberliegende Durchgänge liegen an derselben Stelle, **Treppen liegen auf beiden Stockwerken an derselben Stelle**.
 - Besitz: `GameState.has_map()/has_compass()` (Merker, gehören zum Spielstand), besuchte Räume `GameState.visit_room()` (setzt Game). Pickup `DungeonItemPickup` (`dungeon_map.tscn`, `compass.tscn`).
+- Nur Kompass: `MapView.show_rooms = false` (nur Symbole und Held).
 - Anzeige: `MapScreen` (Aktion `map`: M / Gamepad Select, pausiert, hoch/runter = Stockwerk) und `MiniMap` (HUD unten rechts, 5×3 Bildschirme, ausgeblendet bei Meldungen/Info/Boss-Leiste), beide zeichnen mit `MapView`.
 
 ## Kamera, Treppen, Löcher, Blöcke

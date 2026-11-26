@@ -185,7 +185,8 @@ Ideen zur Vorbereitung der Wendung (offen):
 ## Karte & Kompass (entschieden, im Testbereich gebaut)
 - **Karte pro Dungeon** als Fundstück (wie Schlüssel). Der Hub braucht keine.
 - **Ohne Karten-Item gibt es keine Karte**, weder Vollbild noch Mini-Karte. Mit dem Item erscheint sofort der ganze Dungeon.
-- **Kompass** als eigenes Fundstück pro Dungeon: markiert ungeöffnete Truhen, verschlossene Schlüssel- und Bosstüren, Speicherstatuen und den Boss (kleine Symbole an der echten Position; Erledigtes verschwindet).
+- **Nur Kompass, keine Karte:** Kartenbildschirm und Mini-Karte zeigen nur den Helden und die Kompass-Symbole im Dunkeln, ohne Räume.
+- **Kompass** als eigenes Fundstück pro Dungeon: markiert ungeöffnete Truhen, verschlossene Schlüssel- und Bosstüren (Schloss-Symbol), Speicherstatuen und den Boss (kleine Symbole an der echten Position; Erledigtes verschwindet).
 - **Anzeige:**
   - Vollbild-Karte über eine eigene Taste (z. B. M / Gamepad Select), Spiel pausiert.
   - Räume als Kästchen im Raster, automatisch aus den Raumszenen erzeugt: Jeder Raum bekommt im Inspector Rasterposition und Stockwerk.

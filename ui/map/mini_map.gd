@@ -1,7 +1,7 @@
 class_name MiniMap
 extends Control
 ## Kleine Karte im HUD (unten rechts): aktueller Bildschirm und Umgebung.
-## Nur sichtbar mit der Karte des aktuellen Dungeons; mit Kompass auch die Markierungen.
+## Sichtbar mit Karte oder Kompass des aktuellen Dungeons; nur mit Kompass ohne Räume.
 
 ## Angezeigte Bildschirme (Breite × Höhe), der aktuelle in der Mitte.
 const CELLS := Vector2i(5, 3)
@@ -13,7 +13,7 @@ var player_pos: Vector2 = Vector2.ZERO
 
 
 func has_map() -> bool:
-	return room_path != "" and GameState.current_dungeon != &"" and GameState.has_map()
+	return room_path != "" and GameState.current_dungeon != &"" and (GameState.has_map() or GameState.has_compass())
 
 
 func refresh() -> void:
@@ -29,6 +29,7 @@ func refresh() -> void:
 	_view.player_pos = player_pos
 	_view.floor_index = current.floor
 	_view.show_compass = GameState.has_compass()
+	_view.show_rooms = GameState.has_map()
 	var center := map.cell_at(room_path, player_pos)
 	_view.origin = Vector2(center - CELLS / 2)
 	_view.queue_redraw()
