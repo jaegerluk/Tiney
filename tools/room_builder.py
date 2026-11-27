@@ -48,6 +48,7 @@ class RoomScene:
         self.nodes: list[str] = []
         self.conns: list[str] = []
         self.walls: list[tuple] = []
+        self.root_props: list[str] = []  # zusätzliche Eigenschaften der Room-Wurzel, z. B. "screen_scroll = false"
         self.res("Script", "res://world/room.gd")
         self.res("TileSet", "res://assets/tilesets/basic_tileset.tres")
 
@@ -80,7 +81,7 @@ class RoomScene:
         tileset = self.res("TileSet", "res://assets/tilesets/basic_tileset.tres")
         root = ['[node name="%s" type="Node2D" node_paths=PackedStringArray("camera_top_left", "camera_bottom_right")]' % self.root_name,
                 "y_sort_enabled = true", "script = " + self.res("Script", "res://world/room.gd"),
-                'dungeon_id = &"%s"' % self.dungeon,
+                'dungeon_id = &"%s"' % self.dungeon, *self.root_props,
                 'camera_top_left = NodePath("CameraBounds/TopLeft")', 'camera_bottom_right = NodePath("CameraBounds/BottomRight")']
         fixed = [
             '[node name="Floor" type="TileMapLayer" parent="."]\nz_index = -10\ntile_map_data = PackedByteArray(%s)\ntile_set = %s'

@@ -46,7 +46,7 @@ Hilfen: `check`, `check_eq`, `frames(n)`, `hold(action)`, `tap(action)`, `contin
 | `tests/` | Headless-Tests und Runner |
 | `debug/` | Debug-Menü (F1, nur in Debug-Läufen) |
 | `effects/` | `Effects`: Partikel, Trefferstopp, Bildschirmwackeln |
-| `tools/` | Hilfsskripte außerhalb von Godot: `make_placeholders.py` (Sprites), `room_builder.py` (Raumszenen mit Tiles), `tidy_tscn.py` (Reihenfolge in .tscn reparieren), `tile_edit.py` (einzelne Tiles in Raumszenen setzen/entfernen) |
+| `tools/` | Hilfsskripte außerhalb von Godot: `make_placeholders.py` (Sprites), `room_builder.py` (Raumszenen mit Tiles), `tidy_tscn.py` (Reihenfolge in .tscn reparieren), `tile_edit.py` (einzelne Tiles in Raumszenen setzen/entfernen), `rooms/` (Bauskripte einzelner Räume) |
 
 Szene und Skript liegen zusammen und tragen denselben Namen (`player/player.tscn`, `player/player.gd`).
 Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_switch.tscn`).
@@ -174,6 +174,7 @@ Objekte und Gegner bekommen je einen Unterordner (`objects/floor_switch/floor_sw
   - `test_traps` (2 Bildschirme): Klingenfallen, Stachelwelle, Bröckelbrücke über Löchern, Westöffnung → `test_dark`.
   - `test_dark`: dunkler Raum, drei Feuerschalen (Bodenschalter, Kristall, vorplatziert) öffnen eine Tür, eine Schale mit Brenndauer.
   - `test_switches` (Westöffnung des Startraums, 2 Bildschirme breit): Halteschalter mit Block, Kristallschalter in allen drei Modi.
+  - `test_hall` (Nordöffnung im rechten Teil des Startraums, 3×2 Bildschirme, **Kamera läuft mit**): Speicherstatue, Truhe mit Herzcontainer, Zombies, Schleime, Schütze, Fledermäuse, Krüge, Gras, Steine. Erzeugt von `tools/rooms/build_test_hall.py`.
 - Vorhanden:
   - Spieler: Bewegung, Schwert, Leben (LP), Rückstoß, Unverwundbarkeit, Stürze.
   - Welt: Raumwechsel mit Überblendung, Bildschirm-Scrollen, Treppen, Löcher, Persistenz, Speicherstatuen.
