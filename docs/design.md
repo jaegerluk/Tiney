@@ -93,6 +93,7 @@ Ideen zur Vorbereitung der Wendung (offen):
 ## Leben & Items (entschieden)
 - **Lebensleiste:** durchgehender Strahl mit Trennstrichen pro Herz. Bei Schaden leuchtet der verlorene Teil kurz auf und läuft dann nach. Heilen und Herzcontainer füllen sich flüssig. Intern: 1 Herz = 20 Punkte, damit skalierter Schaden fein abgestuft ist. Bei 4,0 glatte Werte (½ Herz, 1 Herz).
 - **Herzen** werden immer aufgesammelt, auch bei vollem Leben. **Herzcontainer:** +1 Herz, Leben voll.
+- **Geld-Balance:** Wer alle Truhen und Secrets mitnimmt, hat immer genug Rubine für die wichtigen Shop-Sachen. Ausnahme: höchstens einmal, für die teuerste Sache gegen Ende, muss man gezielt sparen oder farmen.
 - **Items** wählt man im Menü aus und benutzt sie mit der Item-Taste. Heilitems werden bei vollem Leben nicht verbraucht. Apfel heilt ½ Herz, Heiltrank alles.
 
 ## Figuren & Dialoge (entschieden)
@@ -159,6 +160,7 @@ Ideen zur Vorbereitung der Wendung (offen):
 - **Karte und Kompass:** ja, die Karte recht bald nach den Tutorial-Räumen.
 - **Gegner:** gruselig: Zombies, Totenköpfe, Skelette, Spinnen usw.
 - **Bosse:** 1–2 Zwischenbosse und ein Hauptboss. Der Zombie-König wird vielleicht ein Zwischenboss.
+- **Befreundeter Insasse:** Ein Mitgefangener, mit dem sich der Held anfreundet; vielleicht führt er durchs Tutorial. Später verwandelt ihn der Boss oder ein Zwischenboss in einen Zombie: ein trauriger Moment, danach ist er ein normaler Gegner.
 - **Secret:** ein Raum voller Krüge, in dem an einer Stelle statt einer Wand ein Krug steht; dahinter liegt ein geheimer Raum.
 - **Deko:** Kerkerzellen, Eisenketten, ein paar Andreaskreuze, in manchen Zellen noch Gefangene.
 - **Sammelobjekte:** einige „Skulltulas“ verstecken (siehe Sammelobjekte).
