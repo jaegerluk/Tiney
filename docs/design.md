@@ -164,7 +164,8 @@ Ideen zur Vorbereitung der Wendung (offen):
 - **Secret:** ein Raum voller Krüge, in dem an einer Stelle statt einer Wand ein Krug steht; dahinter liegt ein geheimer Raum.
 - **Deko:** Kerkerzellen, Eisenketten, ein paar Andreaskreuze, in manchen Zellen noch Gefangene.
 - **Sammelobjekte:** einige „Skulltulas“ verstecken (siehe Sammelobjekte).
-- **Items:** noch offen.
+- **Items:** noch offen. Das **neu erfundene Item** soll möglichst schon in D1 vorkommen (eigener Vibe des Spiels).
+- **Mindestens ein dunkler Raum.**
 
 ## Welt & Lore
 **Entschieden**
